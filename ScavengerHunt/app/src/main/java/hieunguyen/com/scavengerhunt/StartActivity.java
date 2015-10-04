@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -11,6 +12,9 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getActionBar().hide();
     }
 
     @Override
