@@ -6,58 +6,50 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="<-"
-        android:id="@+id/back"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:focusable="true">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout">
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight=".20"
-            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
             android:id="@+id/imageView1"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight=".20"
-            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
             android:id="@+id/imageView2"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/imageView1" />
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight=".20"
-            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
             android:id="@+id/imageView3"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/imageView2" />
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight=".20"
-            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
             android:id="@+id/imageView4"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/imageView3" />
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight=".20"
-            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
             android:id="@+id/imageView5"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="false"
@@ -66,10 +58,8 @@
 
     <VideoView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:id="@+id/videoView"
-        android:layout_below="@+id/back"
-        android:layout_toEndOf="@+id/back"
         android:layout_above="@+id/linearLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
