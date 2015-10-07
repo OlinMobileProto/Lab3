@@ -56,7 +56,8 @@ Since this lab is longer we will give you some guidance on implementation:
 ####Using S3
 - The s3 bucket name you will be using is olin-mobile-proto.
 - The API key will be emailed to you.
-- You must get the S3 URL of the videos in order to easily play the video in a VideoView
+- You must get the S3 URL of the videos in order to easily play the video in a VideoView.
+- The database contains the S3 unique ID of the file. You need to use the Amazon SDK to get the URL from the unique identifier
 - upload your images with a UUID.
 
 ####Video download
