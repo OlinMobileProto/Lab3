@@ -1,0 +1,85 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clue_fetch"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.yhuang.scavengerhunt.Fragments.ClueFetch">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="@string/clue"
+        android:textColor="#97d5ff"
+        android:textSize="64sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="90dp"
+        android:text="@string/slash"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+    <!-- Change the number to a variable -->
+    <TextView
+        android:id="@+id/currentClue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="90dp"
+        android:text="3"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/totalClue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="195dp"
+        android:layout_marginStart="195dp"
+        android:layout_marginTop="90dp"
+        android:text="6"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+    <VideoView
+        android:id="@+id/videoClue"
+        android:layout_width="match_parent"
+        android:layout_height="249dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center" />
+
+    <!-- Change the button into a camera icon -->
+    <ImageButton
+        android:id="@+id/camera"
+        android:layout_width="91dp"
+        android:layout_height="88dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:src="@drawable/camera"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/prev"
+        android:layout_marginTop="30dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="left|top"
+        android:padding="0dp"
+        android:src="@drawable/prev" />
+
+    <ImageButton
+        android:id="@+id/next"
+        android:layout_marginTop="30dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="right|top"
+        android:padding="0dp"
+        android:src="@drawable/next" />
+
+
+</FrameLayout>
