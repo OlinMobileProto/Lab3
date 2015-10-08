@@ -1,20 +1,25 @@
-package hieunguyen.com.scavengerhunt;
+package hieunguyen.com.scavengerhunt.Activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
-public class StartActivity extends AppCompatActivity {
+import hieunguyen.com.scavengerhunt.Fragments.InstructionsFragment;
+import hieunguyen.com.scavengerhunt.Fragments.WelcomeFragment;
+import hieunguyen.com.scavengerhunt.R;
+
+public class StartActivity extends Activity implements WelcomeFragment.onGoListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().hide();
+        if(savedInstanceState == null){
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new WelcomeFragment())
+                    .commit();
+        }
     }
 
     @Override
@@ -37,5 +42,12 @@ public class StartActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onGo() {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new InstructionsFragment())
+                .commit();
     }
 }
