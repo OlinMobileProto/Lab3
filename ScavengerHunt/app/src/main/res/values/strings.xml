@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Scavenger Hunt</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="new_game">New Game</string>
+    <string name="resume_game">Resume</string>
+
+    <!-- ClueFetch Fragment -->
+    <string name="clue">Clue</string>
+    <string name="slash">/</string>
+    <string name="yes">Yes</string>
+    <string name="go_back">Go Back</string>
+    <string name="hint_message">Please get close to the spot to take a picture. Do you want a hint?</string>
+    <string name="clue_switch_message">Are you sure to skip this challenge?</string>
+</resources>
