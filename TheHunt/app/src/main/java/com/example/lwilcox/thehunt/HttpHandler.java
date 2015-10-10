@@ -22,6 +22,8 @@ import javax.security.auth.callback.Callback;
 /**
  * Created by lwilcox on 10/8/2015.
  */
+//TODO: do SQL database :'-(
+//TODO: fix HttpHandler and do Volley stuff
 public class HttpHandler {
         public RequestQueue queue;
     public HttpHandler(Context context) {

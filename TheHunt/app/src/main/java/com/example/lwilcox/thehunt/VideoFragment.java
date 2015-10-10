@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
@@ -33,7 +34,7 @@ public class VideoFragment extends Fragment {
 
     public boolean locationFound = false;
     public int[] clue_location; //[latitude, longitude]
-    //public Handler mHandler;
+    public int current_clue;
     private int time_interval = 100; //milliseconds
     private int min_distance_for_updates = 1; //meters
     public LocationManager locationManager;
@@ -62,6 +63,7 @@ public class VideoFragment extends Fragment {
         for (int i = 0; i < images.size(); i++) {
             images.get(i).setImageDrawable(myDrawable);
         }
+        //TODO: add VideoView to VideoFragment
 
         ////////////////////////////////////////////GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -91,6 +93,27 @@ public class VideoFragment extends Fragment {
                 new MyLocationListener()
         );
         return myFragmentView;
+    }
+
+
+    public void downloadClue(){
+        //TODO: integrate downloadClue with Camera stuff
+        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
+
+        String file_name; //this is given to us
+        s3.download(current_clue);
+        //do stuff with clue_location
+        current_clue += 1;
+    }
+
+    public void uploadPicture(){
+        //TODO: integrate uploadPicture with Camera stuff
+        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
+
+        //do camera stuff
+        String file_name = "";
+        String clue_info = "information on clue " + current_clue;
+        s3.upload(file_name, current_clue, clue_info);
     }
 
     @Override
@@ -123,8 +146,8 @@ public class VideoFragment extends Fragment {
 
         public void checkLocation(){
             //use position[0], position[1]
-            //checks to see if you are within acceptable distance of clue
-            locationFound = false; //return true if you are within distance
+            //TODO: write function that checks to see if you are within 10M of clue location
+            locationFound = false; //true if you are within distance
         }
 
         @Override

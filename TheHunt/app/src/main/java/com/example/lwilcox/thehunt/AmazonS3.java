@@ -33,7 +33,9 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
         AmazonS3Client s3 = new AmazonS3Client(new BasicAWSCredentials("AKIAISEFKD6O3QSZGHUQ", "ETum1qfRaUFQ/ixydMBA+yBcUJLY5m8/JojEufNf"));
         s3.setRegion(Region.getRegion(Regions.US_EAST_1));
         transferUtility = new TransferUtility(s3, context.getApplicationContext());
-
+        //TODO: Understand AsyncTask
+        //TODO: make sure S3 works
+        //TODO: go to ninja hours
         return null;
     }
 
