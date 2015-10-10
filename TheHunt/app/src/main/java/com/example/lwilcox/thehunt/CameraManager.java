@@ -21,20 +21,24 @@ import java.util.UUID;
  */
 public class CameraManager extends Camera {
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static Context context;
-    Activity activity;
     String mCurrentPhotoPath;
+    public Context mContext;
+
+    public CameraManager(Context context){
+        mContext = context;
+    }
 
     public void dispatchTakePictureIntent() {
+        //this.context = context.getApplicationContext();
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
-            activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(mContext.getPackageManager()) != null) {
+            ((Activity) mContext).startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
     //@Override
-    public Bitmap onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == activity.RESULT_OK) {
+    public Bitmap onActivityResult(int requestCode, int resultCode, Intent data, Context mcontext) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == ((Activity) mcontext).RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             return imageBitmap;

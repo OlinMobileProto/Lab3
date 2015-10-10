@@ -33,7 +33,7 @@ public class VideoFragment extends Fragment {
     public ImageView img1, img2, img3, img4, img5, img6;
     public ArrayList<ImageView> images = new ArrayList<ImageView>();
     public Integer imageIndex = 0;
-    public CameraManager myCamera =  new CameraManager();
+    public CameraManager myCamera =  new CameraManager(getActivity().getApplicationContext()); //issues are here
 
     public boolean locationFound = false;
     public int[] clue_location; //[latitude, longitude]
@@ -73,7 +73,7 @@ public class VideoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 myCamera.dispatchTakePictureIntent();
-                myCamera.onActivityResult();
+                //myCamera.onActivityResult();
             }
         });
 
