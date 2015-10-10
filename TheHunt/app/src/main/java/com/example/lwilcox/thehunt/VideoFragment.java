@@ -1,5 +1,6 @@
 package com.example.lwilcox.thehunt;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,6 +17,8 @@ public class VideoFragment extends Fragment {
     private View myFragmentView;
     public ImageView img1, img2, img3, img4, img5, img6;
     public ArrayList<ImageView> images = new ArrayList<ImageView>();
+    public Integer imageIndex = 0;
+    public CameraManager myCamera =  new CameraManager();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +45,14 @@ public class VideoFragment extends Fragment {
             images.get(i).setImageDrawable(myDrawable);
         }
 
+        images.get(imageIndex).setClickable(true);
+
+        images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myCamera.dispatchTakePictureIntent();
+            }
+        });
         return myFragmentView;
     }
 }
