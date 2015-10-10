@@ -77,7 +77,7 @@ Since this lab is longer we will give you some guidance on implementation:
 1. Functionality (65%):
   - Correctly view GPS data and trigger event when within specific location range (15%)
   - Upload/download to a class SQL database (15%)
-  - Display video from S3 (15%)
+  - Display video from S3 (20%)
   - Successfully take picture, upload image to S3 (15%)
 2. Code Quality (20%):
   - Android guidelines (10%)

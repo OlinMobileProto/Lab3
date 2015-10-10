@@ -2,4 +2,7 @@
     <string name="app_name">The Hunt</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title">The Hunt</string>
+    <string name="begin">Begin</string>
+    <string name="descrip">some desccription that got deleted</string>
 </resources>
