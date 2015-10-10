@@ -42,7 +42,9 @@ public class CameraManager extends Camera {
         return null;
     }
 
-    public File, String createImageFile() throws IOException{
+    public File createImageFile() throws IOException{
+        //actually we probably just want to save to S3 from here.
+        UUID uid = UUID.randomUUID();
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()); //used as name
 
@@ -54,6 +56,6 @@ public class CameraManager extends Camera {
                 storageDir      /* directory */
         );
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image, mCurrentPhotoPath;
+        return image;
     }
 }

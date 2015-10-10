@@ -62,11 +62,10 @@ public class VideoFragment extends Fragment {
         images.add(img4);
         images.add(img5);
         images.add(img6);
-        Drawable myDrawable = getActivity().getResources().getDrawable(R.drawable.cameraimage);
+        final Drawable myDrawable = getActivity().getResources().getDrawable(R.drawable.cameraimage);
         for (int i = 0; i < images.size(); i++) {
             images.get(i).setImageDrawable(myDrawable);
         }
-
 
         images.get(imageIndex).setClickable(true);
 
@@ -74,8 +73,10 @@ public class VideoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 myCamera.dispatchTakePictureIntent();
+                myCamera.onActivityResult();
             }
         });
+
         ////////////////////////////////////////////GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         //Request location services
