@@ -64,7 +64,7 @@ Since this lab is longer we will give you some guidance on implementation:
 - You should use a VideoView to view the video. See documentation here: http://developer.android.com/reference/android/widget/VideoView.html
 
 ####Image upload
-- We're using the Android S3 SDK. A super-relevant code example can be found here: https://github.com/aws/aws-sdk-android.  You can include the SDK in gradle with the lines 'com.amazonaws:aws-android-sdk-core:2.2.7' and 'com.amazonaws:aws-android-sdk-s3:2.2.7'.
+- We're using the Android S3 SDK. A super-relevant code example can be found here: https://github.com/aws/aws-sdk-android.  You can include the SDK in gradle with the line 'com.amazonaws:aws-android-sdk-s3:2.2.7'.
 
 
 ####Device hardware
