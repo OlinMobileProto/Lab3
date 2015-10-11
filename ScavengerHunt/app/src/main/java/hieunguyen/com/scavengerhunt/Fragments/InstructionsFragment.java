@@ -14,11 +14,9 @@ import hieunguyen.com.scavengerhunt.R;
  */
 public class InstructionsFragment extends Fragment {
 
-
     public InstructionsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,5 +25,9 @@ public class InstructionsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_instructions, container, false);
     }
 
+
+    public interface onReadyListener{
+        public void onReady();
+    }
 
 }

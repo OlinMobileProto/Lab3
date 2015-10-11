@@ -9,7 +9,7 @@ import hieunguyen.com.scavengerhunt.Fragments.InstructionsFragment;
 import hieunguyen.com.scavengerhunt.Fragments.WelcomeFragment;
 import hieunguyen.com.scavengerhunt.R;
 
-public class StartActivity extends Activity implements WelcomeFragment.onGoListener {
+public class StartActivity extends Activity implements WelcomeFragment.onGoListener, InstructionsFragment.onReadyListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,5 +49,10 @@ public class StartActivity extends Activity implements WelcomeFragment.onGoListe
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new InstructionsFragment())
                 .commit();
+    }
+
+    @Override
+    public void onReady() {
+        //TODO: Implement the MapActivity so we can switch to it right here
     }
 }
