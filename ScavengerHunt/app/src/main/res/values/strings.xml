@@ -8,5 +8,6 @@
     <string name="instruction1">1. Watch the clue</string>
     <string name="instruction2">2. Use the map to find the clue</string>
     <string name="instruction3">3. Upload a photo</string>
+    <string name="title_activity_hunt">HuntActivity</string>
 
 </resources>
