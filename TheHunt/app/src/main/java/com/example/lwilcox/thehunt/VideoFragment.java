@@ -10,14 +10,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,9 +24,6 @@ import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
-
-import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
@@ -71,7 +63,6 @@ public class VideoFragment extends Fragment {
         img5 = (ImageView) myFragmentView.findViewById(R.id.imageView5);
         img6 = (ImageView) myFragmentView.findViewById(R.id.imageView6);
         relativeLayout = (RelativeLayout) myFragmentView.findViewById(R.id.searchView);
-        video = (VideoView) myFragmentView.findViewById(R.id.videoView);
 
         images.add(img1);
         images.add(img2);
@@ -87,23 +78,21 @@ public class VideoFragment extends Fragment {
         // get first clue
         s3 = new AmazonS3(getActivity().getBaseContext());
         //TODO: get .MOV name from the SQL database instead
-        video_name = "MVI_3146.MOV";
+        video_name = "MVI_3146.3gp";
         uri = Uri.parse(s3.download(video_name));
 
         // set up video view
-        video.setVideoURI(uri);
-        mediaController = new MediaController(getActivity().getApplicationContext());
-        mediaController.setAnchorView(video);
-        video.setMediaController(mediaController);
-
-        // new BackgroundAsyncTask().execute(s3.download(video_name);
-        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener(){
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                video.requestFocus();
-                video.start();
-            }
-        });
+        try {
+            video = (VideoView) myFragmentView.findViewById(R.id.videoView);
+            mediaController = new MediaController(getActivity().getBaseContext());
+            video.setVideoURI(uri);
+            video.setMediaController(mediaController);
+            video.requestFocus();
+            video.start();
+        } catch (Exception e){
+            Log.e("Error", e.getMessage());
+            e.printStackTrace();
+        }
 
         ////////////////////////////////////////////GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -125,12 +114,12 @@ public class VideoFragment extends Fragment {
             Toast.makeText(getActivity().getBaseContext(), "You probably want a higher version of android",
                     Toast.LENGTH_SHORT).show();
         }
-
+        MyLocationListener locationListener = new MyLocationListener(getActivity().getBaseContext());
         locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 time_interval,
                 min_distance_for_updates,
-                new MyLocationListener()
+                locationListener
         );
         return myFragmentView;
     }
@@ -185,38 +174,6 @@ public class VideoFragment extends Fragment {
                 return;
             }
             // other 'case' lines to check for other permissions this app might request
-        }
-    }
-
-    private class MyLocationListener implements LocationListener {
-        @Override
-        public void onLocationChanged(Location location) {
-            position[0] = location.getLongitude();
-            position[1] = location.getLatitude();
-            Log.d("Location", position[0] + ", " + position[1]);
-            checkLocation();
-        }
-
-        public void checkLocation(){
-            //use position[0], position[1]
-            //TODO: write function that checks to see if you are within 10M of clue location
-
-            //relativeLayout.setBackgroundColor(Color.GREEN);
-            locationFound = false; //true if you are within distance
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            Toast.makeText(getActivity().getBaseContext(), "Provider status changed",
-                    Toast.LENGTH_LONG).show();
-        }
-        public void onProviderEnabled(String s) {
-            Toast.makeText(getActivity().getBaseContext(), "Provider enabled by the user. GPS turned on",
-                    Toast.LENGTH_LONG).show();
-        }
-        public void onProviderDisabled(String s){
-            Toast.makeText(getActivity().getBaseContext(), "Provider disabled by the user. GPS turned off",
-                    Toast.LENGTH_LONG).show();
         }
     }
 }

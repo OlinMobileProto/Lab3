@@ -69,6 +69,7 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
             @Override
             public void onError(int id, Exception ex) {
                 Log.d("Error", "An error occurred when downloading from S3");
+                ex.printStackTrace();
             }
         });
     }
