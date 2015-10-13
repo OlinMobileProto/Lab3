@@ -1,16 +1,20 @@
 package com.example.lwilcox.thehunt;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import android.Manifest;
 import android.app.Application;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -24,7 +28,13 @@ import android.widget.ImageView;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
@@ -33,7 +43,9 @@ public class VideoFragment extends Fragment {
     public ImageView img1, img2, img3, img4, img5, img6;
     public ArrayList<ImageView> images = new ArrayList<ImageView>();
     public Integer imageIndex = 0;
-    public CameraManager myCamera =  new CameraManager(getActivity().getApplicationContext()); //issues are here
+    //public CameraManager myCamera =  new CameraManager(getActivity().getBaseContext()); //issues are here
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    String mCurrentPhotoPath;
 
     public boolean locationFound = false;
     public int[] clue_location; //[latitude, longitude]
@@ -43,6 +55,8 @@ public class VideoFragment extends Fragment {
     public LocationManager locationManager;
     public double[] position = new double[2];
     public final int LOCATION_REQUEST = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    public Uri u;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,15 +81,7 @@ public class VideoFragment extends Fragment {
             images.get(i).setImageDrawable(myDrawable);
         }
 
-        images.get(imageIndex).setClickable(true);
-
-        images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myCamera.dispatchTakePictureIntent();
-                //myCamera.onActivityResult();
-            }
-        });
+        setCameraButton();
 
         ////////////////////////////////////////////GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -154,6 +160,36 @@ public class VideoFragment extends Fragment {
         public void onProviderDisabled(String s){
             Toast.makeText(getActivity().getBaseContext(), "Provider disabled by the user. GPS turned off",
                     Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void setCameraButton(){
+        images.get(imageIndex).setClickable(true); //Set first time
+
+        images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == -1) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            images.get(imageIndex).setImageBitmap(imageBitmap);
+            Uri u = data.getData();
+            imageIndex ++;
+        }
+        setCameraButton();
+    }
+
+    public void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 }
