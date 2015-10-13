@@ -2,11 +2,16 @@ package com.example.lwilcox.thehunt;
 
 import android.Manifest;
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,26 +25,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.content.Context;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
 public class VideoFragment extends Fragment {
     private View myFragmentView;
+    public RelativeLayout relativeLayout;
     public ImageView img1, img2, img3, img4, img5, img6;
     public ArrayList<ImageView> images = new ArrayList<ImageView>();
+    public VideoView video;
+    public AmazonS3 s3;
+    public ProgressDialog progressDialog;
+    public MediaController mediaController;
 
+    public String video_name;
     public boolean locationFound = false;
     public int[] clue_location; //[latitude, longitude]
     public int current_clue;
+    public Uri uri;
     private int time_interval = 100; //milliseconds
     private int min_distance_for_updates = 1; //meters
     public LocationManager locationManager;
     public double[] position = new double[2];
     public final int LOCATION_REQUEST = 1;
+
+    //TODO: Clean this mess up
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +70,8 @@ public class VideoFragment extends Fragment {
         img4 = (ImageView) myFragmentView.findViewById(R.id.imageView4);
         img5 = (ImageView) myFragmentView.findViewById(R.id.imageView5);
         img6 = (ImageView) myFragmentView.findViewById(R.id.imageView6);
+        relativeLayout = (RelativeLayout) myFragmentView.findViewById(R.id.searchView);
+        video = (VideoView) myFragmentView.findViewById(R.id.videoView);
 
         images.add(img1);
         images.add(img2);
@@ -63,7 +83,27 @@ public class VideoFragment extends Fragment {
         for (int i = 0; i < images.size(); i++) {
             images.get(i).setImageDrawable(myDrawable);
         }
-        //TODO: add VideoView to VideoFragment
+
+        // get first clue
+        s3 = new AmazonS3(getActivity().getBaseContext());
+        //TODO: get .MOV name from the SQL database instead
+        video_name = "MVI_3146.MOV";
+        uri = Uri.parse(s3.download(video_name));
+
+        // set up video view
+        video.setVideoURI(uri);
+        mediaController = new MediaController(getActivity().getApplicationContext());
+        mediaController.setAnchorView(video);
+        video.setMediaController(mediaController);
+
+        // new BackgroundAsyncTask().execute(s3.download(video_name);
+        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener(){
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                video.requestFocus();
+                video.start();
+            }
+        });
 
         ////////////////////////////////////////////GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -95,28 +135,41 @@ public class VideoFragment extends Fragment {
         return myFragmentView;
     }
 
-
     public void downloadClue(){
         //TODO: integrate downloadClue with Camera stuff
         AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
 
         String file_name; //this is given to us
-        s3.download(current_clue);
+        if (current_clue == 2) {
+            video_name = "MVI_3146.MOV";
+        } else if(current_clue == 2) {
+            video_name = "MVI_3146.MOV";
+        }else if(current_clue == 3) {
+            video_name = "MVI_3146.MOV";
+        }else if(current_clue == 4) {
+            video_name = "MVI_3146.MOV";
+        }else if(current_clue == 5) {
+            video_name = "MVI_3146.MOV";
+        }else if(current_clue == 6) {
+            //TODO: YOU WIN THING
+        }
+        uri = Uri.parse(s3.download(video_name));
         //do stuff with clue_location
+        //set clue as videoview
         current_clue += 1;
     }
 
     public void uploadPicture(){
         //TODO: integrate uploadPicture with Camera stuff
-        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
-
-        //do camera stuff
-        String file_name = "";
-        String clue_info = "information on clue " + current_clue;
-        s3.upload(file_name, current_clue, clue_info);
+//        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
+//
+//        //do camera stuff
+//        String file_name = "";
+//        String clue_info = "information on clue " + current_clue;
+//        s3.upload(file_name, current_clue, clue_info);
     }
 
-    @Override
+    @Override // request permission from phone to use GPS functionality
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case LOCATION_REQUEST: {
@@ -147,6 +200,8 @@ public class VideoFragment extends Fragment {
         public void checkLocation(){
             //use position[0], position[1]
             //TODO: write function that checks to see if you are within 10M of clue location
+
+            //relativeLayout.setBackgroundColor(Color.GREEN);
             locationFound = false; //true if you are within distance
         }
 
