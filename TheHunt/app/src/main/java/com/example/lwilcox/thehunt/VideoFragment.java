@@ -1,14 +1,21 @@
 package com.example.lwilcox.thehunt;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Intent;
+
 import android.Manifest;
 import android.app.Application;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -18,12 +25,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.content.Context;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
@@ -31,6 +48,10 @@ public class VideoFragment extends Fragment {
     private View myFragmentView;
     public ImageView img1, img2, img3, img4, img5, img6;
     public ArrayList<ImageView> images = new ArrayList<ImageView>();
+    public Integer imageIndex = 0;
+    //public CameraManager myCamera =  new CameraManager(getActivity().getBaseContext()); //issues are here
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    String mCurrentPhotoPath;
 
     public boolean locationFound = false;
     public int[] clue_location; //[latitude, longitude]
@@ -40,6 +61,9 @@ public class VideoFragment extends Fragment {
     public LocationManager locationManager;
     public double[] position = new double[2];
     public final int LOCATION_REQUEST = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    public Uri u;
+    public Drawable fullImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,11 +83,13 @@ public class VideoFragment extends Fragment {
         images.add(img4);
         images.add(img5);
         images.add(img6);
-        Drawable myDrawable = getActivity().getResources().getDrawable(R.drawable.cameraimage);
+        final Drawable myDrawable = getActivity().getResources().getDrawable(R.drawable.cameraimage);
         for (int i = 0; i < images.size(); i++) {
             images.get(i).setImageDrawable(myDrawable);
         }
         //TODO: add VideoView to VideoFragment
+
+        setCameraButton(u);
 
         ////////////////////////////////////////////GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -92,6 +118,7 @@ public class VideoFragment extends Fragment {
                 min_distance_for_updates,
                 new MyLocationListener()
         );
+
         return myFragmentView;
     }
 
@@ -162,6 +189,75 @@ public class VideoFragment extends Fragment {
         public void onProviderDisabled(String s){
             Toast.makeText(getActivity().getBaseContext(), "Provider disabled by the user. GPS turned off",
                     Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void setCameraButton(Uri u){
+        //final Uri uri = u;
+
+        for (int i = 0; i < images.size(); i++) {
+            if (imageIndex == i) {
+                images.get(imageIndex).setClickable(true);
+            }
+            else {
+//                images.get(i).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        try {
+//                            String filePath = uri.getPath();
+//                            InputStream inputStream  = new FileInputStream(filePath);
+//                            //InputStream inputStream = getActivity().getBaseContext().getContentResolver().openInputStream(uri);
+//                            fullImage = Drawable.createFromStream(inputStream, uri.toString() );
+//                        } catch (FileNotFoundException e) {
+//
+//                        }
+//                        final Dialog nagDialog = new Dialog(getActivity().getBaseContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+//                        nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                        nagDialog.setCancelable(false);
+//                        nagDialog.setContentView(R.layout.preview_image);
+//                        Button btnClose = (Button)nagDialog.findViewById(R.id.btnIvClose);
+//                        ImageView ivPreview = (ImageView)nagDialog.findViewById(R.id.iv_preview_image);
+//                        ivPreview.setBackgroundDrawable(fullImage);
+//
+//                        btnClose.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View arg0) {
+//
+//                                nagDialog.dismiss();
+//                            }
+//                        });
+//                        nagDialog.show();
+//                    }
+//                });
+                images.get(imageIndex).setClickable(false);
+            }
+        }
+
+
+        images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == -1) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            images.get(imageIndex).setImageBitmap(imageBitmap);
+            Uri u = data.getData();
+            imageIndex ++;
+        }
+        setCameraButton(u);
+    }
+
+    public void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 }
