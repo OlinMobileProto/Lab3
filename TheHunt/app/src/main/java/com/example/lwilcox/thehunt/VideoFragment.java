@@ -1,6 +1,7 @@
 package com.example.lwilcox.thehunt;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 
 import android.Manifest;
@@ -24,12 +25,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.content.Context;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +63,7 @@ public class VideoFragment extends Fragment {
     public final int LOCATION_REQUEST = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     public Uri u;
+    public Drawable fullImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,7 +88,7 @@ public class VideoFragment extends Fragment {
             images.get(i).setImageDrawable(myDrawable);
         }
 
-        setCameraButton();
+        setCameraButton(u);
 
         ////////////////////////////////////////////GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -163,8 +170,47 @@ public class VideoFragment extends Fragment {
         }
     }
 
-    public void setCameraButton(){
-        images.get(imageIndex).setClickable(true); //Set first time
+    public void setCameraButton(Uri u){
+        //final Uri uri = u;
+
+        for (int i = 0; i < images.size(); i++) {
+            if (imageIndex == i) {
+                images.get(imageIndex).setClickable(true);
+            }
+            else {
+//                images.get(i).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        try {
+//                            String filePath = uri.getPath();
+//                            InputStream inputStream  = new FileInputStream(filePath);
+//                            //InputStream inputStream = getActivity().getBaseContext().getContentResolver().openInputStream(uri);
+//                            fullImage = Drawable.createFromStream(inputStream, uri.toString() );
+//                        } catch (FileNotFoundException e) {
+//
+//                        }
+//                        final Dialog nagDialog = new Dialog(getActivity().getBaseContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+//                        nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                        nagDialog.setCancelable(false);
+//                        nagDialog.setContentView(R.layout.preview_image);
+//                        Button btnClose = (Button)nagDialog.findViewById(R.id.btnIvClose);
+//                        ImageView ivPreview = (ImageView)nagDialog.findViewById(R.id.iv_preview_image);
+//                        ivPreview.setBackgroundDrawable(fullImage);
+//
+//                        btnClose.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View arg0) {
+//
+//                                nagDialog.dismiss();
+//                            }
+//                        });
+//                        nagDialog.show();
+//                    }
+//                });
+                images.get(imageIndex).setClickable(false);
+            }
+        }
+
 
         images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +229,7 @@ public class VideoFragment extends Fragment {
             Uri u = data.getData();
             imageIndex ++;
         }
-        setCameraButton();
+        setCameraButton(u);
     }
 
     public void dispatchTakePictureIntent() {
