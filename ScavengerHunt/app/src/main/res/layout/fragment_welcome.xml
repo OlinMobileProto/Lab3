@@ -15,14 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:paddingTop="100dp"
-        android:paddingBottom="30dp"/>
+        android:paddingBottom="80dp"/>
 
     <ImageButton android:id="@+id/goButton"
         android:layout_width="@dimen/go_button_side"
         android:layout_height="@dimen/go_button_side"
         android:layout_below="@id/welcome_text"
         android:background="@drawable/gobutton"
-        android:paddingTop="30dp"
+        android:paddingTop="70dp"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

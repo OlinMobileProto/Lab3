@@ -2,17 +2,28 @@ package hieunguyen.com.scavengerhunt.Fragments;
 
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import hieunguyen.com.scavengerhunt.R;
 
 public class InstructionsFragment extends Fragment {
 
     private onReadyListener mListener;
+
+    @Bind(R.id.done_button) Button mDoneButton;
+    @OnClick(R.id.done_button) void ready() {
+        Toast.makeText(getActivity(), "BUTTON CLIKED", Toast.LENGTH_SHORT).show();
+        mListener.onReady();
+    }
 
     public InstructionsFragment() {
         // Required empty public constructor
@@ -23,6 +34,7 @@ public class InstructionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_instructions, container, false);
+        ButterKnife.bind(this, rootView);
 
         //TODO: Add an "I'm ready" button somewhere in here, onClickListener should be implemented w/Butterknife
 
@@ -41,7 +53,7 @@ public class InstructionsFragment extends Fragment {
     }
 
     public interface onReadyListener{
-        public void onReady();
+        void onReady();
     }
 
 }

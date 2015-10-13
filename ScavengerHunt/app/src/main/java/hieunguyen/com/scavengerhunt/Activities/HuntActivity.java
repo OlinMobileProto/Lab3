@@ -1,5 +1,6 @@
 package hieunguyen.com.scavengerhunt.Activities;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -18,5 +19,9 @@ public class HuntActivity extends AppCompatActivity {
                     .add(R.id.container, new ClueFragment())
                     .commit();
         }
+    }
+
+    public Uri getVideoUrl(int clueNumber){
+        return Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.MOV");
     }
 }

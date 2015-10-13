@@ -1,6 +1,7 @@
 package hieunguyen.com.scavengerhunt.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,6 +54,7 @@ public class StartActivity extends Activity implements WelcomeFragment.onGoListe
 
     @Override
     public void onReady() {
-        //TODO: Implement the MapActivity so we can switch to it right here
+        Intent intent = new Intent(this, HuntActivity.class);
+        startActivity(intent);
     }
 }
