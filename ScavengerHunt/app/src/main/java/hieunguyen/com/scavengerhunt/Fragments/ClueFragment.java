@@ -17,13 +17,18 @@ import android.widget.VideoView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import hieunguyen.com.scavengerhunt.R;
 
 public class ClueFragment extends Fragment {
 
-//    private onVideoDoneListener mListener;
+    private onVideoDoneListener mListener;
 
     @Bind(R.id.done_button) Button mDoneButton;
+    @OnClick(R.id.done_button) void done(){
+        mListener.onVideoDone();
+    }
+
     @Bind(R.id.clue_vv) VideoView mClueVideoView;
     @Bind(R.id.title_tv) TextView mTitleTextView;
 
@@ -47,7 +52,7 @@ public class ClueFragment extends Fragment {
 
 //        Uri vidUrl = Uri.parse("http://s3.amazonaws.com/olin-mobile-proto/MVI_3140.MOV");
 
-        String vidAddress = "https://archive.org/download/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
+        String vidAddress = "http://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp";
         Uri vidUrl = Uri.parse(vidAddress);
 
         pDialog = new ProgressDialog(getActivity());
@@ -87,16 +92,22 @@ public class ClueFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        try {
+            mListener = (onVideoDoneListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
+        mListener = null;
     }
 
-//    public interface onVideoDoneListener {
-//        public void onVideoDone();
-//    }
+    public interface onVideoDoneListener {
+        public void onVideoDone();
+    }
 
 }
