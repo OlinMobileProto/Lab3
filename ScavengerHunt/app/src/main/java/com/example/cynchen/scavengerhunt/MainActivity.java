@@ -10,7 +10,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    MapsActivity test = new MapsActivity();
+    GPSFragment test = new GPSFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
