@@ -1,8 +1,8 @@
-/local.properties
-/.idea/*
-.DS_Store
-/build/*
-gradle/*
-/captures
-.gradle
+/ScavengerHunt/local.properties
+/ScavengerHunt/.idea/*
+/ScavengerHunt/.DS_Store
+/ScavengerHunt/build/*
+/ScavengerHunt/gradle/*
+/ScavengerHunt/captures
+/ScavengerHunt/.gradle
 *.iml
