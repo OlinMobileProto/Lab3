@@ -23,12 +23,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.content.Context;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import android.widget.VideoView;
@@ -63,7 +67,7 @@ public class VideoFragment extends Fragment {
     public double[] position = new double[2];
     public final int LOCATION_REQUEST = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
-    public Uri u;
+    public ArrayList<Uri> photoUriList = new ArrayList<Uri>();
     public Drawable fullImage;
 
     //TODO: Clean this mess up
@@ -95,7 +99,7 @@ public class VideoFragment extends Fragment {
         // get first clue
         s3 = new AmazonS3(getActivity().getBaseContext());
         //TODO: get .MOV name from the SQL database instead
-        locationListener = new MyLocationListener(getActivity().getBaseContext());
+        locationListener = new MyLocationListener(getActivity().getBaseContext(), this);
         video_name = "MVI_3146.3gp";
         locationListener.position[0] = 42.29386;
         locationListener.position[0] = -71.26483;
@@ -108,14 +112,14 @@ public class VideoFragment extends Fragment {
             video.setVideoURI(uri);
             video.setMediaController(mediaController);
             video.requestFocus();
-            video.start();
+            //video.start();
         } catch (Exception e){
             Log.e("Stupid error :'-(", e.getMessage());
             e.printStackTrace();
         }
 
         // set up camera buttons
-        setCameraButton(u);
+        setCameraButton();
 
         // set up GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -212,47 +216,47 @@ public class VideoFragment extends Fragment {
         }
     }
 
-    public void setCameraButton(Uri u){
-        //final Uri uri = u;
+    public void setCameraButton(){
 
-        for (int i = 0; i < images.size(); i++) {
-            if (imageIndex == i) {
-                images.get(imageIndex).setClickable(true);
-            }
-            else {
-//                images.get(i).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        try {
-//                            String filePath = uri.getPath();
-//                            InputStream inputStream  = new FileInputStream(filePath);
-//                            //InputStream inputStream = getActivity().getBaseContext().getContentResolver().openInputStream(uri);
-//                            fullImage = Drawable.createFromStream(inputStream, uri.toString() );
-//                        } catch (FileNotFoundException e) {
-//
-//                        }
-//                        final Dialog nagDialog = new Dialog(getActivity().getBaseContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-//                        nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                        nagDialog.setCancelable(false);
-//                        nagDialog.setContentView(R.layout.preview_image);
-//                        Button btnClose = (Button)nagDialog.findViewById(R.id.btnIvClose);
-//                        ImageView ivPreview = (ImageView)nagDialog.findViewById(R.id.iv_preview_image);
-//                        ivPreview.setBackgroundDrawable(fullImage);
-//
-//                        btnClose.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View arg0) {
-//
-//                                nagDialog.dismiss();
-//                            }
-//                        });
-//                        nagDialog.show();
-//                    }
-//                });
-                images.get(imageIndex).setClickable(false);
+        images.get(imageIndex).setClickable(true);
+
+        if (photoUriList != null) {
+            for (int i = 0; i < photoUriList.size(); i++) {
+                if (i != imageIndex) {
+                    final Uri u = photoUriList.get(i);
+                    images.get(i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                //                            String filePath = uri.getPath();
+                                //                            InputStream inputStream  = new FileInputStream(filePath);
+                                InputStream inputStream = getActivity().getBaseContext().getContentResolver().openInputStream(u);
+                                fullImage = Drawable.createFromStream(inputStream, u.toString());
+                            } catch (FileNotFoundException e) {
+
+                            }
+                            final Dialog nagDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+                            nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            nagDialog.setCancelable(false);
+                            nagDialog.setContentView(R.layout.preview_image);
+                            Button btnClose = (Button) nagDialog.findViewById(R.id.btnIvClose);
+                            ImageView ivPreview = (ImageView) nagDialog.findViewById(R.id.iv_preview_image);
+                            ivPreview.setBackgroundDrawable(fullImage);
+
+                            btnClose.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View arg0) {
+
+                                    nagDialog.dismiss();
+                                }
+                            });
+                            nagDialog.show();
+                        }
+                    });
+                    images.get(imageIndex).setClickable(false);
+                }
             }
         }
-
 
         images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,10 +272,11 @@ public class VideoFragment extends Fragment {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             images.get(imageIndex).setImageBitmap(imageBitmap);
-            Uri u = data.getData();
+            Uri imageUri = data.getData();
+            photoUriList.add(imageIndex, imageUri);
             imageIndex ++;
         }
-        setCameraButton(u);
+        setCameraButton();
         downloadClue();
     }
 

@@ -31,7 +31,7 @@ public class MyLocationListener implements LocationListener {
         Log.d("Location", yourPosition[0] + ", " + yourPosition[1]);
         checkLocation();
         if (locationFound == true){
-            //fragment.setCameraButton();
+            fragment.setCameraButton();
         }
     }
 
