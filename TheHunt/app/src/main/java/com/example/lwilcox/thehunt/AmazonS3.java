@@ -76,32 +76,5 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
 
     public String download(String clue_name){
         return "https://s3.amazonaws.com/olin-mobile-proto/" + clue_name;
-//        String object_key = clue_name;
-//        File file = new File(object_key + ".MOV");
-//        //download
-//        TransferObserver observer = transferUtility.download(
-//                "olin-mobile-proto",     /* The bucket to download from */
-//                object_key,    /* The key for the object to download */
-//                file        /* The file to download the object to */
-//        );
-//        observer.setTransferListener(new TransferListener() {
-//            @Override
-//            public void onStateChanged(int id, TransferState state) {
-//                Log.d("State changed", "The state of the downloading Transfer Observer has changed...");
-//                Log.d("What is this?", "" + id);
-//                //TODO: find out if this is where you put "Finished downloading". What does state changed mean?
-//            }
-//
-//            @Override
-//            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-//                int percentage = (int) (bytesCurrent/bytesTotal * 100);
-//                Log.d("Percent", percentage + "%");
-//            }
-//
-//            @Override
-//            public void onError(int id, Exception ex) {
-//                Log.d("Error", "An error occurred when downloading from S3");
-//            }
-//        });
     }
 }

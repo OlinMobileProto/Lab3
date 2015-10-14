@@ -42,7 +42,7 @@ public class VideoFragment extends Fragment {
     private View myFragmentView;
     public RelativeLayout relativeLayout;
     public ImageView img1, img2, img3, img4, img5, img6;
-    public ArrayList<ImageView> images = new ArrayList<ImageView>();
+    public ArrayList<ImageView> images = new ArrayList<>();
 
     public Integer imageIndex = 0;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -52,10 +52,9 @@ public class VideoFragment extends Fragment {
     public AmazonS3 s3;
     public ProgressDialog progressDialog;
     public MediaController mediaController;
+    public MyLocationListener locationListener;
 
     public String video_name;
-    public boolean locationFound = false;
-    public int[] clue_location; //[latitude, longitude]
     public int current_clue;
     public Uri uri;
     private int time_interval = 100; //milliseconds
@@ -74,6 +73,7 @@ public class VideoFragment extends Fragment {
                              Bundle savedInstanceState) {
         myFragmentView = inflater.inflate(R.layout.fragment_video, container, false);
 
+        // add images
         img1 = (ImageView) myFragmentView.findViewById(R.id.imageView1);
         img2 = (ImageView) myFragmentView.findViewById(R.id.imageView2);
         img3 = (ImageView) myFragmentView.findViewById(R.id.imageView3);
@@ -81,7 +81,6 @@ public class VideoFragment extends Fragment {
         img5 = (ImageView) myFragmentView.findViewById(R.id.imageView5);
         img6 = (ImageView) myFragmentView.findViewById(R.id.imageView6);
         relativeLayout = (RelativeLayout) myFragmentView.findViewById(R.id.searchView);
-
         images.add(img1);
         images.add(img2);
         images.add(img3);
@@ -96,25 +95,29 @@ public class VideoFragment extends Fragment {
         // get first clue
         s3 = new AmazonS3(getActivity().getBaseContext());
         //TODO: get .MOV name from the SQL database instead
+        locationListener = new MyLocationListener(getActivity().getBaseContext());
         video_name = "MVI_3146.3gp";
+        locationListener.position[0] = 42.29386;
+        locationListener.position[0] = -71.26483;
         uri = Uri.parse(s3.download(video_name));
 
         // set up video view
         try {
             video = (VideoView) myFragmentView.findViewById(R.id.videoView);
-            mediaController = new MediaController(getActivity().getBaseContext());
+            mediaController = new MediaController(getActivity());
             video.setVideoURI(uri);
             video.setMediaController(mediaController);
             video.requestFocus();
             video.start();
         } catch (Exception e){
-            Log.e("Error", e.getMessage());
+            Log.e("Stupid error :'-(", e.getMessage());
             e.printStackTrace();
         }
 
+        // set up camera buttons
         setCameraButton(u);
 
-        ////////////////////////////////////////////GPS Functionality
+        // set up GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         //Request location services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //if you have a high enough version of android, request permissions
@@ -134,7 +137,7 @@ public class VideoFragment extends Fragment {
             Toast.makeText(getActivity().getBaseContext(), "You probably want a higher version of android",
                     Toast.LENGTH_SHORT).show();
         }
-        MyLocationListener locationListener = new MyLocationListener(getActivity().getBaseContext());
+
         locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 time_interval,
@@ -148,24 +151,35 @@ public class VideoFragment extends Fragment {
     public void downloadClue(){
         //TODO: integrate downloadClue with Camera stuff
         AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
-
-        String file_name; //this is given to us
         if (current_clue == 2) {
-            video_name = "MVI_3146.MOV";
+            video_name = "MVI_3145.3gp";
+            locationListener.position[0] = 42.292987;
+            locationListener.position[1] = -71.264039;
         } else if(current_clue == 2) {
-            video_name = "MVI_3146.MOV";
+            video_name = "MVI_3144.3gp";
+            locationListener.position[0] = 42.292733;
+            locationListener.position[1] = -71.263977;
         }else if(current_clue == 3) {
-            video_name = "MVI_3146.MOV";
+            video_name = "MVI_3147.3gp";
+            locationListener.position[0] = 42.293445;
+            locationListener.position[1] = -71.263481;
         }else if(current_clue == 4) {
-            video_name = "MVI_3146.MOV";
+            video_name = "MVI_3141.3gp";
+            locationListener.position[0] = 42.293108;
+            locationListener.position[1] = -71.262802;
         }else if(current_clue == 5) {
-            video_name = "MVI_3146.MOV";
+            video_name = "MVI_3140.3gp";
+            locationListener.position[0] = 42.292701;
+            locationListener.position[1] = -71.262054;
         }else if(current_clue == 6) {
             //TODO: YOU WIN THING
         }
+        video.stopPlayback();
         uri = Uri.parse(s3.download(video_name));
-        //do stuff with clue_location
-        //set clue as videoview
+        video.setVideoURI(uri);
+        video.requestFocus();
+        video.start();
+
         current_clue += 1;
     }
 
@@ -258,6 +272,7 @@ public class VideoFragment extends Fragment {
             imageIndex ++;
         }
         setCameraButton(u);
+        downloadClue();
     }
 
     public void dispatchTakePictureIntent() {
