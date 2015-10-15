@@ -53,13 +53,12 @@ public class VideoFragment extends Fragment {
     String mCurrentPhotoPath;
 
     public VideoView video;
-    public AmazonS3 s3;
     public ProgressDialog progressDialog;
     public MediaController mediaController;
     public MyLocationListener locationListener;
 
     public String video_name;
-    public int current_clue;
+    public int current_clue = 1;
     public Uri uri;
     private int time_interval = 100; //milliseconds
     private int min_distance_for_updates = 1; //meters
@@ -97,12 +96,11 @@ public class VideoFragment extends Fragment {
         }
 
         // get first clue
-        s3 = new AmazonS3(getActivity().getBaseContext());
+        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
         //TODO: get .MOV name from the SQL database instead
         locationListener = new MyLocationListener(getActivity().getBaseContext(), this);
-        video_name = "MVI_3146.3gp";
-        locationListener.position[0] = 42.29386;
-        locationListener.position[0] = -71.26483;
+        downloadClue();
+
         uri = Uri.parse(s3.download(video_name));
 
         // set up video view
@@ -123,6 +121,7 @@ public class VideoFragment extends Fragment {
 
         // set up GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
         //Request location services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //if you have a high enough version of android, request permissions
             Log.d("Permission request","Doing permission location request");
@@ -152,31 +151,36 @@ public class VideoFragment extends Fragment {
         return myFragmentView;
     }
 
+    //gets the next video and displays it, also changes the current camera button
     public void downloadClue(){
         //TODO: integrate downloadClue with Camera stuff
         AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
-        if (current_clue == 2) {
+        if (current_clue == 1) {
+            video_name = "MVI_3146.3gp";
+            locationListener.position[0] = 42.29386;
+            locationListener.position[0] = -71.26483;
+        } else if (current_clue == 2) {
             video_name = "MVI_3145.3gp";
             locationListener.position[0] = 42.292987;
             locationListener.position[1] = -71.264039;
-        } else if(current_clue == 2) {
+        } else if(current_clue == 3) {
             video_name = "MVI_3144.3gp";
             locationListener.position[0] = 42.292733;
             locationListener.position[1] = -71.263977;
-        }else if(current_clue == 3) {
+        }else if(current_clue == 4) {
             video_name = "MVI_3147.3gp";
             locationListener.position[0] = 42.293445;
             locationListener.position[1] = -71.263481;
-        }else if(current_clue == 4) {
+        }else if(current_clue == 5) {
             video_name = "MVI_3141.3gp";
             locationListener.position[0] = 42.293108;
             locationListener.position[1] = -71.262802;
-        }else if(current_clue == 5) {
+        }else if(current_clue == 6) {
             video_name = "MVI_3140.3gp";
             locationListener.position[0] = 42.292701;
             locationListener.position[1] = -71.262054;
-        }else if(current_clue == 6) {
-            //TODO: YOU WIN THING
+        }else if(current_clue == 7) {
+            //TODO: THERE IS NO CLUE 7, YOU WIN
         }
         video.stopPlayback();
         uri = Uri.parse(s3.download(video_name));
@@ -187,14 +191,10 @@ public class VideoFragment extends Fragment {
         current_clue += 1;
     }
 
-    public void uploadPicture(){
-        //TODO: integrate uploadPicture with Camera stuff
-//        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
-//
-//        //do camera stuff
-//        String file_name = "";
-//        String clue_info = "information on clue " + current_clue;
-//        s3.upload(file_name, current_clue, clue_info);
+    public void uploadPicture(String file_name){
+        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
+        String clue_info = "Picture of clue " + current_clue;
+        s3.upload(file_name, current_clue, clue_info);
     }
 
     @Override // request permission from phone to use GPS functionality
@@ -276,8 +276,9 @@ public class VideoFragment extends Fragment {
             photoUriList.add(imageIndex, imageUri);
             imageIndex ++;
         }
-        setCameraButton();
+        uploadPicture("file location string goes here");
         downloadClue();
+        setCameraButton();
     }
 
     public void dispatchTakePictureIntent() {
