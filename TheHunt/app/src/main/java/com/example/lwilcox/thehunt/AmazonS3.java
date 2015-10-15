@@ -39,7 +39,7 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
     }
 
     public void upload(String file_name, int clue_num, String clue_info){
-        String object_key = "clue_" + clue_num;
+        String object_key = "HUNT_clue_" + clue_num;
         File file = new File(file_name);
 
         //metadata for future implementations if you wanted to retrieve data and know what it was

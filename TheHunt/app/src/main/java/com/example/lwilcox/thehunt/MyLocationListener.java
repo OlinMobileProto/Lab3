@@ -12,8 +12,8 @@ import android.widget.Toast;
  */
 public class MyLocationListener implements LocationListener {
     private Context context;
-    public double[] position = new double[2];
-    public double[] yourPosition = new double[2];
+    public double[] position = new double[2]; //location of the clue
+    public double[] yourPosition = new double[2]; //location of you
     public boolean locationFound = false;
     VideoFragment fragment;
 
@@ -31,20 +31,19 @@ public class MyLocationListener implements LocationListener {
         Log.d("Location", yourPosition[0] + ", " + yourPosition[1]);
         checkLocation();
         if (locationFound == true){
-            fragment.setCameraButton();
+            // prompt to take picture, then upload, then download clue
+            fragment.setCameraButton(); //i don't think this is correct
+            locationFound = false;
         }
     }
 
     public void checkLocation(){
-        //TODO: write function that checks to see if you are within 10M of clue location
         int within_dist = 10; //change this
         //relativeLayout.setBackgroundColor(Color.GREEN);
 
         if (yourPosition[0] >= position[0] - within_dist || yourPosition[0] <= position[0] + within_dist ||
-                yourPosition[1] >= position[1] - within_dist || yourPosition[1] <= position[1] + within_dist){
+                yourPosition[1] >= position[1] - within_dist || yourPosition[1] <= position[1] + within_dist) {
             locationFound = true;
-        }else {
-            locationFound = false; //true if you are within distance
         }
     }
 
