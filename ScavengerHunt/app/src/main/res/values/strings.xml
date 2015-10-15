@@ -13,6 +13,7 @@
     <string name="cluetitle">Clue Number </string>
     <string name="donecluebutton">I\'m Ready!</string>
     <string name="doneinstructionsbutton">Let\'s Go!</string>
+    <string name="title_activity_photo">PhotoActivity</string>
 
 
 
