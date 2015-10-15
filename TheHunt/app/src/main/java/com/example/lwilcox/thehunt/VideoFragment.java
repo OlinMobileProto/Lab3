@@ -117,7 +117,7 @@ public class VideoFragment extends Fragment {
         }
 
         // set up camera buttons
-        setCameraButton();
+        setImageDialog();
 
         // set up GPS Functionality
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -217,9 +217,18 @@ public class VideoFragment extends Fragment {
     }
 
     public void setCameraButton(){
+        images.get(imageIndex).setClickable(true);images.get(imageIndex).setClickable(true);
 
-        images.get(imageIndex).setClickable(true);
+        images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
 
+    }
+//shows the image when clicked in a window
+    public void setImageDialog(){
         if (photoUriList != null) {
             for (int i = 0; i < photoUriList.size(); i++) {
                 if (i != imageIndex) {
@@ -247,41 +256,34 @@ public class VideoFragment extends Fragment {
                                 @Override
                                 public void onClick(View arg0) {
 
-                                    nagDialog.dismiss();
-                                }
-                            });
-                            nagDialog.show();
-                        }
-                    });
-                    images.get(imageIndex).setClickable(false);
-                }
-            }
+        nagDialog.dismiss();
+    }
+});
+        nagDialog.show();
+        }
+        });
+        images.get(imageIndex).setClickable(false);
+        }
+        }
+        }
         }
 
-        images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dispatchTakePictureIntent();
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+@Override
+public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == -1) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             images.get(imageIndex).setImageBitmap(imageBitmap);
             Uri imageUri = data.getData();
             photoUriList.add(imageIndex, imageUri);
+            uploadPicture(imageUri.toString()); //TODO: get way to say yes or no to upload
+            downloadClue(); //TODO: if yes download
             imageIndex ++;
         }
-        uploadPicture("file location string goes here");
-        downloadClue();
-        setCameraButton();
-    }
+        setImageDialog();
+}
 
-    public void dispatchTakePictureIntent() {
+public void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
