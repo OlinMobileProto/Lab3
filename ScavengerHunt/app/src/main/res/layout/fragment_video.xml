@@ -1,10 +1,36 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.cynchen.scavengerhunt.VideoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Overwrite me"
+        android:id="@+id/clueTitle"
+        android:layout_marginTop="10dp"/>
 
-</FrameLayout>
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:id='@+id/clue'
+        android:layout_below="@id/clueTitle"
+        android:layout_marginTop="10dp"
+ />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_below="@id/clue"
+        android:id="@+id/mc_wrapper"
+        android:layout_marginTop="-10dp"
+        />
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:id="@+id/next_clue"-->
+        <!--android:text="Next Clue"-->
+        <!--/>-->
+
+</RelativeLayout>
