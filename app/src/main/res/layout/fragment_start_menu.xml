@@ -5,6 +5,7 @@
               android:paddingRight="16dp"
               android:orientation="vertical"
               android:gravity="center"
+              android:id="@+id/start_menu_fragment"
               android:background="@color/background" >
 
     <Button
