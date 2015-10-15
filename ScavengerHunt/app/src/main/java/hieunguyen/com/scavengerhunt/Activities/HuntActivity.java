@@ -78,5 +78,6 @@ public class HuntActivity extends AppCompatActivity implements ClueFragment.onVi
         if (mapFragment != null) {
             mapFragment.updateUI(location);
         }
+
     }
 }
