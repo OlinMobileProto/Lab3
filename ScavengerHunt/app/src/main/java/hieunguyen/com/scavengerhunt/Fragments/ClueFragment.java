@@ -107,7 +107,7 @@ public class ClueFragment extends Fragment {
     }
 
     public interface onVideoDoneListener {
-        public void onVideoDone();
+        void onVideoDone();
     }
 
 }
