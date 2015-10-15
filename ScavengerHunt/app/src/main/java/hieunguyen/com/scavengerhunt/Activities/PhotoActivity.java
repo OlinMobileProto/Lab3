@@ -3,7 +3,7 @@ package hieunguyen.com.scavengerhunt.Activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import hieunguyen.com.scavengerhunt.Fragments.WelcomeFragment;
+import hieunguyen.com.scavengerhunt.Fragments.CameraFragment;
 import hieunguyen.com.scavengerhunt.R;
 
 public class PhotoActivity extends AppCompatActivity {
@@ -15,7 +15,7 @@ public class PhotoActivity extends AppCompatActivity {
 
         if(savedInstanceState == null){
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new WelcomeFragment())
+                    .add(R.id.container, new CameraFragment())
                     .commit();
         }
     }
