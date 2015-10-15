@@ -99,18 +99,11 @@ public class VideoFragment extends Fragment {
         AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
         //TODO: get .MOV name from the SQL database instead
         locationListener = new MyLocationListener(getActivity().getBaseContext(), this);
-        downloadClue();
-
-        uri = Uri.parse(s3.download(video_name));
 
         // set up video view
         try {
             video = (VideoView) myFragmentView.findViewById(R.id.videoView);
-            mediaController = new MediaController(getActivity());
-            video.setVideoURI(uri);
-            video.setMediaController(mediaController);
-            video.requestFocus();
-            //video.start();
+            downloadClue();
         } catch (Exception e){
             Log.e("Stupid error :'-(", e.getMessage());
             e.printStackTrace();
@@ -155,6 +148,10 @@ public class VideoFragment extends Fragment {
     public void downloadClue(){
         //TODO: integrate downloadClue with Camera stuff
         AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
+        //make sure video isn't playable
+        if(current_clue != 1){
+            video.stopPlayback();
+        }
         if (current_clue == 1) {
             video_name = "MVI_3146.3gp";
             locationListener.position[0] = 42.29386;
@@ -180,9 +177,10 @@ public class VideoFragment extends Fragment {
             locationListener.position[0] = 42.292701;
             locationListener.position[1] = -71.262054;
         }else if(current_clue == 7) {
+            Toast.makeText(getActivity(), "YOU WINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", Toast.LENGTH_SHORT).show();
             //TODO: THERE IS NO CLUE 7, YOU WIN
+            return;
         }
-        video.stopPlayback();
         uri = Uri.parse(s3.download(video_name));
         video.setVideoURI(uri);
         video.requestFocus();
@@ -280,7 +278,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
             downloadClue(); //TODO: if yes download
             imageIndex ++;
         }
-        setImageDialog();
+    setImageDialog();
 }
 
 public void dispatchTakePictureIntent() {

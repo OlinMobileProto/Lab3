@@ -12,7 +12,7 @@ import android.widget.Toast;
  */
 public class MyLocationListener implements LocationListener {
     private Context context;
-    public double[] position = new double[2]; //location of the clue
+    public double[] position = new double[2]; //location of the clue -> its long, lat
     public double[] yourPosition = new double[2]; //location of you
     public boolean locationFound = false;
     VideoFragment fragment;
