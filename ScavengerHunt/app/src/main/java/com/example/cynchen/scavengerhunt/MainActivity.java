@@ -9,21 +9,17 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    GPSFragment test = new GPSFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //initializes the searchGoogle fragment and loads it in the container
+        GPSFragment gps = new GPSFragment();
         VideoFragment playClue = new VideoFragment();
         CameraFragment takePicture = new CameraFragment();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.replace(R.id.container, test);
-//        transaction.commit();
-        transitionToFragment(takePicture);
+        transitionToFragment(playClue);
     }
 
     public void transitionToFragment(Fragment fragment){

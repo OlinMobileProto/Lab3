@@ -21,7 +21,7 @@ public class VideoFragment extends Fragment {
     public VideoView clue;
     public ArrayList<String> cluesLink = new ArrayList<>();
     public int clueCounter;
-    public Button tempnextClue;
+//    public Button tempnextClue;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,15 +58,22 @@ public class VideoFragment extends Fragment {
                 mc.setAnchorView(clue);
             }
         });
-        tempnextClue = (Button) rootView.findViewById(R.id.next_clue);
-        tempnextClue.setOnClickListener(new View.OnClickListener() {
+        clue.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
-            public void onClick(View v) {
-                clueCounter += 1;
-                clueTitle.setText("Clue " + Integer.toString(clueCounter));
-                clue.setVideoURI(Uri.parse(cluesLink.get(clueCounter - 1)));
+            public void onCompletion(MediaPlayer mp) {
+                GPSFragment gps_frag = new GPSFragment();
+                ((MainActivity)getActivity()).transitionToFragment(gps_frag);
             }
         });
+//        tempnextClue = (Button) rootView.findViewById(R.id.next_clue);
+//        tempnextClue.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                clueCounter += 1;
+//                clueTitle.setText("Clue " + Integer.toString(clueCounter));
+//                clue.setVideoURI(Uri.parse(cluesLink.get(clueCounter - 1)));
+//            }
+//        });
 
         return rootView;
     }

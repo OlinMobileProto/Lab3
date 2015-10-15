@@ -3,6 +3,8 @@ package com.example.cynchen.scavengerhunt;
 import android.content.IntentSender;
 import android.graphics.Color;
 import android.location.Location;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,9 +44,12 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     public GPSFragment() {
     }
-
+    // Video Initializations:
+    public VideoView clue;
+    public ArrayList<String> cluesLink = new ArrayList<>();
+    public int clueCounter;
+    //GPS Initializations:
     GPSTracker gps;
-    Button start_gps;
     Timer timer;
     TimerTask myTimerTask;
     final Handler handler = new Handler();
@@ -82,32 +89,47 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_g, container, false);
 
+        //VIDEO Code:
+        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3146.3gp");
+        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3145.3gp");
+        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3144.3gp");
+        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3147.3gp");
+        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3141.3gp");
+        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp");
+        clueCounter = 1;
+        clue = (VideoView) rootView.findViewById(R.id.clue);
+        clue.setVideoURI(Uri.parse(cluesLink.get(clueCounter - 1)));
+        clue.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                clue.seekTo(1);
+                MediaController mc = new MediaController(getContext());
+                clue.setMediaController(mc);
+                mc.setAnchorView(clue);
+            }
+        });
+
+        //MAP Code
         setUpMapIfNeeded();
 
-        start_gps = (Button) rootView.findViewById(R.id.start_gps);
         tvLocation = (TextView) rootView.findViewById(R.id.text_location);
         arrayPoints = new ArrayList<LatLng>();
 
-        start_gps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("asdasd", "asdasd");
-                timer = new Timer();
-                myTimerTask = new TimerTask() {
-                    @Override
-                    public void run() {
-                        handler.post(new Runnable() {
-                            public void run() {
-                                display_location();
-                            }
-                        });
-                    }
-                };
-                //singleshot delay 1000 ms
-                timer.scheduleAtFixedRate(myTimerTask, 0, 1000 * 10 * 1);
 
+        timer = new Timer();
+        myTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        display_location();
+                    }
+                });
             }
-        });
+        };
+        //singleshot delay 1000 ms
+        timer.scheduleAtFixedRate(myTimerTask, 0, 1000 * 10 * 1);
+
 
         return rootView;
     }
@@ -215,8 +237,10 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
 
             Log.d("Place:", String.valueOf(latitude));
             tvLocation.setText("Your Location is - \nLat: " + latitude + "\nLong: " + longitude);
-            if (42.292 < latitude & latitude < 42.294 & longitude > -71.266 & longitude < -71.265) {
+            if (42.290 < latitude & latitude < 42.295 & longitude < -71.263 & longitude > -71.265) {
                 Toast.makeText(getActivity(), "You have arrived!", Toast.LENGTH_LONG).show();
+                CameraFragment camera_frag = new CameraFragment();
+                ((MainActivity)getActivity()).transitionToFragment(camera_frag);
             }
             polylineOptions = new PolylineOptions();
             polylineOptions.color(Color.RED);
