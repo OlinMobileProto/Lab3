@@ -256,17 +256,17 @@ public class VideoFragment extends Fragment {
                                 @Override
                                 public void onClick(View arg0) {
 
-        nagDialog.dismiss();
-    }
-});
+                            nagDialog.dismiss();
+                        }
+                    });
         nagDialog.show();
-        }
+                        }
         });
         images.get(imageIndex).setClickable(false);
         }
         }
         }
-        }
+    }
 
 @Override
 public void onActivityResult(int requestCode, int resultCode, Intent data) {
