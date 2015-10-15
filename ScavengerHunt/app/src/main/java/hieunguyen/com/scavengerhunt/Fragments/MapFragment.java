@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import hieunguyen.com.scavengerhunt.Data.LocationProvider;
+import butterknife.ButterKnife;
 import hieunguyen.com.scavengerhunt.R;
 
 
@@ -55,6 +54,8 @@ public class MapFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
+        ButterKnife.bind(this, rootView);
+
         mMap = mMapView.getMap();
         setUpMap();
 
@@ -68,6 +69,7 @@ public class MapFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     @Override
