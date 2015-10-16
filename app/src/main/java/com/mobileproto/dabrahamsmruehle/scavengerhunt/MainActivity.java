@@ -1,36 +1,37 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements
-        StartMenuFragment.OnFragmentInteractionListener
+        StartMenuFragment.OnFragmentInteractionListener,
+        HUDFragment.OnFragmentInteractionListener
 {
+
+    FragmentManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        manager = getSupportFragmentManager();
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        switchFragment(StartMenuFragment.newInstance());
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    private void switchFragment(Fragment f)
+    {
+        FragmentTransaction transaction = manager.beginTransaction();
+        // addToBackStack requires a String object for some reason. I'm a rebel
+        // and gave it null.
+        transaction.replace(R.id.container, f).addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
@@ -55,6 +56,15 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(char buttonName)
+    {
+        if (buttonName == 'a')
+        {
+            switchFragment(HUDFragment.newInstance());
+        }
     }
 
     @Override
