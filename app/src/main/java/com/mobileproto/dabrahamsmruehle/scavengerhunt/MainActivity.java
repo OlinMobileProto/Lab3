@@ -10,7 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements
-        StartMenuFragment.OnFragmentInteractionListener, HUDFragment.OnFragmentInteractionListener
+        StartMenuFragment.OnFragmentInteractionListener,
+        HUDFragment.OnFragmentInteractionListener
 {
 
     FragmentManager manager;
@@ -19,17 +20,17 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         manager = getSupportFragmentManager();
+        setContentView(R.layout.activity_main);
         switchFragment(StartMenuFragment.newInstance());
     }
 
     private void switchFragment(Fragment f)
     {
-
-        Log.d("DEBUG", "boom");
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.container, f);
+        // addToBackStack requires a String object for some reason. I'm a rebel
+        // and gave it null.
+        transaction.replace(R.id.container, f).addToBackStack(null);
         transaction.commit();
     }
 

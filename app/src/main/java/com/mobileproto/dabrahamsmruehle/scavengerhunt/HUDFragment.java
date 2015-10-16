@@ -55,7 +55,8 @@ public class HUDFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_hud, container, false);
+        View view = inflater.inflate(R.layout.fragment_hud, container, false);
+        return view;
     }
 
     @Override

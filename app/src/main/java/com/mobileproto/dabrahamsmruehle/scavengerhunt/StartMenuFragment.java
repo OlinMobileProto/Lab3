@@ -3,7 +3,6 @@ package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +89,6 @@ public class StartMenuFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                Log.d("DEBUG", "click");
                 ((StartMenuFragment.OnFragmentInteractionListener) getActivity())
                         .onFragmentInteraction('a');
             }
