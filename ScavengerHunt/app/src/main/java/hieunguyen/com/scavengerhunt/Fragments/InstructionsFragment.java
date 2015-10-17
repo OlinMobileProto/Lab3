@@ -1,18 +1,29 @@
 package hieunguyen.com.scavengerhunt.Fragments;
 
 
-import android.os.Bundle;
+import android.app.Activity;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import hieunguyen.com.scavengerhunt.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class InstructionsFragment extends Fragment {
+
+    private onReadyListener mListener;
+
+    @Bind(R.id.done_button) Button mDoneButton;
+    @OnClick(R.id.done_button) void ready() {
+        Toast.makeText(getActivity(), "BUTTON CLIKED", Toast.LENGTH_SHORT).show();
+        mListener.onReady();
+    }
 
     public InstructionsFragment() {
         // Required empty public constructor
@@ -22,12 +33,27 @@ public class InstructionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_instructions, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_instructions, container, false);
+        ButterKnife.bind(this, rootView);
+
+        //TODO: Add an "I'm ready" button somewhere in here, onClickListener should be implemented w/Butterknife
+
+        return rootView;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (onReadyListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     public interface onReadyListener{
-        public void onReady();
+        void onReady();
     }
 
 }
