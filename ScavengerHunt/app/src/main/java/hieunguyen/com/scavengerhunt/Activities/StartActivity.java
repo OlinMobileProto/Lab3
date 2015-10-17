@@ -1,16 +1,25 @@
-package hieunguyen.com.scavengerhunt;
+package hieunguyen.com.scavengerhunt.Activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class StartActivity extends AppCompatActivity {
+import hieunguyen.com.scavengerhunt.Fragments.InstructionsFragment;
+import hieunguyen.com.scavengerhunt.Fragments.WelcomeFragment;
+import hieunguyen.com.scavengerhunt.R;
+
+public class StartActivity extends Activity implements WelcomeFragment.onGoListener, InstructionsFragment.onReadyListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        if(savedInstanceState == null){
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new WelcomeFragment())
+                    .commit();
+        }
     }
 
     @Override
@@ -33,5 +42,17 @@ public class StartActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onGo() {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new InstructionsFragment())
+                .commit();
+    }
+
+    @Override
+    public void onReady() {
+        //TODO: Implement the MapActivity so we can switch to it right here
     }
 }
