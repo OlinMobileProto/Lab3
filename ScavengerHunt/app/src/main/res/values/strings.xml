@@ -18,6 +18,10 @@
     <string name="doneinstructionsbutton">Let\'s Go!</string>
     <string name="title_activity_photo">PhotoActivity</string>
 
+    <string name="found_clue">You Found It!</string>
+    <string name="take_photo_prompt">Now Take a Photo</string>
+    <string name="open_camera_button">Go</string>
+
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
