@@ -26,5 +26,4 @@ public class UploadPhotoFragment extends Fragment {
         return rootView;
     }
 
-
 }
