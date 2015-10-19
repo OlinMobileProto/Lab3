@@ -12,6 +12,8 @@ import hieunguyen.com.scavengerhunt.R;
 
 public class StartActivity extends Activity implements WelcomeFragment.onGoListener, InstructionsFragment.onReadyListener{
 
+    private static final String TAG = StartActivity.class.getName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

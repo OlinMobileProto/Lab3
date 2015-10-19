@@ -1,25 +1,12 @@
 package hieunguyen.com.scavengerhunt.Activities;
 
-import android.app.Fragment;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import hieunguyen.com.scavengerhunt.Data.LocationProvider;
 import hieunguyen.com.scavengerhunt.Fragments.ClueFragment;
@@ -29,7 +16,7 @@ import hieunguyen.com.scavengerhunt.R;
 public class HuntActivity extends AppCompatActivity implements ClueFragment.onVideoDoneListener,
     LocationProvider.LocationCallback {
 
-    public static final String TAG = "HUNT_ACTIVITY";
+    private static final String TAG = HuntActivity.class.getName();
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationProvider mLocationProvider;
@@ -66,6 +53,7 @@ public class HuntActivity extends AppCompatActivity implements ClueFragment.onVi
 
     // Generates URL to get video of current clue
     public Uri getVideoUrl(int clueNumber){
+        // TODO: Implement getting the actual URL here
         return Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.MOV");
     }
 
