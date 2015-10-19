@@ -53,7 +53,10 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
     }
 
     /*
-    Creates an image file with name
+    Creates an image file with name of current time as UUID
+
+    Returns:
+        image (File): The created image file
      */
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -72,6 +75,9 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         return image;
     }
 
+    /*
+    Creates and launches Intent to open the Camera, and retrieve picture
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -92,18 +98,27 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         }
     }
 
+    /*
+    Overrides onActivityResult to be called when the picture has been taken
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // Upload file to S3
         new S3Uploader().execute();
+        // Create ClueCompleteFragment
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new ClueCompleteFragment()).commit();
     }
 
+    /*
+    Inner AsyncTask to deal with uploading to S3 asynchronously
+     */
     private class S3Uploader extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... params) {
 
+            // Create AmazonS3Client
             AmazonS3Client s3Client = new AmazonS3Client();
             s3Client.setRegion(Region.getRegion(Regions.US_EAST_1));
 
@@ -135,6 +150,5 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
             });
             return null;
         }
-
     }
 }
