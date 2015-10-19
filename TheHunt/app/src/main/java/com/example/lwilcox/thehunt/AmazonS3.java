@@ -29,9 +29,8 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        AmazonS3Client s3 = new AmazonS3Client();
-        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
-      // transferUtility = new TransferUtility(s3, context);
+        //amazonS3Client s3 = new AmazonS3Client();
+        //s3.setRegion(Region.getRegion(Regions.US_EAST_1));
         //TODO: Understand AsyncTask
         //TODO: make sure S3 works
         //TODO: go to ninja hours
