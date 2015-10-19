@@ -72,7 +72,14 @@ public class MapFragment extends Fragment {
             mMap = googleMap;
             mMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("I'm here"));
             dbService = new DbService(getActivity().getBaseContext());
-            currClue = dbService.getClue(clueNumber);
+
+            // Tries to get active clue. If it doesn't exist, get clue based on clueNumber (1)
+            currClue = dbService.getClue(0);
+            if (currClue == null) {
+                Log.d(TAG, "currClue is null");
+                currClue = dbService.getClue(clueNumber);
+                dbService.changeActiveClue(-1, clueNumber);
+            }
 
             try {
                 MapsInitializer.initialize(getActivity());
@@ -125,6 +132,12 @@ public class MapFragment extends Fragment {
                     && currentLongitude > currClue.getLongitude() - locTol
                     && currentLongitude < currClue.getLongitude() + locTol) {
                 Log.d(TAG, "IN RANGE");
+
+                // Once clue has been reached, change the active clue, increment clueNumber,
+                // and get the new clue
+                dbService.changeActiveClue(clueNumber, clueNumber++);
+                clueNumber++;
+                currClue = dbService.getClue(clueNumber);
             }
 
             LatLng latLng = new LatLng(currentLatitude, currentLongitude);

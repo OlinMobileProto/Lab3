@@ -44,6 +44,7 @@ public class DbService {
                 cv.put(LocationDatabase.colLat, place.get("latitude").toString());
                 cv.put(LocationDatabase.colLong, place.get("longitude").toString());
                 cv.put(LocationDatabase.colS3, place.get("s3id").toString());
+                cv.put(LocationDatabase.colActive, 0);
                 Log.d(TAG, "populate " + cv);
                 db.insertOrThrow(LocationDatabase.tableName, LocationDatabase.colS3, cv);
             }
@@ -90,10 +91,22 @@ public class DbService {
     }
 
     public ClueDAO getClue(int clueNumber) {
+        // If clueNumber = 0, get currently active clue
         db = locationDB.getReadableDatabase();
+
+        String query = "SELECT * FROM " + LocationDatabase.tableName + " WHERE ";
+
+        String[] args;
+
+        if (clueNumber == 0) {
+            query += LocationDatabase.colActive + "=?";
+            args = new String[] {String.valueOf(1)};
+        } else {
+            query += LocationDatabase.colID + "=?";
+            args = new String[] {String.valueOf(clueNumber)};
+        }
         
-        Cursor c = db.rawQuery("SELECT * FROM " + LocationDatabase.tableName + " WHERE " +
-                LocationDatabase.colID + "=?", new String[] {String.valueOf(clueNumber)});
+        Cursor c = db.rawQuery(query, args);
 
         Log.d(TAG, "getClue");
         
@@ -105,12 +118,34 @@ public class DbService {
             double result_lat = c.getDouble(1);
             double result_long = c.getDouble(2);
             String result_s3id = c.getString(3);
-            clue = new ClueDAO(result_id, result_lat, result_long, result_s3id);
+            boolean result_isActive = c.getInt(4) > 0;
+            clue = new ClueDAO(result_id, result_lat, result_long, result_s3id, result_isActive);
             c.moveToNext();
         }
         c.close();
 
         db.close();
         return clue;
+    }
+
+    public void changeActiveClue(int oldClue, int newClue) {
+        // Setting a new active clue. if there is no oldClue, set oldClue to -1
+        db = locationDB.getWritableDatabase();
+
+        Log.d(TAG, "oldClue: " + String.valueOf(oldClue) + ", newClue: " + String.valueOf(newClue));
+
+        if (oldClue != -1) {
+            ContentValues oldCv = new ContentValues();
+            oldCv.put(LocationDatabase.colActive, 0);
+            db.update(LocationDatabase.tableName, oldCv,
+                    LocationDatabase.colID + "=?", new String[]{String.valueOf(oldClue)});
+        }
+
+        ContentValues newCv = new ContentValues();
+        newCv.put(LocationDatabase.colActive, 1);
+        db.update(LocationDatabase.tableName, newCv,
+                LocationDatabase.colID + "=?", new String[]{String.valueOf(newClue)});
+
+        db.close();
     }
 }

@@ -10,13 +10,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class LocationDatabase extends SQLiteOpenHelper {
 
     public static final int dbVersion = 1;
-    static final String dbName = "ClueLocations.db";
+    public static final String dbName = "ClueLocations.db";
     public static final String tableName = "Locations";
 
     public static final String colID = "ID";
     public static final String colLat = "Latitude";
     public static final String colLong = "Longitude";
     public static final String colS3 = "S3ID";
+    public static final String colActive = "Active";
 
     public LocationDatabase(Context context) {
         super(context, dbName, null, dbVersion);
@@ -28,7 +29,8 @@ public class LocationDatabase extends SQLiteOpenHelper {
                 + colID + " INTEGER PRIMARY KEY, "
                 + colLat + " DECIMAL(8,6), "
                 + colLong + " DECIMAL(8,6), "
-                + colS3 + " TEXT)");
+                + colS3 + " TEXT, "
+                + colActive + " INTEGER)");
     }
 
     @Override

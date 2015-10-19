@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hieunguyen.com.scavengerhunt.Data.ClueDAO;
 import hieunguyen.com.scavengerhunt.Data.DbService;
+import hieunguyen.com.scavengerhunt.Data.LocationDatabase;
 import hieunguyen.com.scavengerhunt.R;
 
 public class WelcomeFragment extends Fragment {
@@ -46,7 +47,10 @@ public class WelcomeFragment extends Fragment {
         if (dbService.isDbEmpty()) {
             dbService.update();
         } else {
-            dbService.getClue(4);
+            dbService.changeActiveClue(-1, 3);
+            for (int i=1; i<7; i++) {
+                Log.d("WELCOME", dbService.getClue(i).toString());
+            }
         }
 
         View rootView = inflater.inflate(R.layout.fragment_welcome, container, false);
