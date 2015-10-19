@@ -7,6 +7,13 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
+import android.widget.VideoView;
+
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.regions.Region;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 
 
 /**
@@ -22,6 +29,8 @@ public class AWS_Video extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public AmazonS3 s3;
+    public VideoView videoView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -37,15 +46,15 @@ public class AWS_Video extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment AWS_Video.
      */
-    // TODO: Rename and change types and number of parameters
-    public static AWS_Video newInstance(String param1, String param2) {
-        AWS_Video fragment = new AWS_Video();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    // TODO: Rename and change types and number of parameters
+//    public static AWS_Video newInstance(String param1, String param2) {
+//        AWS_Video fragment = new AWS_Video();
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     public AWS_Video() {
         // Required empty public constructor
@@ -54,10 +63,14 @@ public class AWS_Video extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+//        if (getArguments() != null) {
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+//        }
+        s3 = new AmazonS3Client(); // deprecated apparently?
+        videoView = (VideoView) getActivity().findViewById(R.id.video_view);
+        MediaController mediaController = new MediaController(getActivity());
+        videoView.setMediaController(mediaController);
     }
 
     @Override
