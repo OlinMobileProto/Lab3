@@ -268,7 +268,7 @@ public class VideoFragment extends Fragment {
 
 @Override
 public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == -1) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             images.get(imageIndex).setImageBitmap(imageBitmap);
