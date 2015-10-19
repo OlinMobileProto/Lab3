@@ -5,14 +5,10 @@ import android.app.Dialog;
 import android.content.Intent;
 
 import android.Manifest;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -30,17 +26,10 @@ import android.content.Context;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import android.widget.VideoView;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
-
-import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
 public class VideoFragment extends Fragment {
     private View myFragmentView;
@@ -235,8 +224,6 @@ public class VideoFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             try {
-                                //                            String filePath = uri.getPath();
-                                //                            InputStream inputStream  = new FileInputStream(filePath);
                                 InputStream inputStream = getActivity().getBaseContext().getContentResolver().openInputStream(u);
                                 fullImage = Drawable.createFromStream(inputStream, u.toString());
                             } catch (FileNotFoundException e) {
@@ -253,16 +240,15 @@ public class VideoFragment extends Fragment {
                             btnClose.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View arg0) {
-
-                            nagDialog.dismiss();
+                                     nagDialog.dismiss();
+                                }
+                            });
+                            nagDialog.show();
                         }
                     });
-        nagDialog.show();
-                        }
-        });
-        images.get(imageIndex).setClickable(false);
-        }
-        }
+                    images.get(imageIndex).setClickable(false);
+                }
+            }
         }
     }
 
