@@ -1,6 +1,7 @@
 package com.example.lwilcox.thehunt;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class IntroFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        myFragmentView = inflater.inflate(R.layout.fragment_video, container, false);
+        myFragmentView = inflater.inflate(R.layout.fragment_intro, container, false);
 
         TextView title = (TextView) myFragmentView.findViewById(R.id.title);
         TextView description = (TextView) myFragmentView.findViewById(R.id.description);
@@ -29,7 +30,10 @@ public class IntroFragment extends Fragment {
         begin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //switch fragment code heree
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                VideoFragment videoFragment = new VideoFragment();
+                ft.replace(R.id.container, videoFragment);
+                ft.commit();
             }
         });
 

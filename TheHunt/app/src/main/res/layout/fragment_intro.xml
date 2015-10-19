@@ -13,18 +13,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/title"
-        android:text="@string/title"/>
+        android:text="@string/title"
+        android:textSize="70dp"
+        android:textIsSelectable="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_below="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/description"
-        android:text="@string/descrip"/>
+        android:text="@string/descrip"
+        android:textStyle="italic"
+        android:typeface="serif" />
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/description"
         android:id="@+id/start"
-        android:text="@string/begin"/>
+        android:text="@string/begin"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#00ff00"
+        android:textSize="50dp"
+        android:textStyle="bold"
+        android:textAppearance="@android:style/TextAppearance.Holo.Widget.Button" />
 
 </RelativeLayout>
