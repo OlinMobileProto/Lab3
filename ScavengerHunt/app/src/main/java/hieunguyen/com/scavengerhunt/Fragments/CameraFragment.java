@@ -1,7 +1,6 @@
 package hieunguyen.com.scavengerhunt.Fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,11 +30,8 @@ public class CameraFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
-
         ButterKnife.bind(this, rootView);
-
         return rootView;
     }
 
