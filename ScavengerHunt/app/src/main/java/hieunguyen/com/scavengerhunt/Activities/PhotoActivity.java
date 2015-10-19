@@ -52,6 +52,9 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         dispatchTakePictureIntent();
     }
 
+    /*
+    Creates an image file with name
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
