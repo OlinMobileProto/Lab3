@@ -26,7 +26,8 @@
         android:id="@+id/description"
         android:text="@string/descrip"
         android:textStyle="italic"
-        android:typeface="serif" />
+        android:typeface="serif"
+        android:gravity="center"/>
     <Button
         android:layout_width="200dp"
         android:layout_height="100dp"

@@ -15,7 +15,6 @@ import android.widget.TextView;
  */
 public class IntroFragment extends Fragment {
     private View myFragmentView;
-    //TODO: make IntroFragment the first fragment you see
     //TODO: add the Begin/Restart portion of IntroFragment
 
     @Override
@@ -32,7 +31,7 @@ public class IntroFragment extends Fragment {
             public void onClick(View v) {
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 VideoFragment videoFragment = new VideoFragment();
-                ft.replace(R.id.container, videoFragment);
+                ft.replace(R.id.container, videoFragment).addToBackStack("video");
                 ft.commit();
             }
         });
