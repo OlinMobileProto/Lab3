@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 
 import hieunguyen.com.scavengerhunt.R;
 
-public class UploadPhotoFragment extends Fragment {
+public class ClueCompleteFragment extends Fragment {
 
 
-    public UploadPhotoFragment() {
+    public ClueCompleteFragment() {
         // Required empty public constructor
     }
 

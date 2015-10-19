@@ -16,7 +16,7 @@ import hieunguyen.com.scavengerhunt.R;
 public class HuntActivity extends AppCompatActivity implements ClueFragment.onVideoDoneListener,
     LocationProvider.LocationCallback {
 
-    public static final String TAG = "HUNT_ACTIVITY";
+    private static final String TAG = HuntActivity.class.getName();
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationProvider mLocationProvider;
