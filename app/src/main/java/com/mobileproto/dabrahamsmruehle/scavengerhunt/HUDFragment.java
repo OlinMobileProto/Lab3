@@ -1,50 +1,41 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
 import android.app.Activity;
+import android.os.Bundle;;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
- * A simple {@link android.app.Fragment} subclass.
+ * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link StartMenuFragment.OnFragmentInteractionListener} interface
+ * {@link HUDFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link StartMenuFragment#newInstance} factory method to
+ * Use the {@link HUDFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StartMenuFragment extends Fragment
+public class HUDFragment extends Fragment
 {
-
     private OnFragmentInteractionListener mListener;
-    @Bind(R.id.continue_button)
-    Button continueButton;
-    Button newHuntButton;
-    Button settingsButton;
-    Button helpButton;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment StartMenuFragment.
+     * @return A new instance of fragment HUDFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StartMenuFragment newInstance()
+    public static HUDFragment newInstance()
     {
-        StartMenuFragment fragment = new StartMenuFragment();
+        HUDFragment fragment = new HUDFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public StartMenuFragment()
+    public HUDFragment()
     {
         // Required empty public constructor
     }
@@ -57,6 +48,15 @@ public class StartMenuFragment extends Fragment
             // mParam1 = getArguments().getString(ARG_PARAM1);
             // mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
+    {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_hud, container, false);
+        return view;
     }
 
     @Override
@@ -78,24 +78,6 @@ public class StartMenuFragment extends Fragment
         mListener = null;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        View view = inflater.inflate(R.layout.fragment_start_menu, container, false);
-        ButterKnife.bind(this, view);
-        continueButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                ((StartMenuFragment.OnFragmentInteractionListener) getActivity())
-                        .onFragmentInteraction('a');
-            }
-        });
-        return view;
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -109,6 +91,7 @@ public class StartMenuFragment extends Fragment
     public interface OnFragmentInteractionListener
     {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(char buttonName);
+        public void onFragmentInteraction(Object o);
     }
+
 }
