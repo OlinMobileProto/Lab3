@@ -31,7 +31,7 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
     protected Void doInBackground(Void... params) {
         AmazonS3Client s3 = new AmazonS3Client();
         s3.setRegion(Region.getRegion(Regions.US_EAST_1));
-   //     transferUtility = new TransferUtility(s3, context.getApplicationContext());
+      // transferUtility = new TransferUtility(s3, context);
         //TODO: Understand AsyncTask
         //TODO: make sure S3 works
         //TODO: go to ninja hours
@@ -41,7 +41,9 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
     public void upload(String file_name, int clue_num, String clue_info){
         String object_key = "HUNT_clue_" + clue_num;
         File file = new File(file_name);
-
+        AmazonS3Client s3 = new AmazonS3Client();
+        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
+        transferUtility = new TransferUtility(s3, context);
         //metadata for future implementations if you wanted to retrieve data and know what it was
         ObjectMetadata myObjectMetadata = new ObjectMetadata();
         Map<String, String> userMetadata = new HashMap<>();
