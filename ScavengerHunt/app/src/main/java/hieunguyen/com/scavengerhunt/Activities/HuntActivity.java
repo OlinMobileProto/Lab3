@@ -58,15 +58,20 @@ public class HuntActivity extends AppCompatActivity implements ClueFragment.onVi
     @Override
     protected void onPause() {
         super.onPause();
-        mMap.clear();
+        if (mMap != null) {
+            mMap.clear();
+        }
         mLocationProvider.disconnect();
     }
 
+    // Generates URL to get video of current clue
     public Uri getVideoUrl(int clueNumber){
         return Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.MOV");
     }
 
     @Override
+    // onVideoDoneListener from ClueFragment. When video completes clue fragment transitions
+    // into map fragment
     public void onVideoDone() {
         Log.d(TAG, "DONE");
         mapFragment = new MapFragment();
@@ -74,10 +79,10 @@ public class HuntActivity extends AppCompatActivity implements ClueFragment.onVi
     }
 
     @Override
+    // Implementing the LocationProvider.LocationCallback interface's required method.
     public void handleNewLocation(Location location) {
         if (mapFragment != null) {
             mapFragment.updateUI(location);
         }
-
     }
 }

@@ -19,24 +19,26 @@ import hieunguyen.com.scavengerhunt.R;
 
 /**
  * Created by hieunguyen on 10/17/15.
+ * Class to handle HTTP requests and responses
  */
 public class HttpHandler {
 
     public RequestQueue queue;
     public Context context;
+    private String url = context.getString(R.string.ip_address);
 
     public HttpHandler(Context context) {
         this.context = context;
         queue = Volley.newRequestQueue(context);
     }
 
+    // API request for clue-related data
     public void getDestinations(final DestinationCallback callback) {
-        String url = context.getString(R.string.ip_address);
-        url += "/scavengerHunt";
+        String localUrl = url + "/scavengerHunt";
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                url,
+                localUrl,
                 new JSONObject(),
                 new Response.Listener<JSONObject>() {
                     @Override
