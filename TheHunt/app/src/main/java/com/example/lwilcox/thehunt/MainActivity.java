@@ -16,8 +16,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        VideoFragment videoFragment = new VideoFragment();
-        ft.replace(R.id.container, videoFragment);
+        IntroFragment introFragment = new IntroFragment();
+        //VideoFragment videoFragment = new VideoFragment();
+        ft.replace(R.id.container, introFragment).addToBackStack("intro");
         ft.commit();
     }
     @Override
