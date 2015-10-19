@@ -9,10 +9,13 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +32,7 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
 
     static final int REQUEST_TAKE_PHOTO = 1;
     String mCurrentPhotoPath;
+    private File mPhotoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,36 +73,62 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
-            File photoFile = null;
+            mPhotoFile = null;
             try {
-                photoFile = createImageFile();
+                mPhotoFile = createImageFile();
             } catch (IOException ex) {
                 Log.e(TAG, ex.toString());
             }
             // Continue only if the File was successfully created
-            if (photoFile != null) {
+            if (mPhotoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
+                        Uri.fromFile(mPhotoFile));
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                new S3Uploader().execute(photoFile);
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new ClueCompleteFragment()).commit();
             }
         }
     }
 
-    private class S3Uploader extends AsyncTask<File,Void,Void> {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        new S3Uploader().execute();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new ClueCompleteFragment()).commit();
+    }
+
+    private class S3Uploader extends AsyncTask<Void,Void,Void> {
         @Override
-        protected Void doInBackground(File... params) {
+        protected Void doInBackground(Void... params) {
 
-            File fileToUpload = params[0];
+            AmazonS3Client s3Client = new AmazonS3Client();
+            s3Client.setRegion(Region.getRegion(Regions.US_EAST_1));
 
-            AmazonS3 s3Client = new AmazonS3Client();
+            TransferUtility mTransferUtility = new TransferUtility(s3Client, PhotoActivity.this);
 
-            PutObjectRequest putRequest = new PutObjectRequest(BUCKET_NAME, fileToUpload.getName(),
-                    fileToUpload);
-            PutObjectResult putResponse = s3Client.putObject(putRequest);
+            TransferObserver observer = mTransferUtility.upload(
+                    "olin-mobile-proto",      // Bucket name
+                    mPhotoFile.getName(),    // Uploaded object key
+                    mPhotoFile              // File to be uploaded
+            );
 
+            observer.setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    Log.d(TAG, state.toString());
+                }
+
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                    int completionPercentage = (int) (bytesCurrent/bytesTotal)*100;
+                    Log.d(TAG, completionPercentage + " percent complete");
+                }
+
+                @Override
+                public void onError(int id, Exception ex) {
+                    Log.e(TAG, ex.toString());
+                    ex.printStackTrace();
+                }
+            });
             return null;
         }
 
