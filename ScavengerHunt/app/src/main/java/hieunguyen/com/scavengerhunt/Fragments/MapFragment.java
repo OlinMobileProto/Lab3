@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -27,6 +26,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import hieunguyen.com.scavengerhunt.Data.ClueDAO;
+import hieunguyen.com.scavengerhunt.Data.DbService;
+import hieunguyen.com.scavengerhunt.Data.HttpHandler;
+import hieunguyen.com.scavengerhunt.Interfaces.DestinationCallback;
 import hieunguyen.com.scavengerhunt.R;
 
 
@@ -41,9 +44,9 @@ public class MapFragment extends Fragment {
     private PolylineOptions pOptions = new PolylineOptions().width(5).color(Color.RED);
 
     private boolean firstLocation = true;
-    private List<double[]> destinations = getDestinations();
-    private int currClue = 0;
-    private double[] currXY = destinations.get(currClue);
+    private int clueNumber = 1;
+    private ClueDAO currClue;
+    private DbService dbService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,8 @@ public class MapFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
             mMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("I'm here"));
+            dbService = new DbService(getActivity().getBaseContext());
+            currClue = dbService.getClue(clueNumber);
 
             try {
                 MapsInitializer.initialize(getActivity());
@@ -115,11 +120,10 @@ public class MapFragment extends Fragment {
             double currentLongitude = location.getLongitude();
 
 
-            if (currentLatitude > currXY[0] - locTol
-                    && currentLatitude < currXY[0] + locTol
-                    && currentLongitude > currXY[1] - locTol
-                    && currentLongitude < currXY[1] + locTol) {
-                // currClue++;
+            if (currentLatitude > currClue.getLatitude() - locTol
+                    && currentLatitude < currClue.getLatitude() + locTol
+                    && currentLongitude > currClue.getLongitude() - locTol
+                    && currentLongitude < currClue.getLongitude() + locTol) {
                 Log.d(TAG, "IN RANGE");
             }
 
@@ -143,16 +147,5 @@ public class MapFragment extends Fragment {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             }
         }
-    }
-
-    public List<double[]> getDestinations() {
-        List<double[]> list = new ArrayList<>();
-        list.add(new double[]{42.29386, -71.26483});
-        list.add(new double[] {42.292987, -71.264039});
-        list.add(new double[] {42.292733, -71.263977});
-        list.add(new double[]{42.293445, -71.263481});
-        list.add(new double[] {42.293108, -71.262802});
-        list.add(new double[]{42.292701, -71.262054});
-        return list;
     }
 }
