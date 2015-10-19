@@ -9,14 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import hieunguyen.com.scavengerhunt.Data.ClueDAO;
 import hieunguyen.com.scavengerhunt.Data.DbService;
-import hieunguyen.com.scavengerhunt.Data.LocationDatabase;
 import hieunguyen.com.scavengerhunt.R;
 
 public class WelcomeFragment extends Fragment {
@@ -43,7 +39,7 @@ public class WelcomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        dbService = new DbService(getContext());
+        dbService = new DbService(getActivity());
         if (dbService.isDbEmpty()) {
             dbService.update();
         } else {
@@ -75,7 +71,6 @@ public class WelcomeFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
     public interface onGoListener {
         void onGo();
