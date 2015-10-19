@@ -21,6 +21,7 @@ public class StartActivity extends Activity implements WelcomeFragment.onGoListe
                     .add(R.id.container, new WelcomeFragment())
                     .commit();
         }
+
     }
 
     @Override

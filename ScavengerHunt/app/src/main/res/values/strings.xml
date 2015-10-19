@@ -3,6 +3,7 @@
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
         AIzaSyCy5VYmC88UsRI3vVZcT1Zv6WvWa599OVA
     </string>
+    <string name="ip_address">http://45.55.65.113</string>
 
     <string name="welcome_text">Start Your Adventure</string>
     <string name="action_settings">Settings</string>
@@ -16,6 +17,10 @@
     <string name="cluetitle">Clue Number </string>
     <string name="donecluebutton">I\'m Ready!</string>
     <string name="doneinstructionsbutton">Let\'s Go!</string>
+    <string name="title_activity_photo">PhotoActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 
