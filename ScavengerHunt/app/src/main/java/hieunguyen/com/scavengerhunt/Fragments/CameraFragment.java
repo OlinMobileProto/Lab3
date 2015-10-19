@@ -1,6 +1,7 @@
 package hieunguyen.com.scavengerhunt.Fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import hieunguyen.com.scavengerhunt.R;
 
 public class CameraFragment extends Fragment {
@@ -37,7 +39,6 @@ public class CameraFragment extends Fragment {
         return rootView;
     }
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -48,7 +49,6 @@ public class CameraFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
 
     @Override
     public void onDetach() {

@@ -34,6 +34,7 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
     String mCurrentPhotoPath;
     private File mPhotoFile;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,5 +134,4 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         }
 
     }
-
 }
