@@ -36,6 +36,7 @@ public class VideoFragment extends Fragment {
     public RelativeLayout relativeLayout;
     public ImageView img1, img2, img3, img4, img5, img6;
     public ArrayList<ImageView> images = new ArrayList<>();
+    public AmazonS3 s3;
 
     public Integer imageIndex = 0;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -85,7 +86,7 @@ public class VideoFragment extends Fragment {
         }
 
         // get first clue
-        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
+        s3 = new AmazonS3(getActivity().getBaseContext());
         //TODO: get .MOV name from the SQL database instead
         locationListener = new MyLocationListener(getActivity().getBaseContext(), this);
 
@@ -136,35 +137,29 @@ public class VideoFragment extends Fragment {
     //gets the next video and displays it, also changes the current camera button
     public void downloadClue(){
         //TODO: integrate downloadClue with Camera stuff
-        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
         //make sure video isn't playable
         if(current_clue != 1){
             video.stopPlayback();
         }
+        //get clue
         if (current_clue == 1) {
             video_name = "MVI_3146.3gp";
-            locationListener.position[0] = 42.29386;
-            locationListener.position[0] = -71.26483;
+            locationListener.setCluePosition(42.29386, -71.26483);
         } else if (current_clue == 2) {
             video_name = "MVI_3145.3gp";
-            locationListener.position[0] = 42.292987;
-            locationListener.position[1] = -71.264039;
+            locationListener.setCluePosition(42.292987, -71.264039);
         } else if(current_clue == 3) {
             video_name = "MVI_3144.3gp";
-            locationListener.position[0] = 42.292733;
-            locationListener.position[1] = -71.263977;
+            locationListener.setCluePosition(42.292733, -71.263977);
         }else if(current_clue == 4) {
             video_name = "MVI_3147.3gp";
-            locationListener.position[0] = 42.293445;
-            locationListener.position[1] = -71.263481;
+            locationListener.setCluePosition(42.293445, -71.263481);
         }else if(current_clue == 5) {
             video_name = "MVI_3141.3gp";
-            locationListener.position[0] = 42.293108;
-            locationListener.position[1] = -71.262802;
+            locationListener.setCluePosition(42.293108, -71.262802);
         }else if(current_clue == 6) {
             video_name = "MVI_3140.3gp";
-            locationListener.position[0] = 42.292701;
-            locationListener.position[1] = -71.262054;
+            locationListener.setCluePosition(42.292701, -71.262054);
         }else if(current_clue == 7) {
             Toast.makeText(getActivity(), "YOU WINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", Toast.LENGTH_SHORT).show();
             //TODO: THERE IS NO CLUE 7, YOU WIN
@@ -179,7 +174,6 @@ public class VideoFragment extends Fragment {
     }
 
     public void uploadPicture(String file_name){
-        AmazonS3 s3 = new AmazonS3(getActivity().getBaseContext());
         String clue_info = "Picture of clue " + current_clue;
         s3.upload(file_name, current_clue, clue_info);
     }
@@ -263,8 +257,9 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
             uploadPicture(imageUri.toString()); //TODO: get way to say yes or no to upload
             downloadClue(); //TODO: if yes download
             imageIndex ++;
-        }
+            }
     setImageDialog();
+    locationListener.doneWithClue();
 }
 
 public void dispatchTakePictureIntent() {
