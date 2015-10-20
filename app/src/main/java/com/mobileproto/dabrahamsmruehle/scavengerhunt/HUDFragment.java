@@ -79,6 +79,8 @@ public class HUDFragment extends Fragment
         }
 
         mapView.onCreate(savedInstanceState);
+
+        // TODO: possibly this should be getMapAsync. right now it is null.
         map = mapView.getMap();
 
         // TODO: THESE LINES DO NOT WORK RIGHT NOW, BUT WE NEED THEM TO INTERACT WITH THE MAP ITSELF
