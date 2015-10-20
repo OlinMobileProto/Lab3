@@ -1,5 +1,6 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,13 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements
         StartMenuFragment.OnFragmentInteractionListener,
+        AWS_Video.OnFragmentInteractionListener,
         HUDFragment.OnFragmentInteractionListener
 {
 
     FragmentManager manager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onFragmentInteraction(char buttonName)
     {
+//        Toast.makeText(this, "charget", Toast.LENGTH_SHORT).show();
+
         if (buttonName == 'a')
         {
             switchFragment(HUDFragment.newInstance());
@@ -68,8 +74,17 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(Object o)
+    public void onFragmentInteraction(Uri uri)
     {
-
+//        Toast.makeText(this, "uriget", Toast.LENGTH_SHORT).show();
+        AWS_Video vid = new AWS_Video();
+        switchFragment(vid);
+//        vid.playVideo(uri);
     }
+
+//    @Override
+//    public void onFragmentInteraction(Object o)
+//    {
+//
+//    }
 }

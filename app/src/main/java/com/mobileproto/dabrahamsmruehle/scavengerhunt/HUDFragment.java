@@ -1,11 +1,18 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
@@ -19,6 +26,8 @@ import android.view.ViewGroup;
 public class HUDFragment extends Fragment
 {
     private OnFragmentInteractionListener mListener;
+    @Bind(R.id.button2)
+    Button play_current_clue;
 
     /**
      * Use this factory method to create a new instance of
@@ -56,6 +65,17 @@ public class HUDFragment extends Fragment
     {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_hud, container, false);
+        ButterKnife.bind(this, view);
+        play_current_clue.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ((HUDFragment.OnFragmentInteractionListener) getActivity())
+                        .onFragmentInteraction(Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp"));
+
+            }
+        });
         return view;
     }
 
@@ -91,7 +111,7 @@ public class HUDFragment extends Fragment
     public interface OnFragmentInteractionListener
     {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Object o);
+        public void onFragmentInteraction(Uri u);
     }
 
 }

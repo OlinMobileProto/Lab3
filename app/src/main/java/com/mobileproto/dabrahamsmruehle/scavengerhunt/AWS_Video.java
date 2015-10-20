@@ -3,11 +3,13 @@ package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -30,7 +32,8 @@ public class AWS_Video extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public AmazonS3 s3;
-    public VideoView videoView;
+    private VideoView videoView;
+    private MediaController mediaController;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -47,14 +50,12 @@ public class AWS_Video extends Fragment {
      * @return A new instance of fragment AWS_Video.
      */
 //    // TODO: Rename and change types and number of parameters
-//    public static AWS_Video newInstance(String param1, String param2) {
-//        AWS_Video fragment = new AWS_Video();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    public static AWS_Video newInstance() {
+        AWS_Video fragment = new AWS_Video();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public AWS_Video() {
         // Required empty public constructor
@@ -68,23 +69,39 @@ public class AWS_Video extends Fragment {
 //            mParam2 = getArguments().getString(ARG_PARAM2);
 //        }
         s3 = new AmazonS3Client(); // deprecated apparently?
-        videoView = (VideoView) getActivity().findViewById(R.id.video_view);
-        MediaController mediaController = new MediaController(getActivity());
-        videoView.setMediaController(mediaController);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_aws__video, container, false);
+        LinearLayout videoPlayerLayout = (LinearLayout) inflater.inflate(R.layout.fragment_aws__video, container, false);
+        videoView = (VideoView) videoPlayerLayout.findViewById(R.id.video_view);
+        Toast.makeText(getActivity(), "got to here", Toast.LENGTH_SHORT).show();
+        mediaController = new MediaController(getActivity());
+        videoView.setMediaController(mediaController);
+
+        Uri uriToPlay = Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp");
+        videoView.setVideoURI(uriToPlay);
+        videoView.requestFocus();
+        mediaController.show();
+        videoView.start();
+
+        return videoPlayerLayout;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    public void playVideo(Uri videoUri) {
+        Uri uriToPlay = Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp");
+        videoView.setVideoURI(uriToPlay);
+        videoView.requestFocus();
+        mediaController.show();
+        videoView.start();
     }
 
     @Override
@@ -115,7 +132,6 @@ public class AWS_Video extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
