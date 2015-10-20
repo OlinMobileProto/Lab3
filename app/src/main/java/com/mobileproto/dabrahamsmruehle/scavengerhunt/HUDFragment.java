@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
@@ -67,11 +69,23 @@ public class HUDFragment extends Fragment
     {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_hud, container, false);
+        ButterKnife.bind(this, view);
+
+        int checkGooglePlayServices =
+                GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
+        if (checkGooglePlayServices != ConnectionResult.SUCCESS) {
+            GooglePlayServicesUtil.getErrorDialog(
+                    checkGooglePlayServices, getActivity(), 1122).show();
+        }
 
         mapView.onCreate(savedInstanceState);
         map = mapView.getMap();
-        map.getUiSettings().setMyLocationButtonEnabled(true);
-        map.setMyLocationEnabled(true);
+
+        // TODO: THESE LINES DO NOT WORK RIGHT NOW, BUT WE NEED THEM TO INTERACT WITH THE MAP ITSELF
+        // TODO: I THINK.
+
+        // map.getUiSettings().setMyLocationButtonEnabled(true);
+        // map.setMyLocationEnabled(true);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
