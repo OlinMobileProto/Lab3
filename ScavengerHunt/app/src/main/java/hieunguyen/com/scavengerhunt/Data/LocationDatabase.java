@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Created by hieunguyen on 10/17/15.
+ * Database to store data on clues/destinations
  */
 public class LocationDatabase extends SQLiteOpenHelper {
 

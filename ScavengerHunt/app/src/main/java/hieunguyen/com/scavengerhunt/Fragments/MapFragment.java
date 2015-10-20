@@ -56,31 +56,35 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, rootView);
+
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(new mapReadyCallback());
 
         return rootView;
     }
 
+    // Async method for when map is ready
     private class mapReadyCallback implements OnMapReadyCallback {
         @Override
         public void onMapReady(GoogleMap googleMap) {
+
+            // Initiates variables. Location temporarily set to off the coast of Africa.
             mMap = googleMap;
             mMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("I'm here"));
             dbService = new DbService(getActivity().getBaseContext());
 
-            // Tries to get active clue. If it doesn't exist, get clue based on clueNumber (1)
+            // Tries to get currently active clue. If it doesn't exist, get clue based on clueNumber (1)
             currClue = dbService.getClue(0);
             if (currClue == null) {
-                Log.d(TAG, "currClue is null");
                 currClue = dbService.getClue(clueNumber);
                 dbService.changeActiveClue(-1, clueNumber);
             }
 
+            // Initialize map view
             try {
                 MapsInitializer.initialize(getActivity());
             } catch (Exception e) {
@@ -120,13 +124,13 @@ public class MapFragment extends Fragment {
     public void updateUI(Location location) {
 
         if (mMap != null) {
-            double locTol = 0.00002;
+            double locTol = 0.00002; // Roughly 3 meters (or 10 feet)
             Log.d(TAG, location.toString());
 
             double currentLatitude = location.getLatitude();
             double currentLongitude = location.getLongitude();
 
-
+            // If location within range
             if (currentLatitude > currClue.getLatitude() - locTol
                     && currentLatitude < currClue.getLatitude() + locTol
                     && currentLongitude > currClue.getLongitude() - locTol
@@ -142,17 +146,19 @@ public class MapFragment extends Fragment {
 
             LatLng latLng = new LatLng(currentLatitude, currentLongitude);
 
+            // Updates markerOptions and marker
             mOptions.position(latLng);
-
             if (mMarker != null) {
                 Log.d(TAG, "Removing marker");
                 mMarker.remove();
             }
             mMarker = mMap.addMarker(mOptions);
 
+            // Adds current location to the polyline and plot it
             pOptions.add(latLng);
             mPolyline = mMap.addPolyline(pOptions);
 
+            // If it is the first time the map is being viewed, zoom in. Else, maintain zoom state
             if (firstLocation) {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, (float) 18.0));
                 firstLocation = false;
@@ -161,4 +167,6 @@ public class MapFragment extends Fragment {
             }
         }
     }
+
+
 }
