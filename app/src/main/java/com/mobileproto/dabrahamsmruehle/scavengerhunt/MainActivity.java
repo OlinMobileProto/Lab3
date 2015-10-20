@@ -1,0 +1,90 @@
+package com.mobileproto.dabrahamsmruehle.scavengerhunt;
+
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity implements
+        StartMenuFragment.OnFragmentInteractionListener,
+        AWS_Video.OnFragmentInteractionListener,
+        HUDFragment.OnFragmentInteractionListener
+{
+
+    FragmentManager manager;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        manager = getSupportFragmentManager();
+        setContentView(R.layout.activity_main);
+        switchFragment(StartMenuFragment.newInstance());
+    }
+
+    private void switchFragment(Fragment f)
+    {
+        FragmentTransaction transaction = manager.beginTransaction();
+        // addToBackStack requires a String object for some reason. I'm a rebel
+        // and gave it null.
+        transaction.replace(R.id.container, f).addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(char buttonName)
+    {
+//        Toast.makeText(this, "charget", Toast.LENGTH_SHORT).show();
+
+        if (buttonName == 'a')
+        {
+            switchFragment(HUDFragment.newInstance());
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri)
+    {
+//        Toast.makeText(this, "uriget", Toast.LENGTH_SHORT).show();
+        AWS_Video vid = new AWS_Video();
+        switchFragment(vid);
+//        vid.playVideo(uri);
+    }
+
+//    @Override
+//    public void onFragmentInteraction(Object o)
+//    {
+//
+//    }
+}

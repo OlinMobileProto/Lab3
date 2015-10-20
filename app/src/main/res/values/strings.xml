@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ScavengerHunt</string>
+    <string name="action_settings">Settings</string>
+    <string name="continue_button">Continue Scavenger Hunt</string>
+    <string name="new_hunt_button">New Scavenger Hunt</string>
+    <string name="settings_button">Settings</string>
+    <string name="help_button">Halp</string>
+    <string name="current_clue_btn">Play Current Clue</string>
+    <string name="prev_clue_btn">Play Previous Clue</string>
+    <string name="take_photo_btn">Take photo</string>
+</resources>
