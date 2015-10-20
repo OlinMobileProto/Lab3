@@ -47,7 +47,9 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
     // Video Initializations:
     public VideoView clue;
     public ArrayList<String> cluesLink = new ArrayList<>();
+    public TextView clueTitle;
     public int clueCounter;
+
     //GPS Initializations:
     GPSTracker gps;
     Timer timer;
@@ -76,7 +78,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
                 .addApi(LocationServices.API)
                 .build();
 
-        // Create the LocationRequest object
+        // Create the LocationRequest object with the intervals that we set
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
@@ -96,7 +98,18 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
         cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3147.3gp");
         cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3141.3gp");
         cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp");
-        clueCounter = 1;
+
+        //Calls increment_counter during initialization to get the number of clue that it is on after finishing the first clue
+        clueCounter = ((MainActivity)getActivity()).return_counter();
+        Log.d("Counter", String.valueOf(clueCounter));
+
+        //Setting the clue title to be aligned with what clue the user is on
+        clueTitle = (TextView) rootView.findViewById(R.id.clueTitle);
+        clueTitle.setText("Clue " + Integer.toString(clueCounter));
+        clue = (VideoView) rootView.findViewById(R.id.clue);
+
+        //Same video code as videofragment that opens the media controller with the video associated with the clue number
+        //This shows up on the first half of the fragment
         clue = (VideoView) rootView.findViewById(R.id.clue);
         clue.setVideoURI(Uri.parse(cluesLink.get(clueCounter - 1)));
         clue.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -109,13 +122,16 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             }
         });
 
-        //MAP Code
+
+        //MAP Code: Setting up map, and updating map location and polyline every 10 seconds.
+        //Map setup at the very beginning
         setUpMapIfNeeded();
 
         tvLocation = (TextView) rootView.findViewById(R.id.text_location);
         arrayPoints = new ArrayList<LatLng>();
 
 
+        //Timertask calls display_location every 10 seconds
         timer = new Timer();
         myTimerTask = new TimerTask() {
             @Override
@@ -143,6 +159,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
 
             // Check if we were successful in obtaining the map.
             if (googleMap != null) {
+                //call setUpMap
                 setUpMap();
             }
         }
@@ -152,41 +169,11 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
         UiSettings mapSettings;
         mapSettings = googleMap.getUiSettings();
 
+        //Zoom enabled
         mapSettings.setZoomControlsEnabled(true);
 
+        //Map Type: Hybrid - mixture of normal and satellite views
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-    }
-
-    private void handleNewLocation(Location myLocation) {
-        double currentLatitude = myLocation.getLatitude();
-        double currentLongitude = myLocation.getLongitude();
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-
-        MarkerOptions options = new MarkerOptions().position(latLng).title("I am here!");
-        googleMap.addMarker(options);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mGoogleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            mGoogleApiClient.disconnect();
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -197,18 +184,50 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
         else {
+            //calls handleNewLocation when connected
             handleNewLocation(myLocation);
         };
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
+    private void handleNewLocation(Location myLocation) {
+        double currentLatitude = myLocation.getLatitude();
+        double currentLongitude = myLocation.getLongitude();
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
 
+        //Puts marker with following options on map with an 18 zoom
+        MarkerOptions options = new MarkerOptions().position(latLng).title("I am here!");
+        googleMap.addMarker(options);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onResume() {
+        super.onResume();
+        //Re-setup map if needed
+        setUpMapIfNeeded();
 
+        //Connect to API client
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            //Disconnect if onPause
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //Disconnect and stop timer if fragment is exited from
+        Log.d(TAG, "onStop fired ..............");
+        mGoogleApiClient.disconnect();
+        Log.d(TAG, "isConnected ...............: " + mGoogleApiClient.isConnected());
+        timer.cancel();
     }
 
     @Override
@@ -225,6 +244,25 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
         }
 
     }
+
+    //Unused on-functions
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    //Timertask calls display_location function, which finds whether or not the location is the right
+    //location and then starts the camera fragment if the person is in the right location
     public void display_location(){
         gps = new GPSTracker(getActivity());
 
@@ -235,19 +273,35 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             double longitude = gps.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
 
-            Log.d("Place:", String.valueOf(latitude));
+            //tvlocation text shows current location
             tvLocation.setText("Your Location is - \nLat: " + latitude + "\nLong: " + longitude);
-            if (42.290 < latitude & latitude < 42.295 & longitude < -71.263 & longitude > -71.265) {
+
+            //checks if longitude and latitude is in the right range
+            if (42.290 < latitude & latitude < 42.295 & longitude < -71.260 & longitude > -71.265) {
+                //If it is in the right range, it will show the congratulations alert and then change to the camera fragment
+                //WE NEED TO MAKE A LONGER DELAY BETWEEN THE TWO
                 Toast.makeText(getActivity(), "You have arrived!", Toast.LENGTH_LONG).show();
-                CameraFragment camera_frag = new CameraFragment();
-                ((MainActivity)getActivity()).transitionToFragment(camera_frag);
+
+                //3 seconds before the camera fragment opens
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        CameraFragment camera_frag = new CameraFragment();
+                        ((MainActivity) getActivity()).transitionToFragment(camera_frag);
+                    }
+                }, 3000);
+
             }
+
+            //if not, a polyline between their current and previous location (10 seconds ago) is drawn
             polylineOptions = new PolylineOptions();
             polylineOptions.color(Color.RED);
             polylineOptions.width(5);
             arrayPoints.add(latLng);
             polylineOptions.addAll(arrayPoints);
             googleMap.addPolyline(polylineOptions);
+
         } else {
             // can't get location
             // GPS or Network is not enabled

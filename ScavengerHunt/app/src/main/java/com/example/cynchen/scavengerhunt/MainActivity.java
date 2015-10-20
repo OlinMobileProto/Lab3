@@ -9,6 +9,18 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Incrementing counter for each clue
+    int counter = 0;
+
+    public int increment_counter(){
+        counter +=1;
+        return counter;
+    }
+
+    //For the other clues
+    public int return_counter(){
+        return counter;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.container, fragment);
         transaction.commit();
     }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
