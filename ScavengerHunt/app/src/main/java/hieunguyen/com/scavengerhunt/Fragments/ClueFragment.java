@@ -18,6 +18,7 @@ import android.widget.VideoView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import hieunguyen.com.scavengerhunt.Activities.HuntActivity;
 import hieunguyen.com.scavengerhunt.R;
 
 public class ClueFragment extends Fragment {
@@ -50,9 +51,7 @@ public class ClueFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_clue, container, false);
         ButterKnife.bind(this, rootView);
 
-        // TODO: Replace this with correct URL
-        String vidAddress = "http://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp";
-        Uri vidUrl = Uri.parse(vidAddress);
+        Uri vidUrl = ((HuntActivity) getActivity()).getVideoUrl();
 
         // Creates buffering dialog
         pDialog = new ProgressDialog(getActivity());

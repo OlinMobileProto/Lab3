@@ -15,12 +15,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import hieunguyen.com.scavengerhunt.Interfaces.DestinationCallback;
+import hieunguyen.com.scavengerhunt.Interfaces.PhotoPostCallback;
 import hieunguyen.com.scavengerhunt.R;
 
 /**
  * Created by hieunguyen on 10/17/15.
  */
 public class HttpHandler {
+    public static final String APP_ID = "patandhieu";
 
     public RequestQueue queue;
     public Context context;
@@ -60,6 +62,38 @@ public class HttpHandler {
         );
 
         queue.add(request);
+    }
+
+    public void postPhotoData(String imageKey, String imageLocation, final PhotoPostCallback callback) {
+        String url = context.getString(R.string.ip_address);
+        String route = "/userdata/" + APP_ID;
+        url += route;
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("imageKey", imageKey);
+            body.put("imageLocation", imageLocation);
+        } catch (Exception e) {
+            Log.e("JSONException", e.getMessage());
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                body,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Response", response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error", error.getMessage());
+                    }
+                }
+        );
     }
 
 

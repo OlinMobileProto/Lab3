@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 
+import hieunguyen.com.scavengerhunt.Data.ClueDAO;
+import hieunguyen.com.scavengerhunt.Data.DbService;
 import hieunguyen.com.scavengerhunt.Data.LocationProvider;
 import hieunguyen.com.scavengerhunt.Fragments.ClueFragment;
 import hieunguyen.com.scavengerhunt.Fragments.MapFragment;
@@ -18,14 +20,19 @@ public class HuntActivity extends AppCompatActivity implements ClueFragment.onVi
 
     private static final String TAG = HuntActivity.class.getName();
 
+    private static final String BASE_S3_URL = "https://s3.amazonaws.com/olin-mobile-proto/";
+
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationProvider mLocationProvider;
     private MapFragment mapFragment;
+    private DbService mDbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt);
+
+        mDbService = new DbService(this);
 
         if(savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -49,9 +56,10 @@ public class HuntActivity extends AppCompatActivity implements ClueFragment.onVi
         mLocationProvider.disconnect();
     }
 
-    public Uri getVideoUrl(int clueNumber){
-        // TODO: Implement getting the actual URL here
-        return Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.MOV");
+    public Uri getVideoUrl(){
+        ClueDAO currentClue = mDbService.getClue(0);
+        String s3id = currentClue.getS3id();
+        return Uri.parse(BASE_S3_URL + s3id);
     }
 
     @Override
