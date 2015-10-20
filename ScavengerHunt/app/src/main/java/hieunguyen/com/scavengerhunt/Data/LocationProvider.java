@@ -42,6 +42,8 @@ public class LocationProvider implements
     private boolean mRequestingLocationUpdates = true;
 
     public LocationProvider(Context context, LocationCallback callback) {
+        Log.d(TAG, "Location Provider CREATED");
+
         mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -50,7 +52,6 @@ public class LocationProvider implements
 
         mLocationCallback = callback;
 
-        // Create the LocationRequest object
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(4 * 1000)         // 4 seconds, in milliseconds
@@ -76,10 +77,12 @@ public class LocationProvider implements
 
         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
+        // If lastLocation exists, update the map
         if (mCurrentLocation != null) {
             mLocationCallback.handleNewLocation(mCurrentLocation);
         }
 
+        // Getting location updates
         if (mRequestingLocationUpdates) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
@@ -122,6 +125,8 @@ public class LocationProvider implements
     }
 
     @Override
+    // LocationListener required method. Handles new location when requestLocationUpdates' updates
+    // come in
     public void onLocationChanged(Location location) {
         Log.d(TAG, "LOCATION CHANGED");
         mLocationCallback.handleNewLocation(location);
