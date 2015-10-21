@@ -30,7 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import android.widget.VideoView;
 import java.util.ArrayList;
-
+//TODO: was is this class in the thing below
 public class VideoFragment extends Fragment {
     private View myFragmentView;
     public RelativeLayout relativeLayout;
@@ -95,7 +95,7 @@ public class VideoFragment extends Fragment {
             video = (VideoView) myFragmentView.findViewById(R.id.videoView);
             downloadClue();
         } catch (Exception e){
-            Log.e("Stupid error :'-(", e.getMessage());
+            Log.e("Stupid error :'-(", e.getMessage()); //TODO: take out of try catch
             e.printStackTrace();
         }
 
@@ -198,7 +198,7 @@ public class VideoFragment extends Fragment {
     }
 
     public void setCameraButton(){
-        images.get(imageIndex).setClickable(true);images.get(imageIndex).setClickable(true);
+        images.get(imageIndex).setClickable(true);
 
         images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
             @Override

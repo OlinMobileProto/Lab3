@@ -7,13 +7,13 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
+//TODO: Add class thing
 /**
  * Created by nmohamed on 10/13/2015.
  */
 public class MyLocationListener implements LocationListener {
-    private Context context;
-    public double[] clue_position = new double[2]; //location of the clue -> its long, lat
+    private Context context; //TODO: change all to camel case
+    private double[] clue_position = new double[2]; //location of the clue -> its long, lat
     private double[] start_position = new double[2]; //the location of the previous clue (if first clue, your start location)
     public double[] your_position = new double[2]; //location of you
     public boolean locationFound = false;
@@ -29,7 +29,7 @@ public class MyLocationListener implements LocationListener {
         this.clue_position[1] = 0;
     }
 
-    public double[] getCluePosition(){
+    public double[] getCluePosition(){ //TODO: maybe take out???
         return this.clue_position; //finish this later by making stuff private and changing functions in videofragment
     }
 
@@ -55,14 +55,14 @@ public class MyLocationListener implements LocationListener {
         checkLocation();
         if (locationFound == true){
             // prompt to take picture, then upload, then download clue
-            fragment.setCameraButton();
+            fragment.setCameraButton(); //TODO: test some stuff
             locationFound = false;
         }
     }
 
     public void doneWithClue(){
         //checks to see if you took a picture, so you know
-        tookPic = true; //do something with this later
+        tookPic = true; //TODO: do something with this later or delete
         //set new initial positions for finding next clue
         Log.d("Done with clue", "going to reset start_position values to your_position");
         start_position[0] = your_position[0];

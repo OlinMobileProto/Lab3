@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
+//TODO: was is this class in the thing below
 /**
  * Created by lwilcox on 10/3/2015.
  */
@@ -22,7 +22,7 @@ public class IntroFragment extends Fragment {
                              Bundle savedInstanceState) {
         myFragmentView = inflater.inflate(R.layout.fragment_intro, container, false);
 
-        TextView title = (TextView) myFragmentView.findViewById(R.id.title);
+        TextView title = (TextView) myFragmentView.findViewById(R.id.title); //TODO: probably don't need these
         TextView description = (TextView) myFragmentView.findViewById(R.id.description);
         Button begin = (Button) myFragmentView.findViewById(R.id.start);
 
