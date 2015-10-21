@@ -1,8 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hieunguyen.com.scavengerhunt.Fragments.ClueCompleteFragment">
+    tools:context="hieunguyen.com.scavengerhunt.Fragments.ClueCompleteFragment"
+    android:background="@drawable/map">
 
+    <!-- TODO: MAKE BACKGROUND IMAGE RESOURCES -->
 
     <TextView
         android:layout_width="wrap_content"
