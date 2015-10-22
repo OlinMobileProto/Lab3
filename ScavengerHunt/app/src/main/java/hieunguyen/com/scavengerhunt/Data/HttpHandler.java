@@ -27,10 +27,11 @@ public class HttpHandler {
 
     public RequestQueue queue;
     public Context context;
-    private String url = context.getString(R.string.ip_address);
+    private String url;
 
     public HttpHandler(Context context) {
         this.context = context;
+        url = context.getString(R.string.ip_address);
         queue = Volley.newRequestQueue(context);
     }
 

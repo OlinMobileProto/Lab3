@@ -40,6 +40,7 @@ public class WelcomeFragment extends Fragment {
 
         // Get clue data if DB is empty, else print out all current clues stored in DB
         dbService = new DbService(getActivity().getBaseContext());
+        dbService.clear();
         if (dbService.isDbEmpty()) {
             dbService.update();
         } else {

@@ -72,6 +72,7 @@ public class DbService {
             public void destCallback(boolean success, JSONArray locations) {
                 if (success && locations != null) {
                     populate(locations);
+                    changeActiveClue(-1, 1);
                 } else if (locations == null) {
                     Log.d(TAG, "LOCATIONS NULL");
                 } else {

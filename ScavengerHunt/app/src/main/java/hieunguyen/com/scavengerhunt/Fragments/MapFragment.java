@@ -2,6 +2,7 @@ package hieunguyen.com.scavengerhunt.Fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import hieunguyen.com.scavengerhunt.Activities.HuntActivity;
+import hieunguyen.com.scavengerhunt.Activities.PhotoActivity;
 import hieunguyen.com.scavengerhunt.Data.ClueDAO;
 import hieunguyen.com.scavengerhunt.Data.DbService;
 import hieunguyen.com.scavengerhunt.Data.HttpHandler;
@@ -124,7 +127,7 @@ public class MapFragment extends Fragment {
     public void updateUI(Location location) {
 
         if (mMap != null) {
-            double locTol = 0.00002; // Roughly 3 meters (or 10 feet)
+            double locTol = 1; //0.00002; // Roughly 3 meters (or 10 feet)
             Log.d(TAG, location.toString());
 
             double currentLatitude = location.getLatitude();
@@ -137,11 +140,9 @@ public class MapFragment extends Fragment {
                     && currentLongitude < currClue.getLongitude() + locTol) {
                 Log.d(TAG, "IN RANGE");
 
-                // Once clue has been reached, change the active clue, increment clueNumber,
-                // and get the new clue
-                dbService.changeActiveClue(clueNumber, clueNumber++);
-                clueNumber++;
-                currClue = dbService.getClue(clueNumber);
+                // Once clue has been reached, launch PhotoActivity
+                Intent intent = new Intent(getActivity(), PhotoActivity.class);
+                startActivity(intent);
             }
 
             LatLng latLng = new LatLng(currentLatitude, currentLongitude);
