@@ -12,6 +12,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  * Use the {@link HUDFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HUDFragment extends Fragment
+public class HUDFragment extends Fragment implements OnMapReadyCallback
 {
 
     private OnFragmentInteractionListener mListener;
@@ -79,15 +80,9 @@ public class HUDFragment extends Fragment
         }
 
         mapView.onCreate(savedInstanceState);
-
+        mapView.getMapAsync(this);
         // TODO: possibly this should be getMapAsync. right now it is null.
         map = mapView.getMap();
-
-        // TODO: THESE LINES DO NOT WORK RIGHT NOW, BUT WE NEED THEM TO INTERACT WITH THE MAP ITSELF
-        // TODO: I THINK.
-
-        // map.getUiSettings().setMyLocationButtonEnabled(true);
-        // map.setMyLocationEnabled(true);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
@@ -142,6 +137,14 @@ public class HUDFragment extends Fragment
     {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap)
+    {
+        map = googleMap;
+        map.setMyLocationEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
     /**
