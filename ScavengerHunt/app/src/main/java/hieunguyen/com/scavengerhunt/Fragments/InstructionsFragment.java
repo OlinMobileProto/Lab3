@@ -33,6 +33,7 @@ public class InstructionsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_instructions, container, false);
         ButterKnife.bind(this, rootView);
+
         return rootView;
     }
 

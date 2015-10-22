@@ -30,7 +30,7 @@ import hieunguyen.com.scavengerhunt.Fragments.ClueCompleteFragment;
 import hieunguyen.com.scavengerhunt.Interfaces.PhotoPostCallback;
 import hieunguyen.com.scavengerhunt.R;
 
-public class PhotoActivity extends AppCompatActivity implements CameraFragment.OnFragmentChangeListener{
+public class PhotoActivity extends AppCompatActivity implements CameraFragment.OnFragmentChangeListener, ClueCompleteFragment.onNextClueListener{
     private static final String TAG = PhotoActivity.class.getName();
     private static final String BUCKET_NAME = "olin-mobile-proto";
 
@@ -55,11 +55,6 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
                     .add(R.id.container, new CameraFragment())
                     .commit();
         }
-    }
-
-    @Override
-    public void onCameraButton() {
-        dispatchTakePictureIntent();
     }
 
     /*
@@ -173,5 +168,17 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
             });
             return null;
         }
+
+    }
+
+    @Override
+    public void onCameraButton() {
+        dispatchTakePictureIntent();
+    }
+
+    @Override
+    public void onNextClue() {
+        Intent intent = new Intent(this, HuntActivity.class);
+        startActivity(intent);
     }
 }

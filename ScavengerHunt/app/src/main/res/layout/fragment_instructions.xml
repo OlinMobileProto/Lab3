@@ -3,52 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/mapblur"
     tools:context="hieunguyen.com.scavengerhunt.Fragments.InstructionsFragment">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/instructions_title"
-        android:id="@+id/instruction_title_tv"
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:id="@+id/instruction_title_iv"
+        android:background="@drawable/instructions"
         android:layout_gravity="center_horizontal"
-        android:paddingTop="30dp"
-        android:textSize="30dp"
-        android:paddingBottom="20dp" />
+        android:paddingTop="100dp"
+        android:paddingBottom="20dp"
+        android:layout_marginTop="140dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/instruction1"
-        android:id="@+id/instruction_1_tv"
-        android:layout_gravity="center_horizontal"
-        android:padding="8dp"
-        android:textSize="16dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/instruction2"
-        android:id="@+id/instruction_2_tv"
-        android:layout_gravity="center_horizontal"
-        android:padding="8dp"
-        android:textSize="16dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/instruction3"
-        android:id="@+id/instruction_3_tv"
-        android:layout_gravity="center_horizontal"
-        android:padding="8dp"
-        android:textSize="16dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/doneinstructionsbutton"
         android:id="@+id/done_button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:elevation="5dp"
+        style="@style/Base.Widget.AppCompat.Button.Colored" />
 
 
 </LinearLayout>
