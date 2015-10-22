@@ -168,7 +168,6 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
             });
             return null;
         }
-
     }
 
     @Override
