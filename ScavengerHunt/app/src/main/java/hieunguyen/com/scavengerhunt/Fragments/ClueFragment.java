@@ -82,10 +82,6 @@ public class ClueFragment extends Fragment {
             }
         });
 
-        //TODO: Figure out the best way to get the current clue
-        //TODO: Figure out how to display a video
-        //TODO: Figure out how to determine when the video has been played
-
         return rootView;
     }
 

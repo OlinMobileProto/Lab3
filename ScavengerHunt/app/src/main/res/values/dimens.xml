@@ -5,4 +5,6 @@
 
     <dimen name="go_button_side">90dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="next_clue_button_width">250dp</dimen>
+    <dimen name="next_clue_button_height">45dp</dimen>
 </resources>
