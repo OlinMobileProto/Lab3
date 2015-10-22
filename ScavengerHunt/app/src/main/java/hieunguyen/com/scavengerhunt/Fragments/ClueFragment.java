@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -25,7 +25,7 @@ public class ClueFragment extends Fragment {
 
     private onVideoDoneListener mListener;
 
-    @Bind(R.id.done_button) Button mDoneButton;
+    @Bind(R.id.done_button) ImageButton mDoneButton;
     @OnClick(R.id.done_button) void done(){
         mListener.onVideoDone();
     }

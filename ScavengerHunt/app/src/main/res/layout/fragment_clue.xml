@@ -33,7 +33,7 @@
     <ImageButton
         android:layout_width="@dimen/next_clue_button_width"
         android:layout_height="@dimen/next_clue_button_height"
-        android:background="@drawable/nexcluebutton"
+        android:background="@drawable/imreadybutton"
         android:id="@+id/done_button"
         android:layout_marginTop="16dp"
         android:layout_margin="32dp"
