@@ -5,16 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 import android.util.Log;
-
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import hieunguyen.com.scavengerhunt.Interfaces.DestinationCallback;
 
@@ -33,6 +28,7 @@ public class DbService {
         locationDB = new LocationDatabase(context);
     }
 
+    // Fill in database with JSON response from HTTP request
     public void populate(JSONArray data) {
         db = locationDB.getWritableDatabase();
         try {
@@ -59,6 +55,7 @@ public class DbService {
         }
     }
 
+    // Clear database
     public void clear() {
         Log.d(TAG, "CLEARING");
         db = locationDB.getWritableDatabase();
@@ -66,6 +63,7 @@ public class DbService {
         db.close();
     }
 
+    // Update: Clears then populates
     public void update() {
         clear();
         HttpHandler handler = new HttpHandler(context);
@@ -90,8 +88,8 @@ public class DbService {
         return mCursor.getCount() == 0;
     }
 
+    // Retrieve a clue object by id; if id is -1 get active clue
     public ClueDAO getClue(int clueNumber) {
-        // If clueNumber = 0, get currently active clue
         db = locationDB.getReadableDatabase();
 
         String query = "SELECT * FROM " + LocationDatabase.tableName + " WHERE ";
@@ -128,6 +126,7 @@ public class DbService {
         return clue;
     }
 
+    // When a clue is completed, this function updates the status of the old and new clues
     public void changeActiveClue(int oldClue, int newClue) {
         // Setting a new active clue. if there is no oldClue, set oldClue to -1
         db = locationDB.getWritableDatabase();

@@ -2,6 +2,7 @@ package hieunguyen.com.scavengerhunt.Data;
 
 /**
  * Created by hieunguyen on 10/17/15.
+ * Database Access Object to carry information loaded from database
  */
 public class ClueDAO {
 
