@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,7 +33,10 @@ import android.widget.VideoView;
 import java.util.ArrayList;
 
 
-//TODO: was is this class in the thing below
+/**
+ * Video Fragment: Fragment that contains all video functionality. Displays the video and camera buttons.
+ */
+
 public class VideoFragment extends Fragment {
     private View myFragmentView;
     public RelativeLayout relativeLayout;
@@ -98,6 +102,9 @@ public class VideoFragment extends Fragment {
         // set up video view
         try {
             video = (VideoView) myFragmentView.findViewById(R.id.videoView);
+            mediaController = new MediaController(getActivity());
+            mediaController.setAnchorView(video);
+            video.setMediaController(mediaController);
             downloadClues();
         } catch (Exception e){
             Log.e("Stupid error :'-(", e.getMessage()); //TODO: take out of try catch
@@ -167,10 +174,17 @@ public class VideoFragment extends Fragment {
             //TODO: THERE IS NO CLUE 7, YOU WIN
             return;
         }
+
+        //set up video view and media controller
         uri = Uri.parse(s3.download(video_name));
         video.setVideoURI(uri);
         video.requestFocus();
-        video.start();
+        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                video.start();
+            }
+        });
 
         current_clue += 1;
     }

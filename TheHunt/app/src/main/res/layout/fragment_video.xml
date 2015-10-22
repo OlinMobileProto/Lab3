@@ -13,17 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/videoView"
-        android:layout_above="@+id/linearLayout"
+        android:gravity="top"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_above="@+id/linearLayout2"
+        android:layout_below="@+id/videoView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
         android:id="@+id/linearLayout">
 
         <ImageView
@@ -52,9 +54,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_below="@id/linearLayout"
         android:id="@+id/linearLayout2">
         <ImageView
             android:layout_width="0dp"
