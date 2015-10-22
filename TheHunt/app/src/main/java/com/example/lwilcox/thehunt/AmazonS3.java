@@ -29,19 +29,20 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        AmazonS3Client s3 = new AmazonS3Client();
-        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
-   //     transferUtility = new TransferUtility(s3, context.getApplicationContext());
+        //amazonS3Client s3 = new AmazonS3Client();
+        //s3.setRegion(Region.getRegion(Regions.US_EAST_1));
         //TODO: Understand AsyncTask
         //TODO: make sure S3 works
         //TODO: go to ninja hours
         return null;
     }
 
-    public void upload(String file_name, int clue_num, String clue_info){
-        String object_key = "HUNT_clue_" + clue_num;
+    public void upload(String file_name, int clue_num, String clue_info){ //TODO: this should be in the do in background or called from there, learned about AsyncTasks
+        String object_key = "HUNT_clue_" + clue_num; //TODO: UUID maybe
         File file = new File(file_name);
-
+        AmazonS3Client s3 = new AmazonS3Client();
+        s3.setRegion(Region.getRegion(Regions.US_EAST_1)); //TODO: maybe get rid of
+        transferUtility = new TransferUtility(s3, context);
         //metadata for future implementations if you wanted to retrieve data and know what it was
         ObjectMetadata myObjectMetadata = new ObjectMetadata();
         Map<String, String> userMetadata = new HashMap<>();
