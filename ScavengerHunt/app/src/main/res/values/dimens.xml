@@ -7,4 +7,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="next_clue_button_width">250dp</dimen>
     <dimen name="next_clue_button_height">45dp</dimen>
+    <dimen name="im_ready_button_width">200dp</dimen>
+    <dimen name="im_ready_button_height">45dp</dimen>
 </resources>

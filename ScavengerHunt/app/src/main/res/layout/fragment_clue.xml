@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:text="@string/cluetitle"
         android:id="@+id/title_tv"
-        android:paddingTop="20dp"
+        android:paddingTop="30dp"
         android:paddingBottom="16dp"
         android:typeface="normal"
-        android:textSize="20sp"
+        android:textSize="35sp"
         android:layout_gravity="center_horizontal|top"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
@@ -30,15 +30,17 @@
         android:layout_alignParentStart="true" />
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:layout_width="@dimen/next_clue_button_width"
+        android:layout_height="@dimen/next_clue_button_height"
+        android:background="@drawable/nexcluebutton"
         android:id="@+id/done_button"
-        android:text="@string/donecluebutton"
+        android:layout_marginTop="16dp"
+        android:layout_margin="32dp"
         android:paddingBottom="20dp"
         android:paddingTop="16dp"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
