@@ -40,8 +40,8 @@ public class MyLocationListener implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        your_position[0] = location.getLongitude();
-        your_position[1] = location.getLatitude();
+        your_position[0] = location.getLatitude();
+        your_position[1] = location.getLongitude();
         Log.d("Start position is.", "set_initial_pos = " + set_initial_pos);
 
         if(set_initial_pos == false){ //to set your start position for the first clue
