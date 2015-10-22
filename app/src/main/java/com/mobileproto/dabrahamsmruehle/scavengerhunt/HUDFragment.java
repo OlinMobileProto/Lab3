@@ -1,11 +1,20 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
 import android.app.Activity;
-import android.os.Bundle;;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
@@ -18,7 +27,11 @@ import android.view.ViewGroup;
  */
 public class HUDFragment extends Fragment
 {
+
     private OnFragmentInteractionListener mListener;
+    @Bind(R.id.mapview)
+    MapView mapView;
+    GoogleMap map;
 
     /**
      * Use this factory method to create a new instance of
@@ -56,6 +69,28 @@ public class HUDFragment extends Fragment
     {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_hud, container, false);
+        ButterKnife.bind(this, view);
+
+        int checkGooglePlayServices =
+                GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
+        if (checkGooglePlayServices != ConnectionResult.SUCCESS) {
+            GooglePlayServicesUtil.getErrorDialog(
+                    checkGooglePlayServices, getActivity(), 1122).show();
+        }
+
+        mapView.onCreate(savedInstanceState);
+
+        // TODO: possibly this should be getMapAsync. right now it is null.
+        map = mapView.getMap();
+
+        // TODO: THESE LINES DO NOT WORK RIGHT NOW, BUT WE NEED THEM TO INTERACT WITH THE MAP ITSELF
+        // TODO: I THINK.
+
+        // map.getUiSettings().setMyLocationButtonEnabled(true);
+        // map.setMyLocationEnabled(true);
+
+        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+        MapsInitializer.initialize(this.getActivity());
         return view;
     }
 
@@ -76,6 +111,37 @@ public class HUDFragment extends Fragment
     {
         super.onDetach();
         mListener = null;
+    }
+
+    /**
+     * Called when the fragment is no longer in use.  This is called
+     * after {@link #onStop()} and before {@link #onDetach()}.
+     */
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    /**
+     * Called when the fragment is visible to the user and actively running.
+     * This is generally
+     * tied to {@link Activity#onResume() Activity.onResume} of the containing
+     * Activity's lifecycle.
+     */
+    @Override
+    public void onResume()
+    {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onLowMemory()
+    {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
     /**
