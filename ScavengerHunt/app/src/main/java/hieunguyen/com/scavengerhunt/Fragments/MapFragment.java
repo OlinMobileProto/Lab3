@@ -77,7 +77,7 @@ public class MapFragment extends Fragment {
 
             // Initiates variables. Location temporarily set to off the coast of Africa.
             mMap = googleMap;
-            mMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("I'm here"));
+            // mMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("I'm here"));
             dbService = new DbService(getActivity().getBaseContext());
 
             // Tries to get currently active clue. If it doesn't exist, get clue based on clueNumber (1)
@@ -125,48 +125,49 @@ public class MapFragment extends Fragment {
     }
 
     public void updateUI(Location location) {
-
         if (mMap != null) {
-            double locTol = 1; //0.00002; // Roughly 3 meters (or 10 feet)
             Log.d(TAG, location.toString());
+            LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
 
-            double currentLatitude = location.getLatitude();
-            double currentLongitude = location.getLongitude();
-
-            // If location within range
-            if (currentLatitude > currClue.getLatitude() - locTol
-                    && currentLatitude < currClue.getLatitude() + locTol
-                    && currentLongitude > currClue.getLongitude() - locTol
-                    && currentLongitude < currClue.getLongitude() + locTol) {
+            if (isWithinRange(position)) {
                 Log.d(TAG, "IN RANGE");
-
                 // Once clue has been reached, launch PhotoActivity
                 Intent intent = new Intent(getActivity(), PhotoActivity.class);
                 startActivity(intent);
             }
 
-            LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-
-            // Updates markerOptions and marker
-            mOptions.position(latLng);
-            if (mMarker != null) {
-                Log.d(TAG, "Removing marker");
-                mMarker.remove();
-            }
-            mMarker = mMap.addMarker(mOptions);
-
-            // Adds current location to the polyline and plot it
-            pOptions.add(latLng);
-            mPolyline = mMap.addPolyline(pOptions);
-
-            // If it is the first time the map is being viewed, zoom in. Else, maintain zoom state
-            if (firstLocation) {
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, (float) 18.0));
-                firstLocation = false;
-            } else {
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            }
+            updateMarker(position);
+            updatePolyline(position);
         }
+    }
+
+    public boolean isWithinRange(LatLng pos) {
+        double locTol = 1; // 0.00002; // Roughly 3 meters (or 10 feet)
+        return (pos.latitude > currClue.getLatitude() - locTol
+                && pos.latitude < currClue.getLatitude() + locTol
+                && pos.longitude > currClue.getLongitude() - locTol
+                && pos.longitude < currClue.getLongitude() + locTol);
+    }
+
+    public void updateMarker(LatLng pos) {
+        // Updates markerOptions and marker
+        mOptions.position(pos);
+        if (mMarker != null) {
+            Log.d(TAG, "Removing marker");
+            mMarker.remove();
+        }
+        mMarker = mMap.addMarker(mOptions);
+        // If it is the first time the map is being viewed, zoom in. Else, maintain zoom state
+        if (firstLocation) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, (float) 18.0));
+            firstLocation = false;
+        }
+    }
+
+    public void updatePolyline(LatLng pos) {
+        // Adds current location to the polyline and plot it
+        pOptions.add(pos);
+        mPolyline = mMap.addPolyline(pOptions);
     }
 
 

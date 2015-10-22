@@ -38,6 +38,7 @@ public class WelcomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         // Get clue data if DB is empty, else print out all current clues stored in DB
         dbService = new DbService(getActivity().getBaseContext());
         dbService.clear();
