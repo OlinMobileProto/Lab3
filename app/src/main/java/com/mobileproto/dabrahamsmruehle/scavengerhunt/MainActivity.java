@@ -61,17 +61,14 @@ public class MainActivity extends AppCompatActivity implements
 
     // TODO: MAKE BUTTONNAME MORE EXPLANATORY
     @Override
-    public void onFragmentInteraction(char buttonName)
+    public void onFragmentInteraction(String buttonName)
     {
-        if (buttonName == 'a')
+        if (buttonName == "continue_button")
         {
             switchFragment(HUDFragment.newInstance());
+        } else if (buttonName == "take_photo_button")
+        {
+            Log.d("TAG", "click");
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Object o)
-    {
-
     }
 }

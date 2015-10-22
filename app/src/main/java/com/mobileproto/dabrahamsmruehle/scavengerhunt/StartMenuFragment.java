@@ -90,7 +90,7 @@ public class StartMenuFragment extends Fragment
             public void onClick(View v)
             {
                 ((StartMenuFragment.OnFragmentInteractionListener) getActivity())
-                        .onFragmentInteraction('a');
+                        .onFragmentInteraction("continue_button");
             }
         });
         return view;
@@ -109,6 +109,6 @@ public class StartMenuFragment extends Fragment
     public interface OnFragmentInteractionListener
     {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(char buttonName);
+        public void onFragmentInteraction(String buttonName);
     }
 }
