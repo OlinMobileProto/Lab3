@@ -22,8 +22,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import hieunguyen.com.scavengerhunt.Data.ClueDAO;
+import hieunguyen.com.scavengerhunt.Data.DbService;
+import hieunguyen.com.scavengerhunt.Data.HttpHandler;
 import hieunguyen.com.scavengerhunt.Fragments.CameraFragment;
 import hieunguyen.com.scavengerhunt.Fragments.ClueCompleteFragment;
+import hieunguyen.com.scavengerhunt.Interfaces.PhotoPostCallback;
 import hieunguyen.com.scavengerhunt.R;
 
 public class PhotoActivity extends AppCompatActivity implements CameraFragment.OnFragmentChangeListener, ClueCompleteFragment.onNextClueListener{
@@ -34,11 +38,17 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
     String mCurrentPhotoPath;
     private File mPhotoFile;
 
+    private DbService mDbService;
+    private HttpHandler mHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+
+        mHandler = new HttpHandler(this);
+        mDbService = new DbService(this);
 
         if(savedInstanceState == null){
             getFragmentManager().beginTransaction()
@@ -47,6 +57,12 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         }
     }
 
+    /*
+    Creates an image file with name of current time as UUID
+
+    Returns:
+        image (File): The created image file
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -64,6 +80,9 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         return image;
     }
 
+    /*
+    Creates and launches Intent to open the Camera, and retrieve picture
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -84,18 +103,40 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         }
     }
 
+    /*
+    Overrides onActivityResult to be called when the picture has been taken
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // Upload file to S3, and file data to server
         new S3Uploader().execute();
+        ClueDAO currClue = mDbService.getClue(0); // Get the current clue
+        String clueID = String.valueOf(currClue.getId());
+
+        mHandler.postPhotoData(mPhotoFile.getName(), clueID, new PhotoPostCallback() {
+            @Override
+            public void photoCallback(boolean success){
+                if (success == true) {
+                    Log.d(TAG, "Photo info was uploaded successfully to the server.");
+                }
+            }
+        });
+
+        mDbService.changeActiveClue(currClue.getId(), currClue.getId() + 1);
+        // Create ClueCompleteFragment
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new ClueCompleteFragment()).commit();
     }
 
+    /*
+    Inner AsyncTask to deal with uploading to S3 asynchronously
+     */
     private class S3Uploader extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... params) {
 
+            // Create AmazonS3Client
             AmazonS3Client s3Client = new AmazonS3Client();
             s3Client.setRegion(Region.getRegion(Regions.US_EAST_1));
 

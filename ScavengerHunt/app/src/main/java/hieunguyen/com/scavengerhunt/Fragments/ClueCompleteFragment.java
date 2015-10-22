@@ -31,14 +31,11 @@ public class ClueCompleteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_clue_complete, container, false);
-
         ButterKnife.bind(this, rootView);
-
         return rootView;
     }
 
     public interface onNextClueListener {
         void onNextClue();
     }
-
 }

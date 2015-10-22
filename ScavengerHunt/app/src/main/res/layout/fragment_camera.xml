@@ -1,35 +1,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hieunguyen.com.scavengerhunt.Fragments.CameraFragment">
+    tools:context="hieunguyen.com.scavengerhunt.Fragments.CameraFragment"
+    android:background="@drawable/mapblur">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/found_clue"
-        android:id="@+id/clue_found_tv"
+        android:src="@drawable/cluefoundtext"
+        android:id="@+id/clue_found_text"
         android:layout_gravity="center_horizontal|top"
         android:textIsSelectable="false"
-        android:textSize="30sp"
-        android:padding="16dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/take_photo_prompt"
-        android:id="@+id/take_photo_tv"
-        android:layout_below="@+id/clue_found_tv"
         android:layout_centerHorizontal="true"
-        android:textSize="20sp" />
+        android:paddingTop="140dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/open_camera_button"
+    <ImageButton
+        android:layout_width="@dimen/go_button_side"
+        android:layout_height="@dimen/go_button_side"
+        android:background="@drawable/gobutton"
         android:id="@+id/take_photo_button"
-        android:layout_below="@+id/take_photo_tv"
+        android:layout_below="@+id/clue_found_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:layout_margin="16dp" />

@@ -2,26 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="hieunguyen.com.scavengerhunt.Fragments.ClueCompleteFragment"
-    android:background="@drawable/map">
+    android:background="@drawable/mapblur">
 
-    <!-- TODO: MAKE BACKGROUND IMAGE RESOURCES -->
-
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="@string/photo_uploaded"
-        android:id="@+id/photo_uploaded_tv"
+        android:src="@drawable/photouploadedtext"
+        android:id="@+id/clue_found_text"
+        android:layout_gravity="center_horizontal|top"
+        android:textIsSelectable="false"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
-        android:textSize="30sp" />
+        android:paddingTop="180dp"
+        android:paddingBottom="50dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next_clue"
+    <ImageButton
+        android:layout_width="@dimen/next_clue_button_width"
+        android:layout_height="@dimen/next_clue_button_height"
+        android:background="@drawable/nexcluebutton"
         android:id="@+id/next_clue_button"
-        android:layout_below="@+id/photo_uploaded_tv"
+        android:layout_below="@+id/clue_found_text"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
         android:layout_margin="16dp" />
+
 </RelativeLayout>

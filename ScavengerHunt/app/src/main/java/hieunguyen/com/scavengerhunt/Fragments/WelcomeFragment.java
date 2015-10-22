@@ -9,14 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import hieunguyen.com.scavengerhunt.Data.ClueDAO;
 import hieunguyen.com.scavengerhunt.Data.DbService;
-import hieunguyen.com.scavengerhunt.Data.LocationDatabase;
 import hieunguyen.com.scavengerhunt.R;
 
 public class WelcomeFragment extends Fragment {
@@ -41,18 +37,19 @@ public class WelcomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-        dbService = new DbService(getContext());
+
+        // Get clue data if DB is empty, else print out all current clues stored in DB
+        dbService = new DbService(getActivity().getBaseContext());
         if (dbService.isDbEmpty()) {
             dbService.update();
         } else {
-            dbService.changeActiveClue(-1, 3);
             for (int i=1; i<7; i++) {
                 Log.d("WELCOME", dbService.getClue(i).toString());
             }
         }
 
+        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_welcome, container, false);
         ButterKnife.bind(this, rootView);
 
@@ -75,7 +72,6 @@ public class WelcomeFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
     public interface onGoListener {
         void onGo();

@@ -18,6 +18,7 @@ import android.widget.VideoView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import hieunguyen.com.scavengerhunt.Activities.HuntActivity;
 import hieunguyen.com.scavengerhunt.R;
 
 public class ClueFragment extends Fragment {
@@ -50,11 +51,9 @@ public class ClueFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_clue, container, false);
         ButterKnife.bind(this, rootView);
 
-//        Uri vidUrl = Uri.parse("http://s3.amazonaws.com/olin-mobile-proto/MVI_3140.MOV");
+        Uri vidUrl = ((HuntActivity) getActivity()).getVideoUrl();
 
-        String vidAddress = "http://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp";
-        Uri vidUrl = Uri.parse(vidAddress);
-
+        // Creates buffering dialog
         pDialog = new ProgressDialog(getActivity());
         pDialog.setTitle("Clue Number 1");
         pDialog.setMessage("Buffering");
@@ -63,6 +62,7 @@ public class ClueFragment extends Fragment {
 
         pDialog.show();
 
+        // Creates MediaController and binds it to video
         try {
             MediaController mediacontroller = new MediaController(getActivity());
             mediacontroller.setAnchorView(mClueVideoView);
@@ -81,10 +81,6 @@ public class ClueFragment extends Fragment {
                 mClueVideoView.start();
             }
         });
-
-        //TODO: Figure out the best way to get the current clue
-        //TODO: Figure out how to display a video
-        //TODO: Figure out how to determine when the video has been played
 
         return rootView;
     }
@@ -109,5 +105,4 @@ public class ClueFragment extends Fragment {
     public interface onVideoDoneListener {
         void onVideoDone();
     }
-
 }
