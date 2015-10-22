@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hieunguyen.com.scavengerhunt.Fragments.CameraFragment"
+    android:background="@drawable/mapblur">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cluefoundtext"
+        android:id="@+id/clue_found_text"
+        android:layout_gravity="center_horizontal|top"
+        android:textIsSelectable="false"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="140dp" />
+
+    <ImageButton
+        android:layout_width="@dimen/go_button_side"
+        android:layout_height="@dimen/go_button_side"
+        android:background="@drawable/gobutton"
+        android:id="@+id/take_photo_button"
+        android:layout_below="@+id/clue_found_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_margin="16dp" />
+
+</RelativeLayout>
+
