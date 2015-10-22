@@ -31,7 +31,6 @@ import java.io.InputStream;
 import android.widget.VideoView;
 import java.util.ArrayList;
 
-import javax.security.auth.callback.Callback;
 
 //TODO: was is this class in the thing below
 public class VideoFragment extends Fragment {
@@ -61,6 +60,10 @@ public class VideoFragment extends Fragment {
     static final int REQUEST_TAKE_PHOTO = 1;
     public ArrayList<Uri> photoUriList = new ArrayList<Uri>();
     public Drawable fullImage;
+    public ArrayList<Integer> allClueIds = new ArrayList<>();
+    public ArrayList<Integer> allClueLats = new ArrayList<>();
+    public ArrayList<Integer> allClueLongs = new ArrayList<>();
+    public ArrayList<String> allClueS3ids = new ArrayList<>();
 
     //TODO: Clean this mess up
 
@@ -90,13 +93,12 @@ public class VideoFragment extends Fragment {
 
         // get first clue
         s3 = new AmazonS3(getActivity().getBaseContext());
-        //TODO: get .MOV name from the SQL database instead
         locationListener = new MyLocationListener(getActivity().getBaseContext(), this);
 
         // set up video view
         try {
             video = (VideoView) myFragmentView.findViewById(R.id.videoView);
-            downloadClue();
+            downloadClues();
         } catch (Exception e){
             Log.e("Stupid error :'-(", e.getMessage()); //TODO: take out of try catch
             e.printStackTrace();
@@ -136,40 +138,30 @@ public class VideoFragment extends Fragment {
 
         return myFragmentView;
     }
-
-    //gets the next video and displays it, also changes the current camera button
-    public void downloadClue(){
+    public void downloadClues(){
         HttpHandler handler = new HttpHandler(getActivity().getApplicationContext());
         handler.getClues(new Callback() {
             @Override
-            public void callback(ArrayList<Integer> ids) {
-               // arrayList<Integer> = ids;
+            public void callback(ArrayList<Integer> clueIds, ArrayList<Integer> clueLats, ArrayList<Integer> clueLongs, ArrayList<String> clueS3ids) {
+                allClueIds = clueIds;
+                allClueLats = clueLats;
+                allClueLongs = clueLongs;
+                allClueS3ids = clueS3ids;
+                downloadClue();
             }
         });
+    }
+    //gets the next video and displays it, also changes the current camera button
+    public void downloadClue(){
         //TODO: integrate downloadClue with Camera stuff
         //make sure video isn't playable
         if(current_clue != 1){
             video.stopPlayback();
         }
         //get clue
-        if (current_clue == 1) {
-            video_name = "MVI_3146.3gp";
-            locationListener.setCluePosition(42.29386, -71.26483);
-        } else if (current_clue == 2) {
-            video_name = "MVI_3145.3gp";
-            locationListener.setCluePosition(42.292987, -71.264039);
-        } else if(current_clue == 3) {
-            video_name = "MVI_3144.3gp";
-            locationListener.setCluePosition(42.292733, -71.263977);
-        }else if(current_clue == 4) {
-            video_name = "MVI_3147.3gp";
-            locationListener.setCluePosition(42.293445, -71.263481);
-        }else if(current_clue == 5) {
-            video_name = "MVI_3141.3gp";
-            locationListener.setCluePosition(42.293108, -71.262802);
-        }else if(current_clue == 6) {
-            video_name = "MVI_3140.3gp";
-            locationListener.setCluePosition(42.292701, -71.262054);
+        if (current_clue < 7) {
+            video_name = allClueS3ids.get(current_clue - 1);
+            locationListener.setCluePosition(allClueLats.get(current_clue - 1), allClueLongs.get(current_clue - 1));
         }else if(current_clue == 7) {
             Toast.makeText(getActivity(), "YOU WINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", Toast.LENGTH_SHORT).show();
             //TODO: THERE IS NO CLUE 7, YOU WIN
