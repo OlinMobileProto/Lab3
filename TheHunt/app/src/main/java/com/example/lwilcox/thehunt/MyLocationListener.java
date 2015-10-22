@@ -7,13 +7,14 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-//TODO: Add class thing
+
 /**
  * Created by nmohamed on 10/13/2015.
+
  */
 public class MyLocationListener implements LocationListener {
     private Context context; //TODO: change all to camel case
-    private double[] clue_position = new double[2]; //location of the clue -> its long, lat
+    private double[] clue_position = new double[2]; //location of the clue -> its lat, long
     private double[] start_position = new double[2]; //the location of the previous clue (if first clue, your start location)
     public double[] your_position = new double[2]; //location of you
     public boolean locationFound = false;
