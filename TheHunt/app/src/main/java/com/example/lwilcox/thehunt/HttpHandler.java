@@ -29,8 +29,8 @@ public class HttpHandler {
     public HttpHandler(Context context) {
         queue = Volley.newRequestQueue(context);
     }
-    public void imageSearch(final Callback callback) {
-        String URL = "https://www.googleapis.com/customsearch/v1?cx=015805936300530222953:xfn9wvqvajy&key=AIzaSyBHSXnNE-tEICkyVFO_dgktm1sLbmXxwPw&";
+    public void getClues(final Callback callback) {
+        String URL = "jdbc:mysql://45.55.65.113/mobproto";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -39,8 +39,16 @@ public class HttpHandler {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response){
+                        ArrayList<Integer> ids = new ArrayList<>();
                         try {
-
+                            JSONArray paths = response.getJSONArray("path");
+                            for (int i = 0; i < paths.length(); i++) {
+                                JSONObject path = paths.getJSONObject(i);
+                                //JSONObject id = path.getJSONObject("id");
+                                Integer id = path.getInt("id");
+                                ids.add(id);
+                            }
+                            callback.callback(ids);
                         } catch (Exception e)
                         {
                             Log.d("Failure", "Not from JSON Object");
@@ -59,3 +67,4 @@ public class HttpHandler {
     }
 
 }
+;

@@ -30,6 +30,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import android.widget.VideoView;
 import java.util.ArrayList;
+
+import javax.security.auth.callback.Callback;
+
 //TODO: was is this class in the thing below
 public class VideoFragment extends Fragment {
     private View myFragmentView;
@@ -136,6 +139,13 @@ public class VideoFragment extends Fragment {
 
     //gets the next video and displays it, also changes the current camera button
     public void downloadClue(){
+        HttpHandler handler = new HttpHandler(getActivity().getApplicationContext());
+        handler.getClues(new Callback() {
+            @Override
+            public void callback(ArrayList<Integer> ids) {
+               // arrayList<Integer> = ids;
+            }
+        });
         //TODO: integrate downloadClue with Camera stuff
         //make sure video isn't playable
         if(current_clue != 1){
