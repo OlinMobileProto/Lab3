@@ -4,11 +4,17 @@
     android:layout_height="match_parent"
     tools:context="com.example.cynchen.scavengerhunt.GPSFragment">
 
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Overwrite me"
+        android:id="@+id/clueTitle"
+        android:layout_marginTop="10dp"/>
+
     <VideoView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:id='@+id/clue'
+        android:layout_below="@id/clueTitle"
         android:layout_marginTop="10dp"
         />
 
