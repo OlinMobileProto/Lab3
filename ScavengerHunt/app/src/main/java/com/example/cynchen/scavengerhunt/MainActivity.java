@@ -5,33 +5,61 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     //Incrementing counter for each clue
-    int counter = 0;
+    private int counter = 0;
+    private VideoFragment playClue;
 
     public int increment_counter(){
         counter +=1;
         return counter;
     }
 
-    //For the other clues
+    //For the other clues, return just the counter
     public int return_counter(){
         return counter;
+    }
+
+    public ArrayList<JSONObject> locations_videos = new ArrayList<JSONObject>();
+    //Making Volley Request
+    public void volley_data() {
+        VolleyRequest handler = new VolleyRequest(getApplicationContext());
+        //checks that there is even a string
+
+        handler.getlocations(new searchcallback() {
+            @Override
+            public void callback(ArrayList<JSONObject> scavengerhunt) {
+                locations_videos = scavengerhunt;
+                transitionToFragment(playClue);
+            }
+        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //initializes the searchGoogle fragment and loads it in the container
+
+
+
+        //Log.d("volley", volley_locations.toString());
+
         GPSFragment gps = new GPSFragment();
-        VideoFragment playClue = new VideoFragment();
+        playClue = new VideoFragment();
         CameraFragment takePicture = new CameraFragment();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        transitionToFragment(playClue);
+        //Automatically transitions to video fragment on initialization
+
+        volley_data();
     }
 
     public void transitionToFragment(Fragment fragment){
@@ -40,10 +68,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.container, fragment);
+        Log.d("WORKED", locations_videos.toString());
         transaction.commit();
     }
 
 
+    //Boiler Plate Code
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

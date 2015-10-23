@@ -21,7 +21,7 @@ public class VideoFragment extends Fragment {
     public TextView clueTitle;
     public VideoView clue;
     public ArrayList<String> cluesLink = new ArrayList<>();
-    public int clueCounter;
+    private int clueCounter; //changed from public to private
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class VideoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
         //List of all of the clue videos. Will change this once we get server working
         cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3146.3gp");
@@ -51,12 +52,12 @@ public class VideoFragment extends Fragment {
         //Setting the clue title to be aligned with what clue the user is on
         clueTitle = (TextView) rootView.findViewById(R.id.clueTitle);
         clueTitle.setText("Clue " + Integer.toString(clueCounter));
-        clue = (VideoView) rootView.findViewById(R.id.clue);
 
         //Setting the clue video to be the clueCounter - 1 video of the arraylist
+        clue = (VideoView) rootView.findViewById(R.id.clue);
         clue.setVideoURI(Uri.parse(cluesLink.get(clueCounter - 1)));
 
-        //Clue Media Controller code:
+        //Clue Media Controller code: COMMENT WHY WE HAVE THIS
         clue.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -75,7 +76,6 @@ public class VideoFragment extends Fragment {
                 ((MainActivity)getActivity()).transitionToFragment(gps_frag);
             }
         });
-
         return rootView;
     }
 }

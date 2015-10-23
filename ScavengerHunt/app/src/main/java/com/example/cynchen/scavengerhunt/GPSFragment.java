@@ -41,6 +41,7 @@ import java.util.TimerTask;
 public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
+    //Extend VideoFragment, because of reuse of code
 
     public GPSFragment() {
     }
@@ -58,8 +59,8 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "LocationActivity";
-    private static final long INTERVAL = 1000 * 10 * 1; //1 minute
-    private static final long FASTEST_INTERVAL = 1000 * 10 * 1; // 1 minute
+    private static final long INTERVAL = 1000 * 10 * 1; //10 seconds
+    private static final long FASTEST_INTERVAL = 1000 * 10 * 1; // 10 seconds
     TextView tvLocation;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
@@ -144,7 +145,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             }
         };
         //singleshot delay 1000 ms
-        timer.scheduleAtFixedRate(myTimerTask, 0, 1000 * 10 * 1);
+        timer.scheduleAtFixedRate(myTimerTask, 0, FASTEST_INTERVAL);
 
 
         return rootView;
@@ -298,6 +299,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             polylineOptions = new PolylineOptions();
             polylineOptions.color(Color.RED);
             polylineOptions.width(5);
+
             arrayPoints.add(latLng);
             polylineOptions.addAll(arrayPoints);
             googleMap.addPolyline(polylineOptions);

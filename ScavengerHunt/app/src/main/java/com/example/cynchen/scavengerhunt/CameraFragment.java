@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,7 @@ public class CameraFragment extends Fragment {
 
     public Button tempopenCamera;
     public Button saveimage;
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
     public ImageView imageView;
 
     @Override
@@ -45,6 +47,8 @@ public class CameraFragment extends Fragment {
             public void onClick(View v) {
 //                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
 //                startActivity(intent);
+
+                //HAVE if statement to check if activity manager can be initialized
 
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent,
@@ -75,6 +79,12 @@ public class CameraFragment extends Fragment {
                 //saveimage button only pops up once an image is uploaded
                 saveimage.setVisibility(View.VISIBLE);
 
+//                Uri contentUri = data.getData();
+//                Log.d("uri", contentUri.toString());
+//
+//
+//                imageView.setImageURI(contentUri);
+//                //Do getData instead, Uri contenturi
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
