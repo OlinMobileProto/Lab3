@@ -6,6 +6,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import android.media.Image;
@@ -17,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import javax.security.auth.callback.Callback;
 
 /**
  * Created by lwilcox on 10/8/2015.
@@ -25,12 +25,12 @@ import javax.security.auth.callback.Callback;
 //TODO: do SQL database :'-(
 //TODO: fix HttpHandler and do Volley stuff
 public class HttpHandler {
-        public RequestQueue queue;
+    public RequestQueue queue;
     public HttpHandler(Context context) {
         queue = Volley.newRequestQueue(context);
     }
-    public void imageSearch(final Callback callback) {
-        String URL = "https://www.googleapis.com/customsearch/v1?cx=015805936300530222953:xfn9wvqvajy&key=AIzaSyBHSXnNE-tEICkyVFO_dgktm1sLbmXxwPw&";
+    public void getClues(final Callback callback) {
+        String URL = "http://45.55.65.113/scavengerhunt";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -39,8 +39,24 @@ public class HttpHandler {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response){
+                        ArrayList<Integer> clueIds = new ArrayList<>();
+                        ArrayList<Integer> clueLats = new ArrayList<>();
+                        ArrayList<Integer> clueLongs = new ArrayList<>();
+                        ArrayList<String> clueS3ids = new ArrayList<>();
                         try {
-
+                            JSONArray paths = response.getJSONArray("path");
+                            for (int i = 0; i < paths.length(); i++) {
+                                JSONObject path = paths.getJSONObject(i);
+                                Integer id = path.getInt("id");
+                                Integer latitude = path.getInt("latitude");
+                                Integer longitude = path.getInt("longitude");
+                                String s3id = path.getString("s3id");
+                                clueIds.add(id);
+                                clueLats.add(latitude);
+                                clueLongs.add(longitude);
+                                clueS3ids.add(s3id);
+                            }
+                                callback.callback(clueIds, clueLats, clueLongs, clueS3ids);
                         } catch (Exception e)
                         {
                             Log.d("Failure", "Not from JSON Object");
