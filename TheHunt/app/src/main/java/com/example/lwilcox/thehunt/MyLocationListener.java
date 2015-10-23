@@ -9,12 +9,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Created by nmohamed on 10/13/2015.
-
+ * Location Listener: A listener for your location. If location services are enabled, whenever you move your position is logged.
  */
 public class MyLocationListener implements LocationListener {
     private Context context; //TODO: change all to camel case
-    private double[] clue_position = new double[2]; //location of the clue -> its lat, long
+    private double[] clue_position = new double[2]; //location of the clue -> its long, lat
     private double[] start_position = new double[2]; //the location of the previous clue (if first clue, your start location)
     public double[] your_position = new double[2]; //location of you
     public boolean locationFound = false;
@@ -54,7 +53,10 @@ public class MyLocationListener implements LocationListener {
 
         Log.d("Location", your_position[0] + ", " + your_position[1]);
         checkLocation();
-        if (locationFound == true){
+        if (locationFound == false){
+            // make button unclickable if you aren't at the location/were there then left
+            fragment.dontSetCameraButton();
+        } else if (locationFound == true){
             // prompt to take picture, then upload, then download clue
             fragment.setCameraButton(); //TODO: test some stuff
             locationFound = false;
