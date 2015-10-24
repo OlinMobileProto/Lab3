@@ -19,11 +19,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hieunguyen.com.scavengerhunt.Activities.HuntActivity;
+import hieunguyen.com.scavengerhunt.Data.DbService;
 import hieunguyen.com.scavengerhunt.R;
 
 public class ClueFragment extends Fragment {
 
     private onVideoDoneListener mListener;
+    private DbService mDbService;
 
     @Bind(R.id.done_button) ImageButton mDoneButton;
     @OnClick(R.id.done_button) void done(){
@@ -42,6 +44,7 @@ public class ClueFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDbService = new DbService(getActivity());
     }
 
     @Override
@@ -51,12 +54,15 @@ public class ClueFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_clue, container, false);
         ButterKnife.bind(this, rootView);
 
+        String curr_clue = String.valueOf(mDbService.getClue(0).getId());
+        mTitleTextView.setText(getString(R.string.cluetitle) + " " + curr_clue);
+
         Uri vidUrl = ((HuntActivity) getActivity()).getVideoUrl();
 
         // Creates buffering dialog
         pDialog = new ProgressDialog(getActivity());
-        pDialog.setTitle("Clue Number 1");
-        pDialog.setMessage("Buffering");
+        pDialog.setTitle("Clue Buffering");
+        pDialog.setMessage("Please wait.");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
 
