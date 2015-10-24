@@ -67,7 +67,10 @@ public class VideoFragment extends Fragment {
     public ArrayList<Integer> allClueLats = new ArrayList<>();
     public ArrayList<Integer> allClueLongs = new ArrayList<>();
     public ArrayList<String> allClueS3ids = new ArrayList<>();
+
     public ImageView finale;
+    public Drawable black_camera;
+    public Drawable purple_camera;
     //TODO: Clean this mess up
 
     @Override
@@ -89,9 +92,10 @@ public class VideoFragment extends Fragment {
         images.add(img4);
         images.add(img5);
         images.add(img6);
-        final Drawable myDrawable = getActivity().getResources().getDrawable(R.drawable.cameraimage);
+        black_camera = getActivity().getResources().getDrawable(R.drawable.camera_black);
+        purple_camera = getActivity().getResources().getDrawable(R.drawable.camera_purple);
         for (int i = 0; i < images.size(); i++) {
-            images.get(i).setImageDrawable(myDrawable);
+            images.get(i).setImageDrawable(black_camera); //black camera button means it's not clickable
         }
         finale = (ImageView) myFragmentView.findViewById(R.id.finished); //for when you're done
 
@@ -216,14 +220,26 @@ public class VideoFragment extends Fragment {
     }
 
     public void setCameraButton(){
+        //make button clickable
         images.get(imageIndex).setClickable(true);
+        // make button purple
+        images.get(imageIndex).setImageDrawable(purple_camera);
 
         images.get(imageIndex).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // let you take picture
                 dispatchTakePictureIntent();
             }
         });
+    }
+
+    //makes camera button unclickable. meant for if you go to the clue then leave it, so you can't still take pictures
+    public void dontSetCameraButton(){
+        // make button not clickable
+        images.get(imageIndex).setClickable(false);
+        // make button black
+        images.get(imageIndex).setImageDrawable(black_camera);
     }
 
     //shows the image when clicked in a window
@@ -276,9 +292,9 @@ public class VideoFragment extends Fragment {
             uploadPicture(imageUri.toString()); //TODO: get way to say yes or no to upload
             downloadClue(); //TODO: if yes download
             imageIndex ++;
+            locationListener.doneWithClue();
+            setImageDialog();
             }
-        setImageDialog();
-        locationListener.doneWithClue();
     }
 
     public void dispatchTakePictureIntent() {
