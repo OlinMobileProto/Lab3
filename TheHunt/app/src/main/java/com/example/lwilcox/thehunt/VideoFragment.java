@@ -195,8 +195,10 @@ public class VideoFragment extends Fragment {
     }
 
     public void uploadPicture(String file_name){
+        HttpHandler handler = new HttpHandler(getActivity().getApplicationContext());
         String clue_info = "Picture of clue " + current_clue;
         s3.upload(file_name, current_clue, clue_info);
+        handler.uploadImage(file_name, current_clue);
     }
 
     @Override // request permission from phone to use GPS functionality

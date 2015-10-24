@@ -1,6 +1,7 @@
 package com.example.lwilcox.thehunt;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -8,6 +9,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.media.Image;
 
@@ -16,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 
@@ -73,5 +77,36 @@ public class HttpHandler {
 
         queue.add(getRequest);
     }
+    public void uploadImage(String imageKey, Integer imageLocation) {
+        final String fImageKey = imageKey;
+        final Integer fImageLocation = imageLocation;
 
+        String URL = "http://45.55.65.113/userdata/thehuntlucynora";
+
+        StringRequest postRequest = new StringRequest(
+                Request.Method.POST,
+                URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response){
+                        Log.d("","");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error)  {
+                        Log.e("Error", error.getMessage());
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("imageKey", fImageKey);
+                        params.put("imageLocation", fImageLocation.toString());
+
+                        return params;
+                    }
+        };
+        queue.add(postRequest);
+    }
 }
