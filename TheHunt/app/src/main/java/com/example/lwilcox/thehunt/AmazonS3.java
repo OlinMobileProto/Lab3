@@ -15,10 +15,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
- * Created by nmohamed on 10/10/2015.
+ * Amazon S3: Handles uploading to S3. Uploads the pictures that you take to S3
  */
+
 public class AmazonS3 extends AsyncTask<Void,Void,Void> {
     private Context context;
     public TransferUtility transferUtility;
@@ -31,23 +31,22 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
     protected Void doInBackground(Void... params) {
         //amazonS3Client s3 = new AmazonS3Client();
         //s3.setRegion(Region.getRegion(Regions.US_EAST_1));
-        //TODO: Understand AsyncTask
-        //TODO: make sure S3 works
-        //TODO: go to ninja hours
         return null;
     }
 
-    public void upload(String file_name, int clue_num, String clue_info){ //TODO: this should be in the do in background or called from there, learned about AsyncTasks
-        String object_key = "HUNT_clue_" + clue_num; //TODO: UUID maybe
+    public void upload(String file_name, int clue_num, String clue_info){ //TODO: this should be in the do in background or called from there, learn about AsyncTasks
+        String object_key = "HUNT_clue_" + clue_num; //TODO: UUID maybe?
         File file = new File(file_name);
         AmazonS3Client s3 = new AmazonS3Client();
-        s3.setRegion(Region.getRegion(Regions.US_EAST_1)); //TODO: maybe get rid of
+        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
         transferUtility = new TransferUtility(s3, context);
+
         //metadata for future implementations if you wanted to retrieve data and know what it was
         ObjectMetadata myObjectMetadata = new ObjectMetadata();
         Map<String, String> userMetadata = new HashMap<>();
         userMetadata.put(object_key, clue_info);
         myObjectMetadata.setUserMetadata(userMetadata);
+
         //upload
         TransferObserver observer = transferUtility.upload(
                "olin-mobile-proto",     /* The bucket to upload to */
@@ -77,5 +76,5 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
 
     public String download(String clue_name){
         return "https://s3.amazonaws.com/olin-mobile-proto/" + clue_name;
-    }
+    } //TODO: We don't need this line anymore, right?
 }

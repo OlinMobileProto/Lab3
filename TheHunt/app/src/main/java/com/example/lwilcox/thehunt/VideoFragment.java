@@ -3,9 +3,7 @@ package com.example.lwilcox.thehunt;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -33,7 +31,7 @@ import android.widget.VideoView;
 import java.util.ArrayList;
 
 /**
- * Video Fragment: Fragment that contains all video functionality. Displays the video and camera buttons.
+ * Video Fragment: Fragment that contains all video functionality. Displays the video and camera buttons
  */
 
 public class VideoFragment extends Fragment {
@@ -41,6 +39,10 @@ public class VideoFragment extends Fragment {
     public RelativeLayout relativeLayout;
     public ImageView img1, img2, img3, img4, img5, img6;
     public ArrayList<ImageView> images = new ArrayList<>();
+    public ImageView finale;
+    public Drawable black_camera;
+    public Drawable purple_camera;
+
     public AmazonS3 s3;
 
     public Integer imageIndex = 0;
@@ -48,29 +50,25 @@ public class VideoFragment extends Fragment {
     String mCurrentPhotoPath;
 
     public VideoView video;
-    public ProgressDialog progressDialog;
     public MediaController mediaController;
-    public MyLocationListener locationListener;
-
     public String video_name;
     public int current_clue = 1;
     public Uri uri;
+
+    public MyLocationListener locationListener;
     private int time_interval = 100; //milliseconds
     private int min_distance_for_updates = 1; //meters
     public LocationManager locationManager;
-    public double[] position = new double[2];
     public final int LOCATION_REQUEST = 1;
+
     static final int REQUEST_TAKE_PHOTO = 1;
     public ArrayList<Uri> photoUriList = new ArrayList<Uri>();
     public Drawable fullImage;
+
     public ArrayList<Integer> allClueIds = new ArrayList<>();
     public ArrayList<Integer> allClueLats = new ArrayList<>();
     public ArrayList<Integer> allClueLongs = new ArrayList<>();
     public ArrayList<String> allClueS3ids = new ArrayList<>();
-
-    public ImageView finale;
-    public Drawable black_camera;
-    public Drawable purple_camera;
     //TODO: Clean this mess up
 
     @Override
@@ -104,16 +102,11 @@ public class VideoFragment extends Fragment {
         locationListener = new MyLocationListener(getActivity().getBaseContext(), this);
 
         // set up video view
-        try {
-            video = (VideoView) myFragmentView.findViewById(R.id.videoView);
-            mediaController = new MediaController(getActivity());
-            mediaController.setAnchorView(video);
-            video.setMediaController(mediaController);
-            downloadClues();
-        } catch (Exception e){
-            Log.e("Stupid error :'-(", e.getMessage()); //TODO: take out of try catch
-            e.printStackTrace();
-        }
+        video = (VideoView) myFragmentView.findViewById(R.id.videoView);
+        mediaController = new MediaController(getActivity());
+        mediaController.setAnchorView(video);
+        video.setMediaController(mediaController);
+        downloadClues();
 
         // set up camera buttons
         setImageDialog();
@@ -162,6 +155,7 @@ public class VideoFragment extends Fragment {
             }
         });
     }
+
     //gets the next video and displays it, also changes the current camera button
     public void downloadClue(){
         //make sure video isn't playable
@@ -195,12 +189,14 @@ public class VideoFragment extends Fragment {
         current_clue += 1;
     }
 
+    // uploads a picture to amazon s3
     public void uploadPicture(String file_name){
         String clue_info = "Picture of clue " + current_clue;
         s3.upload(file_name, current_clue, clue_info);
     }
 
-    @Override // request permission from phone to use GPS functionality
+    // request permission from phone to use GPS functionality
+    @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case LOCATION_REQUEST: {
