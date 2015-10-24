@@ -73,9 +73,6 @@ public class VideoFragment extends Fragment {
     public ArrayList<Integer> allClueLongs = new ArrayList<>();
     public ArrayList<String> allClueS3ids = new ArrayList<>();
 
-    HttpHandler handler = new HttpHandler(getActivity().getApplicationContext());
-
-
     //TODO: Clean this mess up
 
     @Override
@@ -154,6 +151,7 @@ public class VideoFragment extends Fragment {
         return myFragmentView;
     }
     public void downloadClues(){
+        HttpHandler handler = new HttpHandler(getActivity().getApplicationContext());
         handler.getClues(new Callback() {
             @Override
             public void callback(ArrayList<Integer> clueIds, ArrayList<Integer> clueLats, ArrayList<Integer> clueLongs, ArrayList<String> clueS3ids) {
@@ -197,6 +195,7 @@ public class VideoFragment extends Fragment {
     }
 
     public void uploadPicture(String file_name){
+        HttpHandler handler = new HttpHandler(getActivity().getApplicationContext());
         String clue_info = "Picture of clue " + current_clue;
         s3.upload(file_name, current_clue, clue_info);
         handler.uploadImage(file_name, current_clue);

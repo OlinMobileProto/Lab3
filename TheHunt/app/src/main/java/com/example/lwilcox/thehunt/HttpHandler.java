@@ -81,7 +81,7 @@ public class HttpHandler {
         final String fImageKey = imageKey;
         final Integer fImageLocation = imageLocation;
 
-        String URL = "http://45.55.65.113/thehunt";
+        String URL = "http://45.55.65.113/userdata/thehuntlucynora";
 
         StringRequest postRequest = new StringRequest(
                 Request.Method.POST,
@@ -89,7 +89,7 @@ public class HttpHandler {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response){
-
+                        Log.d("","");
                     }
                 },
                 new Response.ErrorListener() {
