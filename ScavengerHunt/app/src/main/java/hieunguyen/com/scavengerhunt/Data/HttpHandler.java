@@ -23,6 +23,8 @@ import hieunguyen.com.scavengerhunt.R;
  * Class to handle HTTP requests and responses
  */
 public class HttpHandler {
+    private static final String TAG = HttpHandler.class.getName();
+
     public static final String APP_ID = "patandhieu";
 
     public RequestQueue queue;
@@ -72,6 +74,9 @@ public class HttpHandler {
         String route = "/userdata/" + APP_ID;
         url += route;
 
+        Log.d(TAG, imageKey);
+        Log.d(TAG, imageLocation);
+
         JSONObject body = new JSONObject();
         try {
             body.put("imageKey", imageKey);
@@ -80,8 +85,10 @@ public class HttpHandler {
             Log.e("JSONException", e.getMessage());
         }
 
+
+
         JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET,
+                Request.Method.POST,
                 url,
                 body,
                 new Response.Listener<JSONObject>() {
@@ -97,6 +104,8 @@ public class HttpHandler {
                     }
                 }
         );
+
+        queue.add(request);
     }
 
 
