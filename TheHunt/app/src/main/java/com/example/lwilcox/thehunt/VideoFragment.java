@@ -32,7 +32,6 @@ import java.io.InputStream;
 import android.widget.VideoView;
 import java.util.ArrayList;
 
-
 /**
  * Video Fragment: Fragment that contains all video functionality. Displays the video and camera buttons.
  */
@@ -68,7 +67,7 @@ public class VideoFragment extends Fragment {
     public ArrayList<Integer> allClueLats = new ArrayList<>();
     public ArrayList<Integer> allClueLongs = new ArrayList<>();
     public ArrayList<String> allClueS3ids = new ArrayList<>();
-
+    public ImageView finale;
     //TODO: Clean this mess up
 
     @Override
@@ -94,6 +93,7 @@ public class VideoFragment extends Fragment {
         for (int i = 0; i < images.size(); i++) {
             images.get(i).setImageDrawable(myDrawable);
         }
+        finale = (ImageView) myFragmentView.findViewById(R.id.finished); //for when you're done
 
         // get first clue
         s3 = new AmazonS3(getActivity().getBaseContext());
@@ -160,18 +160,20 @@ public class VideoFragment extends Fragment {
     }
     //gets the next video and displays it, also changes the current camera button
     public void downloadClue(){
-        //TODO: integrate downloadClue with Camera stuff
         //make sure video isn't playable
         if(current_clue != 1){
             video.stopPlayback();
         }
+
         //get clue
         if (current_clue < 7) {
             video_name = allClueS3ids.get(current_clue - 1);
             locationListener.setCluePosition(allClueLats.get(current_clue - 1), allClueLongs.get(current_clue - 1));
-        }else if(current_clue == 7) {
-            Toast.makeText(getActivity(), "YOU WINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", Toast.LENGTH_SHORT).show();
-            //TODO: THERE IS NO CLUE 7, YOU WIN
+        } else if(current_clue == 7) {
+            Toast.makeText(getActivity(), "YOU WIN", Toast.LENGTH_LONG).show();
+            video.setVisibility(View.GONE); //get rid of video
+            Drawable pmills = getActivity().getResources().getDrawable(R.drawable.olin_challenge);
+            finale.setImageDrawable(pmills);
             return;
         }
 
@@ -222,9 +224,9 @@ public class VideoFragment extends Fragment {
                 dispatchTakePictureIntent();
             }
         });
-
     }
-//shows the image when clicked in a window
+
+    //shows the image when clicked in a window
     public void setImageDialog(){
         if (photoUriList != null) {
             for (int i = 0; i < photoUriList.size(); i++) {
@@ -253,6 +255,7 @@ public class VideoFragment extends Fragment {
                                      nagDialog.dismiss();
                                 }
                             });
+
                             nagDialog.show();
                         }
                     });
@@ -262,8 +265,8 @@ public class VideoFragment extends Fragment {
         }
     }
 
-@Override
-public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -274,11 +277,11 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
             downloadClue(); //TODO: if yes download
             imageIndex ++;
             }
-    setImageDialog();
-    locationListener.doneWithClue();
-}
+        setImageDialog();
+        locationListener.doneWithClue();
+    }
 
-public void dispatchTakePictureIntent() {
+    public void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
