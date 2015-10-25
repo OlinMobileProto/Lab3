@@ -120,6 +120,9 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
                 if (success == true) {
                     Log.d(TAG, "Photo info was uploaded successfully to the server.");
                 }
+                else {
+                    Log.e(TAG, "Error encountered when posting photo to server");
+                }
             }
         });
 
