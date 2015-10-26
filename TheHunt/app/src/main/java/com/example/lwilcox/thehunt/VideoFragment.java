@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import android.widget.VideoView;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Video Fragment: Fragment that contains all video functionality. Displays the video and camera buttons
@@ -288,7 +289,8 @@ public class VideoFragment extends Fragment {
             images.get(imageIndex).setImageBitmap(imageBitmap);
             Uri imageUri = data.getData();
             photoUriList.add(imageIndex, imageUri);
-            uploadPicture(imageUri.toString()); //TODO: get way to say yes or no to upload
+            UUID uid = UUID.randomUUID();
+            uploadPicture(uid.toString()); //TODO: get way to say yes or no to upload
             downloadClue(); //TODO: if yes download
             imageIndex ++;
             locationListener.doneWithClue();
