@@ -25,5 +25,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.amazonaws:aws-android-sdk-core:2.+'
+    compile 'com.amazonaws:aws-android-sdk-cognito:2.+'
+    compile 'com.amazonaws:aws-android-sdk-s3:2.+' // apparently using the .+ is sketch, but in the interests of expediency, I'll trust amazon to keep their systems working to +/- 1 version for the next couple weeks.
     compile 'com.google.android.gms:play-services-maps:8.1.0'
 }

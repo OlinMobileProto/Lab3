@@ -1,20 +1,22 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
 import android.app.Activity;
-import android.os.Bundle;
+import android.net.Uri;
+import android.os.Bundle;;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 
 /**
@@ -29,8 +31,9 @@ public class HUDFragment extends Fragment
 {
 
     private OnFragmentInteractionListener mListener;
-    @Bind(R.id.mapview)
-    MapView mapView;
+    @Bind(R.id.curr_clue_button) Button play_current_clue;
+    @Bind(R.id.mapview) MapView mapView;
+    GpsHandler gpsHandler;
     GoogleMap map;
 
     /**
@@ -58,8 +61,6 @@ public class HUDFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            // mParam1 = getArguments().getString(ARG_PARAM1);
-            // mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -70,6 +71,16 @@ public class HUDFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_hud, container, false);
         ButterKnife.bind(this, view);
+        play_current_clue.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ((HUDFragment.OnFragmentInteractionListener) getActivity())
+                        .onFragmentInteraction(Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp"));
+
+            }
+        });
 
         int checkGooglePlayServices =
                 GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
@@ -157,7 +168,7 @@ public class HUDFragment extends Fragment
     public interface OnFragmentInteractionListener
     {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Object o);
+        public void onFragmentInteraction(Uri u);
     }
 
 }
