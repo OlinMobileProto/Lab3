@@ -60,7 +60,7 @@ public class AmazonS3 {
 
             @Override
             public void onError(int id, Exception ex) {
-                Log.d("Error", "An error occurred when downloading from S3");
+                Log.d("Error", "An error occurred when uploading from S3");
                 ex.printStackTrace();
             }
         });
