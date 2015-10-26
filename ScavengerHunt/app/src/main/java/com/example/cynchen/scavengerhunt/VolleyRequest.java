@@ -41,25 +41,32 @@ public class VolleyRequest {
                     public void onResponse(JSONObject response) {
 
                         //Initializes an arraylist that we will fill with image url's
-                        ArrayList<JSONObject> locationvideolist = new ArrayList<JSONObject>();
+                        ArrayList<String> locationvideolist = new ArrayList<String>();
+                        ArrayList<String> longitudes = new ArrayList<String>();
+                        ArrayList<String> latitudes = new ArrayList<String>();
                         try {
                             //get items array, which we will parse to get all of the links
                             JSONArray items = response.getJSONArray("path");
                             for (int i=0; i<items.length(); i++){
                                 JSONObject image_item = items.getJSONObject(i);
-                                locationvideolist.add(image_item); //add each link to arraylist of image links
+                                String videos = "https://s3.amazonaws.com/olin-mobile-proto/" + image_item.getString("s3id");
+                                String longitude = image_item.getString("longitude");
+                                String latitude = image_item.getString("latitude");
+                                locationvideolist.add(videos); //add each link to arraylist of image links
+                                longitudes.add(longitude);
+                                latitudes.add(latitude);
                             }
                         } catch (Exception e) {
                             Log.e("ERROR!", e.getMessage()); //catch error
                         }
-                        callback.callback(locationvideolist); //use callback to return imagelinks arraylist
+                        callback.callback(locationvideolist, longitudes, latitudes); //use callback to return imagelinks arraylist
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("ERROR!", error.getMessage());
-                        callback.callback(null); //don't callback anything if unsuccessful
+                        callback.callback(null, null, null); //don't callback anything if unsuccessful
                     }
                 }
         );

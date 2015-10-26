@@ -32,15 +32,9 @@ public class VideoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        
 
-
-        //List of all of the clue videos. Will change this once we get server working
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3146.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3145.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3144.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3147.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3141.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp");
+        cluesLink = ((MainActivity)getActivity()).locations_videos;
 
         //Calls increment_counter during initialization to get the number of clue that it is on after finishing the first clue
         clueCounter = ((MainActivity)getActivity()).increment_counter();

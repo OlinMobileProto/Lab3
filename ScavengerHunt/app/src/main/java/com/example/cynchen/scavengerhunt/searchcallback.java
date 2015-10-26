@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 public interface searchcallback {
     //callback function created
-    void callback(ArrayList<JSONObject> scavengerhunt);
+    void callback(ArrayList<String> videos, ArrayList<String> longitudes, ArrayList<String> latitudes);
 }

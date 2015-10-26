@@ -28,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
         return counter;
     }
 
-    public ArrayList<JSONObject> locations_videos = new ArrayList<JSONObject>();
+    public ArrayList<String> locations_videos = new ArrayList<String>();
+    public ArrayList<String> longitudes_list = new ArrayList<String>();
+    public ArrayList<String> latitudes_list = new ArrayList<String>();
+
     //Making Volley Request
     public void volley_data() {
         VolleyRequest handler = new VolleyRequest(getApplicationContext());
@@ -36,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
         handler.getlocations(new searchcallback() {
             @Override
-            public void callback(ArrayList<JSONObject> scavengerhunt) {
-                locations_videos = scavengerhunt;
+            public void callback(ArrayList<String> videos, ArrayList<String> longitudes, ArrayList<String> latitudes) {
+                locations_videos = videos;
+                longitudes_list = longitudes;
+                latitudes_list = latitudes;
                 transitionToFragment(playClue);
             }
         });
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.container, fragment);
-        Log.d("WORKED", locations_videos.toString());
+//        Log.d("WORKED", locations_videos.toString());
         transaction.commit();
     }
 

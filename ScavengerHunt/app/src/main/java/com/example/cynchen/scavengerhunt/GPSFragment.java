@@ -48,6 +48,8 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
     // Video Initializations:
     public VideoView clue;
     public ArrayList<String> cluesLink = new ArrayList<>();
+    public ArrayList<String> longitude_list = new ArrayList<>();
+    public ArrayList<String> latitude_list = new ArrayList<>();
     public TextView clueTitle;
     public int clueCounter;
 
@@ -93,12 +95,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
         View rootView = inflater.inflate(R.layout.fragment_g, container, false);
 
         //VIDEO Code:
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3146.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3145.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3144.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3147.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3141.3gp");
-        cluesLink.add("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp");
+        cluesLink = ((MainActivity)getActivity()).locations_videos;
 
         //Calls increment_counter during initialization to get the number of clue that it is on after finishing the first clue
         clueCounter = ((MainActivity)getActivity()).return_counter();
@@ -128,6 +125,9 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
         //Map setup at the very beginning
         setUpMapIfNeeded();
 
+        longitude_list =  ((MainActivity) getActivity()).longitudes_list;
+        latitude_list =  ((MainActivity) getActivity()).latitudes_list;
+
         tvLocation = (TextView) rootView.findViewById(R.id.text_location);
         arrayPoints = new ArrayList<LatLng>();
 
@@ -139,7 +139,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        display_location();
+                        display_location(Integer.parseInt(longitude_list.get(clueCounter)), Integer.parseInt(latitude_list.get(clueCounter)));
                     }
                 });
             }
@@ -264,7 +264,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     //Timertask calls display_location function, which finds whether or not the location is the right
     //location and then starts the camera fragment if the person is in the right location
-    public void display_location(){
+    public void display_location(int longitude_real, int latitude_real){
         gps = new GPSTracker(getActivity());
 
         //check if GPS enabled
@@ -278,7 +278,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             tvLocation.setText("Your Location is - \nLat: " + latitude + "\nLong: " + longitude);
 
             //checks if longitude and latitude is in the right range
-            if (42.290 < latitude & latitude < 42.295 & longitude < -71.260 & longitude > -71.265) {
+            if ((latitude_real-0.0005) < latitude & latitude < (latitude_real+0.0005) & longitude < (longitude_real+0.0005) & longitude > (longitude_real-0.0005)) {
                 //If it is in the right range, it will show the congratulations alert and then change to the camera fragment
                 //WE NEED TO MAKE A LONGER DELAY BETWEEN THE TWO
                 Toast.makeText(getActivity(), "You have arrived!", Toast.LENGTH_LONG).show();
