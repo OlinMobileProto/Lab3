@@ -1,18 +1,14 @@
 package com.example.lwilcox.thehunt;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.media.Image;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;

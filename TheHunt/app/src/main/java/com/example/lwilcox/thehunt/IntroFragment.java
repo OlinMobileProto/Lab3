@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 public class IntroFragment extends Fragment {
     private View myFragmentView;
-    //TODO: add the Begin/Restart portion of IntroFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
