@@ -61,8 +61,8 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "LocationActivity";
-    private static final long INTERVAL = 1000 * 10 * 1; //10 seconds
-    private static final long FASTEST_INTERVAL = 1000 * 10 * 1; // 10 seconds
+    private static final long INTERVAL = 1000 * 5 * 1; //10 seconds
+    private static final long FASTEST_INTERVAL = 1000 * 5 * 1; // 10 seconds
     TextView tvLocation;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
@@ -139,7 +139,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        display_location(Integer.parseInt(longitude_list.get(clueCounter)), Integer.parseInt(latitude_list.get(clueCounter)));
+                        display_location(Double.parseDouble(longitude_list.get(clueCounter - 1)), Double.parseDouble(latitude_list.get(clueCounter - 1)));
                     }
                 });
             }
@@ -264,7 +264,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     //Timertask calls display_location function, which finds whether or not the location is the right
     //location and then starts the camera fragment if the person is in the right location
-    public void display_location(int longitude_real, int latitude_real){
+    public void display_location(double longitude_real, double latitude_real){
         gps = new GPSTracker(getActivity());
 
         //check if GPS enabled
@@ -274,11 +274,15 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             double longitude = gps.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
 
+            Log.d("Latitude",Double.toString(latitude_real));
+            Log.d("Longitude",Double.toString(longitude_real));
+
+
             //tvlocation text shows current location
             tvLocation.setText("Your Location is - \nLat: " + latitude + "\nLong: " + longitude);
 
             //checks if longitude and latitude is in the right range
-            if ((latitude_real-0.0005) < latitude & latitude < (latitude_real+0.0005) & longitude < (longitude_real+0.0005) & longitude > (longitude_real-0.0005)) {
+            if ((latitude_real-0.00029) < latitude & latitude < (Math.abs(latitude_real)+0.00029) & Math.abs(longitude) < (Math.abs(longitude_real)+0.00029) & Math.abs(longitude) > (Math.abs(longitude_real)-0.00029)) {
                 //If it is in the right range, it will show the congratulations alert and then change to the camera fragment
                 //WE NEED TO MAKE A LONGER DELAY BETWEEN THE TWO
                 Toast.makeText(getActivity(), "You have arrived!", Toast.LENGTH_LONG).show();
