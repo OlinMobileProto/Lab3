@@ -19,7 +19,7 @@ import java.util.Map;
  * Amazon S3: Handles uploading to S3. Uploads the pictures that you take to S3
  */
 
-public class AmazonS3 extends AsyncTask<Void,Void,Void> {
+public class AmazonS3 {
     private Context context;
     public TransferUtility transferUtility;
 
@@ -27,16 +27,8 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
         context = mContext;
     }
 
-    @Override
-    protected Void doInBackground(Void... params) {
-        //amazonS3Client s3 = new AmazonS3Client();
-        //s3.setRegion(Region.getRegion(Regions.US_EAST_1));
-        return null;
-    }
-
-    public void upload(String file_name, int clue_num, String clue_info){ //TODO: this should be in the do in background or called from there, learn about AsyncTasks
-        String object_key = "HUNT_clue_" + clue_num; //TODO: UUID maybe?
-        File file = new File(file_name);
+    public void upload(String objectKey ,String fileName, String clueInfo){
+        File file = new File(fileName);
         AmazonS3Client s3 = new AmazonS3Client();
         s3.setRegion(Region.getRegion(Regions.US_EAST_1));
         transferUtility = new TransferUtility(s3, context);
@@ -44,13 +36,13 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
         //metadata for future implementations if you wanted to retrieve data and know what it was
         ObjectMetadata myObjectMetadata = new ObjectMetadata();
         Map<String, String> userMetadata = new HashMap<>();
-        userMetadata.put(object_key, clue_info);
+        userMetadata.put(objectKey, clueInfo);
         myObjectMetadata.setUserMetadata(userMetadata);
 
         //upload
         TransferObserver observer = transferUtility.upload(
                "olin-mobile-proto",     /* The bucket to upload to */
-                object_key,    /* The key for the uploaded object */
+                objectKey,    /* The key for the uploaded object */
                 file,        /* The file where the data to upload exists */
                 myObjectMetadata //ObjectMetadata associated with the object
         );
@@ -74,7 +66,7 @@ public class AmazonS3 extends AsyncTask<Void,Void,Void> {
         });
     }
 
-    public String download(String clue_name){
-        return "https://s3.amazonaws.com/olin-mobile-proto/" + clue_name;
-    } //TODO: We don't need this line anymore, right?
+    public String download(String clueName){
+        return "https://s3.amazonaws.com/olin-mobile-proto/" + clueName;
+    }
 }

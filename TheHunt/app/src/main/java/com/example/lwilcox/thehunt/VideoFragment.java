@@ -190,10 +190,10 @@ public class VideoFragment extends Fragment {
     }
 
     // uploads a picture to amazon s3
-    public void uploadPicture(String file_name){
+    public void uploadPicture(String objectKey, String file_name){
         HttpHandler handler = new HttpHandler(getActivity().getApplicationContext());
         String clue_info = "Picture of clue " + current_clue;
-        s3.upload(file_name, current_clue, clue_info);
+        s3.upload(objectKey ,file_name, current_clue, clue_info);
         handler.uploadImage(file_name, current_clue - 1);
     }
 
@@ -290,7 +290,7 @@ public class VideoFragment extends Fragment {
             Uri imageUri = data.getData();
             photoUriList.add(imageIndex, imageUri);
             UUID uid = UUID.randomUUID();
-            uploadPicture(uid.toString()); //TODO: get way to say yes or no to upload
+            uploadPicture(uid.toString(), imageUri.toString()); //TODO: get way to say yes or no to upload
             downloadClue(); //TODO: if yes download
             imageIndex ++;
             locationListener.doneWithClue();

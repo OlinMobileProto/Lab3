@@ -20,7 +20,7 @@ public class MyLocationListener implements LocationListener {
     private boolean locationFound = false;
     VideoFragment fragment;
     private Boolean setInitialPosition = false; //to set the initial position you are at when you start a new clue. This is for changing the background color
-    private double within_dist = 10;//.00005; //TODO: change this to be a bit more exact. currently this makes a 5.6 m radius
+    private double within_dist = 0.00005; //TODO: check
     private double ratio = 1;
     private double b;
     private double c;
