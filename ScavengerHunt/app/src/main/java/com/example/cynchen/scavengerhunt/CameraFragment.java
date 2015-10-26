@@ -2,6 +2,7 @@ package com.example.cynchen.scavengerhunt;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -15,7 +16,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.UUID;
 
 public class CameraFragment extends Fragment {
 
@@ -61,6 +71,39 @@ public class CameraFragment extends Fragment {
         saveimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                UUID uid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+                uid = uid.randomUUID();
+                File imageFile = null;
+
+                // Find the last picture
+                String[] projection = new String[]{
+                        MediaStore.Images.ImageColumns._ID,
+                        MediaStore.Images.ImageColumns.DATA,
+                        MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+                        MediaStore.Images.ImageColumns.DATE_TAKEN,
+                        MediaStore.Images.ImageColumns.MIME_TYPE
+                };
+                final Cursor cursor = getContext().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
+                        null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
+
+                // Put it in the image view
+                if (cursor.moveToFirst()) {
+                    String imageLocation = cursor.getString(1);
+                    imageFile = new File(imageLocation);
+                }
+
+                if (imageFile != null) {
+                    BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAISEFKD6O3QSZGHUQ", "ETum1qfRaUFQ/ixydMBA+yBcUJLY5m8/JojEufNf");
+                    AmazonS3Client s3Client = new AmazonS3Client();
+                    File fileToUpload = imageFile;
+                    //(Replace "MY-BUCKET" with your S3 bucket name, and "MY-OBJECT-KEY" with whatever you would like to name the file in S3)
+                    PutObjectRequest putRequest = new PutObjectRequest("olin-mobile-proto", uid.toString(), fileToUpload);
+                    PutObjectResult putResponse = s3Client.putObject(putRequest);
+                }
+
+                VolleyRequest handler = new VolleyRequest(getActivity().getApplicationContext());
+                handler.putID(uid, ((MainActivity)getActivity()).return_counter());
 
                 VideoFragment camera_frag = new VideoFragment();
                 ((MainActivity)getActivity()).transitionToFragment(camera_frag);

@@ -7,6 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.UUID;
+
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -71,5 +76,40 @@ public class VolleyRequest {
                 }
         );
         queue.add(request); //make the queue request
+    }
+
+    public void putID(final UUID uid, int location){
+        String url = "http://45.55.65.113/CynthiaZoherMobProto2015/scavengerhunt";
+        JSONObject ImageInfo = new JSONObject();
+        try{
+            ImageInfo.put("imageKey", uid.toString());
+        } catch (Exception e){
+            Log.e("ERROR!", e.getMessage());
+        }
+        try{
+            ImageInfo.put("imageLocation", String.valueOf(location));
+        } catch (Exception e){
+            Log.e("ERROR!", e.getMessage());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                ImageInfo,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        AmazonS3Client s3Client = new AmazonS3Client();
+                        GetObjectRequest getRequest = new GetObjectRequest("olin-mobile-proto", uid.toString());
+                        S3Object getResponse = s3Client.getObject(getRequest);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error!", error.getMessage());
+                    }
+                });
+        queue.add(request);
+
     }
 }

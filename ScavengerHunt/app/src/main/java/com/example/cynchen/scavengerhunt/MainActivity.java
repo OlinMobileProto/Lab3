@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     //Incrementing counter for each clue
-    private int counter = 0;
+    private int counter = 5;
     private VideoFragment playClue;
 
     public int increment_counter(){
