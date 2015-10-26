@@ -3,6 +3,8 @@ package com.example.lwilcox.thehunt;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
@@ -27,9 +29,10 @@ public class AmazonS3 {
         context = mContext;
     }
 
-    public void upload(String objectKey ,String fileName, String clueInfo){
+    public void upload(String objectKey, String fileName, String clueInfo){
         File file = new File(fileName);
-        AmazonS3Client s3 = new AmazonS3Client();
+        //File file2 = new File(file.getAbsolutePath()); // tried this...
+        AmazonS3Client s3 = new AmazonS3Client(new BasicAWSCredentials("AKIAISEFKD6O3QSZGHUQ","ETum1qfRaUFQ/ixydMBA+yBcUJLY5m8/JojEufNf"));
         s3.setRegion(Region.getRegion(Regions.US_EAST_1));
         transferUtility = new TransferUtility(s3, context);
 
@@ -43,8 +46,8 @@ public class AmazonS3 {
         TransferObserver observer = transferUtility.upload(
                "olin-mobile-proto",     /* The bucket to upload to */
                 objectKey,    /* The key for the uploaded object */
-                file,        /* The file where the data to upload exists */
-                myObjectMetadata //ObjectMetadata associated with the object
+                file    /* The file where the data to upload exists */
+               //myObjectMetadata //ObjectMetadata associated with the object
         );
         observer.setTransferListener(new TransferListener() {
             @Override

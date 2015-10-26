@@ -193,8 +193,8 @@ public class VideoFragment extends Fragment {
     public void uploadPicture(String objectKey, String fileName){
         HttpHandler handler = new HttpHandler(getActivity().getApplicationContext());
         String clueInfo = "Picture of clue " + currentClue;
-        s3.upload(objectKey, fileName, clueInfo);
-        handler.uploadImage(fileName, currentClue - 1);
+        //s3.upload(objectKey, fileName, clueInfo);
+        handler.uploadImage(objectKey, currentClue - 1);
     }
 
     //request permission from phone to use GPS functionality
@@ -291,7 +291,7 @@ public class VideoFragment extends Fragment {
             Uri imageUri = data.getData();
             photoUriList.add(imageIndex, imageUri);
             UUID uid = UUID.randomUUID();
-            uploadPicture(uid.toString(), imageUri.toString()); //TODO: get way to say yes or no to upload
+            uploadPicture(uid.toString(), imageUri.toString());
             downloadClue(); //TODO: if yes download
             imageIndex ++;
             locationListener.doneWithClue();
