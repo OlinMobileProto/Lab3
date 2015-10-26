@@ -38,6 +38,7 @@ public class HUDFragment extends Fragment
     private OnFragmentInteractionListener mListener;
     @Bind(R.id.button2) Button play_current_clue;
     @Bind(R.id.mapview) MapView mapView;
+    GpsHandler gpsHandler;
     GoogleMap map;
 
     /**

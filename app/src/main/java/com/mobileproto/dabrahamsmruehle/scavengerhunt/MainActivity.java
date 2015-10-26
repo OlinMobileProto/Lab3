@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements
         StartMenuFragment.OnFragmentInteractionListener,
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onFragmentInteraction(char buttonName)
     {
-//        Toast.makeText(this, "charget", Toast.LENGTH_SHORT).show();
 
         if (buttonName == 'a')
         {
@@ -78,10 +76,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onFragmentInteraction(Uri uri)
     {
-//        Toast.makeText(this, "uriget", Toast.LENGTH_SHORT).show();
         AWS_Video vid = new AWS_Video();
         switchFragment(vid);
-//        vid.playVideo(uri);
     }
 
 //    @Override
