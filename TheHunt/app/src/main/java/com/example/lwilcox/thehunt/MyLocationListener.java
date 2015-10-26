@@ -20,7 +20,7 @@ public class MyLocationListener implements LocationListener {
     private boolean locationFound = false;
     VideoFragment fragment;
     private Boolean setInitialPosition = false; //to set the initial position you are at when you start a new clue. This is for changing the background color
-    private double within_dist = .00005; //TODO: change this to be a bit more exact. currently this makes a 5.6 m radius
+    private double within_dist = 10;//.00005; //TODO: change this to be a bit more exact. currently this makes a 5.6 m radius
     private double ratio = 1;
     private double b;
     private double c;
@@ -68,6 +68,7 @@ public class MyLocationListener implements LocationListener {
     public void doneWithClue(){
         //set new initial positions for finding next clue
         Log.d("Done with clue", "going to reset start_position values to your_position");
+        fragment.relativeLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
         startPosition[0] = yourPosition[0];
         startPosition[1] = yourPosition[1];
     }

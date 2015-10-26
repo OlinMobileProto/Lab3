@@ -272,7 +272,9 @@ public class VideoFragment extends Fragment {
                             nagDialog.show();
                         }
                     });
-                    images.get(imageIndex).setClickable(false);
+                    if(imageIndex != 6) { //in order to prevent errors when it tries to get "clue" 7 (which here is 6)
+                        images.get(imageIndex).setClickable(false);
+                    }
                 }
             }
         }
