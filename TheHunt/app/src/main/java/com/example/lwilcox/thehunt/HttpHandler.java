@@ -22,12 +22,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-
 /**
- * Created by lwilcox on 10/8/2015.
+ * HTTP Handler: A class that handles Http requests. Gets clue information from a SQL database
  */
-//TODO: do SQL database :'-(
-//TODO: fix HttpHandler and do Volley stuff
+
 public class HttpHandler {
     public RequestQueue queue;
     public HttpHandler(Context context) {

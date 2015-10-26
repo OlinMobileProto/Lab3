@@ -3,9 +3,7 @@ package com.example.lwilcox.thehunt;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -32,9 +30,8 @@ import java.io.InputStream;
 import android.widget.VideoView;
 import java.util.ArrayList;
 
-
 /**
- * Video Fragment: Fragment that contains all video functionality. Displays the video and camera buttons.
+ * Video Fragment: Fragment that contains all video functionality. Displays the video and camera buttons
  */
 
 public class VideoFragment extends Fragment {
@@ -42,31 +39,29 @@ public class VideoFragment extends Fragment {
     public RelativeLayout relativeLayout;
     public ImageView img1, img2, img3, img4, img5, img6;
     public ArrayList<ImageView> images = new ArrayList<>();
+    public ImageView finale;
+    public Drawable black_camera;
+    public Drawable purple_camera;
+
     public AmazonS3 s3;
 
     public Integer imageIndex = 0;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    String mCurrentPhotoPath;
 
     public VideoView video;
-    public ProgressDialog progressDialog;
     public MediaController mediaController;
-    public MyLocationListener locationListener;
-
     public String video_name;
     public int current_clue = 1;
     public Uri uri;
+
+    public MyLocationListener locationListener;
     private int time_interval = 100; //milliseconds
     private int min_distance_for_updates = 1; //meters
     public LocationManager locationManager;
-    public double[] position = new double[2];
     public final int LOCATION_REQUEST = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
+
     public ArrayList<Uri> photoUriList = new ArrayList<Uri>();
     public Drawable fullImage;
-    
-    public Drawable black_camera;
-    public Drawable purple_camera;
 
     public ArrayList<Integer> allClueIds = new ArrayList<>();
     public ArrayList<Integer> allClueLats = new ArrayList<>();
@@ -99,22 +94,18 @@ public class VideoFragment extends Fragment {
         for (int i = 0; i < images.size(); i++) {
             images.get(i).setImageDrawable(black_camera); //black camera button means it's not clickable
         }
+        finale = (ImageView) myFragmentView.findViewById(R.id.finished); //for when you're done
 
         // get first clue
         s3 = new AmazonS3(getActivity().getBaseContext());
         locationListener = new MyLocationListener(getActivity().getBaseContext(), this);
 
         // set up video view
-        try {
-            video = (VideoView) myFragmentView.findViewById(R.id.videoView);
-            mediaController = new MediaController(getActivity());
-            mediaController.setAnchorView(video);
-            video.setMediaController(mediaController);
-            downloadClues();
-        } catch (Exception e){
-            Log.e("Stupid error :'-(", e.getMessage()); //TODO: take out of try catch
-            e.printStackTrace();
-        }
+        video = (VideoView) myFragmentView.findViewById(R.id.videoView);
+        mediaController = new MediaController(getActivity());
+        mediaController.setAnchorView(video);
+        video.setMediaController(mediaController);
+        downloadClues();
 
         // set up camera buttons
         setImageDialog();
@@ -163,20 +154,23 @@ public class VideoFragment extends Fragment {
             }
         });
     }
+
     //gets the next video and displays it, also changes the current camera button
     public void downloadClue(){
-        //TODO: integrate downloadClue with Camera stuff
         //make sure video isn't playable
         if(current_clue != 1){
             video.stopPlayback();
         }
+
         //get clue
         if (current_clue < 7) {
             video_name = allClueS3ids.get(current_clue - 1);
             locationListener.setCluePosition(allClueLats.get(current_clue - 1), allClueLongs.get(current_clue - 1));
-        }else if(current_clue == 7) {
-            Toast.makeText(getActivity(), "YOU WINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", Toast.LENGTH_SHORT).show();
-            //TODO: THERE IS NO CLUE 7, YOU WIN
+        } else if(current_clue == 7) {
+            Toast.makeText(getActivity(), "YOU WIN", Toast.LENGTH_LONG).show();
+            video.setVisibility(View.GONE); //get rid of video
+            Drawable pmills = getActivity().getResources().getDrawable(R.drawable.olin_challenge);
+            finale.setImageDrawable(pmills);
             return;
         }
 
@@ -194,6 +188,7 @@ public class VideoFragment extends Fragment {
         current_clue += 1;
     }
 
+    // uploads a picture to amazon s3
     public void uploadPicture(String file_name){
         HttpHandler handler = new HttpHandler(getActivity().getApplicationContext());
         String clue_info = "Picture of clue " + current_clue;
@@ -201,7 +196,8 @@ public class VideoFragment extends Fragment {
         handler.uploadImage(file_name, current_clue - 1);
     }
 
-    @Override // request permission from phone to use GPS functionality
+    // request permission from phone to use GPS functionality
+    @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case LOCATION_REQUEST: {
@@ -233,9 +229,9 @@ public class VideoFragment extends Fragment {
                 dispatchTakePictureIntent();
             }
         });
-
     }
 
+    //makes camera button unclickable. meant for if you go to the clue then leave it, so you can't still take pictures
     public void dontSetCameraButton(){
         // make button not clickable
         images.get(imageIndex).setClickable(false);
@@ -272,6 +268,7 @@ public class VideoFragment extends Fragment {
                                      nagDialog.dismiss();
                                 }
                             });
+
                             nagDialog.show();
                         }
                     });
@@ -281,9 +278,8 @@ public class VideoFragment extends Fragment {
         }
     }
 
-
-@Override
-public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -296,9 +292,9 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
             locationListener.doneWithClue();
             setImageDialog();
             }
-}
+    }
 
-public void dispatchTakePictureIntent() {
+    public void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
