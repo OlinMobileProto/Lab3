@@ -38,7 +38,7 @@ import java.util.TimerTask;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class GPSFragment extends VideoFragment implements GoogleApiClient.ConnectionCallbacks,
+public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     //Extend VideoFragment, because of reuse of code
@@ -63,7 +63,6 @@ public class GPSFragment extends VideoFragment implements GoogleApiClient.Connec
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 1000 * 5 * 1; //10 seconds
     private static final long FASTEST_INTERVAL = 1000 * 5 * 1; // 10 seconds
-    TextView tvLocation;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     GoogleMap googleMap;
@@ -101,11 +100,22 @@ public class GPSFragment extends VideoFragment implements GoogleApiClient.Connec
         clueCounter = ((MainActivity)getActivity()).return_counter();
         Log.d("Counter", String.valueOf(clueCounter));
 
-        clue.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        //Setting the clue title to be aligned with what clue the user is on
+        clueTitle = (TextView) rootView.findViewById(R.id.clueTitle);
+        clueTitle.setText("Clue " + Integer.toString(clueCounter));
+        clue = (VideoView) rootView.findViewById(R.id.clue);
+
+        //Same video code as videofragment that opens the media controller with the video associated with the clue number
+        //This shows up on the first half of the fragment
+        clue = (VideoView) rootView.findViewById(R.id.clue);
+        clue.setVideoURI(Uri.parse(cluesLink.get(clueCounter - 1)));
+        clue.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
-            public void onCompletion(MediaPlayer mp) {
-                GPSFragment gps_frag = new GPSFragment();
-                ((MainActivity) getActivity()).transitionToFragment(gps_frag);
+            public void onPrepared(MediaPlayer mp) {
+                clue.seekTo(1);
+                MediaController mc = new MediaController(getContext());
+                clue.setMediaController(mc);
+                mc.setAnchorView(clue);
             }
         });
 
@@ -117,7 +127,6 @@ public class GPSFragment extends VideoFragment implements GoogleApiClient.Connec
         longitude_list =  ((MainActivity) getActivity()).longitudes_list;
         latitude_list =  ((MainActivity) getActivity()).latitudes_list;
 
-        tvLocation = (TextView) rootView.findViewById(R.id.text_location);
         arrayPoints = new ArrayList<LatLng>();
 
 
@@ -266,9 +275,6 @@ public class GPSFragment extends VideoFragment implements GoogleApiClient.Connec
             Log.d("Latitude",Double.toString(latitude_real));
             Log.d("Longitude",Double.toString(longitude_real));
 
-
-            //tvlocation text shows current location
-            tvLocation.setText("Your Location is - \nLat: " + latitude + "\nLong: " + longitude);
 
             //checks if longitude and latitude is in the right range
             if ((latitude_real-0.00029) < latitude & latitude < (Math.abs(latitude_real)+0.00029) & Math.abs(longitude) < (Math.abs(longitude_real)+0.00029) & Math.abs(longitude) > (Math.abs(longitude_real)-0.00029)) {

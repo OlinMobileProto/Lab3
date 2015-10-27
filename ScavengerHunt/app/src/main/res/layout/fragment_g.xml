@@ -21,18 +21,18 @@
     <fragment
         android:id="@+id/map"
         android:layout_width="wrap_content"
-        android:layout_height="170dp"
+        android:layout_height="200dp"
         android:layout_below="@id/clue"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         class="com.google.android.gms.maps.SupportMapFragment"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:text="@string/current_loc_text"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:id="@+id/text_location"
-        android:layout_below="@id/map"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="75dp"-->
+        <!--android:text="@string/current_loc_text"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:id="@+id/text_location"-->
+        <!--android:layout_below="@id/map"/>-->
 
 </RelativeLayout>
