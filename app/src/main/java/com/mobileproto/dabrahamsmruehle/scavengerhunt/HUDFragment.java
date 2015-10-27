@@ -1,9 +1,15 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +35,16 @@ import com.google.android.gms.maps.MapsInitializer;
  */
 public class HUDFragment extends Fragment
 {
-
     private OnFragmentInteractionListener mListener;
-    @Bind(R.id.curr_clue_button) Button play_current_clue;
+    public LocationManager locationManager;
+    public LocationListener locationListener;
+    private SharedPreferences sharedPrefs;
+    private SharedPreferences.Editor sharedPrefsEditor;
+    public boolean isAtTarget;
+    public HttpHandler httpHandler;
+    @Bind(R.id.curr_clue_button) Button playCurrentClue;
     @Bind(R.id.mapview) MapView mapView;
-    GpsHandler gpsHandler;
+    @Bind(R.id.take_photo_button) Button takePhotoButton;
     GoogleMap map;
 
     /**
@@ -42,7 +53,6 @@ public class HUDFragment extends Fragment
      *
      * @return A new instance of fragment HUDFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static HUDFragment newInstance()
     {
         HUDFragment fragment = new HUDFragment();
@@ -69,18 +79,61 @@ public class HUDFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
+//        myGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+//                .addApi(LocationServices.API)
+//                .build();
+        httpHandler = new HttpHandler(getActivity());
+        sharedPrefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        sharedPrefsEditor = sharedPrefs.edit();
         View view = inflater.inflate(R.layout.fragment_hud, container, false);
         ButterKnife.bind(this, view);
-        play_current_clue.setOnClickListener(new View.OnClickListener()
-        {
+        playCurrentClue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ((HUDFragment.OnFragmentInteractionListener) getActivity())
                         .onFragmentInteraction(Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp"));
 
             }
         });
+        takePhotoButton.setEnabled(false);
+        takePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //takePhoto();
+                int currentStep = sharedPrefs.getInt("current_step", 0);
+                int nextStep = currentStep + 1;
+                sharedPrefsEditor.putInt("current_step", nextStep);
+                httpHandler.updatePathFromServer();
+            }
+        });
+//        takePhotoButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//        public void onClick(View v) {
+//                Log.d("GpsVals", "TakePhoto clicked");
+//
+//                Location loc = LocationServices.FusedLocationApi.getLastLocation(myGoogleApiClient);
+//                if (loc == null) {
+//                    Log.d("GpsVals", "TakePhoto: getLastLocation returned null");
+//                } else {
+//                    Log.d("GpsVals", "TakePhoto onClick: lat = " + String.valueOf(loc.getLatitude()) + " long = " + String.valueOf(loc.getLongitude()));
+//                }
+//            }
+//        });
+        Log.d("GpsVals", "got to here: HUD Fragment, about to make it handle GPS");
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            public void onLocationChanged(Location location)
+            {
+                Log.d("GpsVals", "onLocationChanged: " + String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude()));
+                checkIfClose(location);
+            }
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onProviderEnabled(String provider) {}
+            public void onProviderDisabled(String provider) {}
+        };
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener); // Do we really need to check for these permissions if we're putting them in the manifest xml file?
+        Log.d("GpsVals", "got to here: HUD Fragment, just requested location updates.");
 
         int checkGooglePlayServices =
                 GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
@@ -103,6 +156,19 @@ public class HUDFragment extends Fragment
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
         return view;
+    }
+
+    public void checkIfClose(Location location)
+    {
+        Location destination = new Location("SERVER");
+        double currentLongitude = Double.longBitsToDouble(sharedPrefs.getLong("target_longitude", 0));
+        double currentLatitude = Double.longBitsToDouble(sharedPrefs.getLong("target_latitude", 0));
+        float distanceThreshold = sharedPrefs.getFloat("distance_threshold", 50); // 50 meters is the default. Not sure if this is reasonable.
+        destination.setLongitude(currentLongitude);
+        destination.setLatitude(currentLatitude);
+        float distanceToTarget = location.distanceTo(destination);
+        isAtTarget = (distanceToTarget < distanceThreshold);
+        takePhotoButton.setEnabled(isAtTarget);
     }
 
     @Override
