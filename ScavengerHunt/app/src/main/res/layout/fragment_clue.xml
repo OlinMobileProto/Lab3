@@ -20,7 +20,7 @@
 
     <VideoView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/clue_video_height"
         android:id="@+id/clue_vv"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
