@@ -38,7 +38,7 @@ import java.util.TimerTask;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+public class GPSFragment extends VideoFragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     //Extend VideoFragment, because of reuse of code
@@ -101,22 +101,11 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
         clueCounter = ((MainActivity)getActivity()).return_counter();
         Log.d("Counter", String.valueOf(clueCounter));
 
-        //Setting the clue title to be aligned with what clue the user is on
-        clueTitle = (TextView) rootView.findViewById(R.id.clueTitle);
-        clueTitle.setText("Clue " + Integer.toString(clueCounter));
-        clue = (VideoView) rootView.findViewById(R.id.clue);
-
-        //Same video code as videofragment that opens the media controller with the video associated with the clue number
-        //This shows up on the first half of the fragment
-        clue = (VideoView) rootView.findViewById(R.id.clue);
-        clue.setVideoURI(Uri.parse(cluesLink.get(clueCounter - 1)));
-        clue.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        clue.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
-            public void onPrepared(MediaPlayer mp) {
-                clue.seekTo(1);
-                MediaController mc = new MediaController(getContext());
-                clue.setMediaController(mc);
-                mc.setAnchorView(clue);
+            public void onCompletion(MediaPlayer mp) {
+                GPSFragment gps_frag = new GPSFragment();
+                ((MainActivity) getActivity()).transitionToFragment(gps_frag);
             }
         });
 
