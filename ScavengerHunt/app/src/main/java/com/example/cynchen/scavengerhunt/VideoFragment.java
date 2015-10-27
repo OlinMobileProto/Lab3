@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -32,7 +33,6 @@ public class VideoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         cluesLink = ((MainActivity)getActivity()).locations_videos;
 
@@ -76,4 +76,5 @@ public class VideoFragment extends Fragment {
         });
         return rootView;
     }
+
 }
