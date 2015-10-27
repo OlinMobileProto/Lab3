@@ -15,10 +15,11 @@ import hieunguyen.com.scavengerhunt.Interfaces.DestinationCallback;
 
 /**
  * Created by hieunguyen on 10/17/15.
+ * Database Helper class for app to interact with the SQLiteDatabase
  */
 public class DbService {
 
-    public static final String TAG = "DB";
+    public static final String TAG = DbService.class.getSimpleName();
     public Context context;
     public LocationDatabase locationDB;
     public SQLiteDatabase db;
@@ -28,7 +29,10 @@ public class DbService {
         locationDB = new LocationDatabase(context);
     }
 
-    // Fill in database with JSON response from HTTP request
+    /**
+     * Insert information into the database
+     * @param data Data received from API request
+     */
     public void populate(JSONArray data) {
         db = locationDB.getWritableDatabase();
         try {
@@ -55,7 +59,9 @@ public class DbService {
         }
     }
 
-    // Clear database
+    /**
+     * Clears the database
+     */
     public void clear() {
         Log.d(TAG, "CLEARING");
         db = locationDB.getWritableDatabase();
@@ -63,7 +69,9 @@ public class DbService {
         db.close();
     }
 
-    // Update: Clears then populates
+    /**
+     * Clears the database, sends out a HTTP request for new data, then populates the database
+     */
     public void update() {
         clear();
         HttpHandler handler = new HttpHandler(context);
@@ -82,14 +90,22 @@ public class DbService {
         });
     }
 
+    /**
+     * Checks if DB is empty
+     * @return True or False
+     */
     public boolean isDbEmpty() {
         db = locationDB.getReadableDatabase();
         Cursor mCursor = db.rawQuery("SELECT * FROM " + LocationDatabase.tableName, null);
-        Log.d(TAG, "EMPTY: " + String.valueOf(mCursor.getCount() == 0));
         return mCursor.getCount() == 0;
     }
 
-    // Retrieve a clue object by id; if id is -1 get active clue
+    /**
+     * Retrieve a clue object by ID.
+     * @param clueNumber ID of the clue. If 0 is passed, retrieve row in DB for which "isActive"
+     *                   is true
+     * @return a ClueDAO object holding all the data. Could be null.
+     */
     public ClueDAO getClue(int clueNumber) {
         db = locationDB.getReadableDatabase();
 
@@ -107,8 +123,6 @@ public class DbService {
         
         Cursor c = db.rawQuery(query, args);
 
-        Log.d(TAG, "getClue");
-        
         ClueDAO clue = null;
         
         c.moveToFirst();
@@ -128,6 +142,12 @@ public class DbService {
     }
 
     // When a clue is completed, this function updates the status of the old and new clues
+
+    /**
+     * Updates which clue is active.
+     * @param oldClue Clue that the user was working on. If this is -1, there was no old clue.
+     * @param newClue Clue that the user will be working on
+     */
     public void changeActiveClue(int oldClue, int newClue) {
         // Setting a new active clue. if there is no oldClue, set oldClue to -1
         db = locationDB.getWritableDatabase();

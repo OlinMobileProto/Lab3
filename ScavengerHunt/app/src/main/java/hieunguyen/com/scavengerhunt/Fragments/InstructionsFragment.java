@@ -48,6 +48,9 @@ public class InstructionsFragment extends Fragment {
         }
     }
 
+    /**
+     Interface to listen for fragment changes - ready for first clue
+     **/
     public interface onReadyListener{
         void onReady();
     }

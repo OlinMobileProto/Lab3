@@ -57,12 +57,12 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         }
     }
 
-    /*
+    /**
     Creates an image file with name of current time as UUID
 
     Returns:
         image (File): The created image file
-     */
+     **/
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -80,9 +80,9 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         return image;
     }
 
-    /*
+    /**
     Creates and launches Intent to open the Camera, and retrieve picture
-     */
+     **/
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -103,9 +103,9 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         }
     }
 
-    /*
+    /**
     Overrides onActivityResult to be called when the picture has been taken
-     */
+     **/
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -132,9 +132,9 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
                 .replace(R.id.container, new ClueCompleteFragment()).commit();
     }
 
-    /*
+    /**
     Inner AsyncTask to deal with uploading to S3 asynchronously
-     */
+     **/
     private class S3Uploader extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -173,11 +173,17 @@ public class PhotoActivity extends AppCompatActivity implements CameraFragment.O
         }
     }
 
+    /**
+    Overrides onCameraButton method of CameraFragment.onFragmentChangeListener interface
+     **/
     @Override
     public void onCameraButton() {
         dispatchTakePictureIntent();
     }
 
+    /**
+    Overrides onNextClue method of ClueCompleteFragment.onNextClueListener interface
+     **/
     @Override
     public void onNextClue() {
         Intent intent = new Intent(this, HuntActivity.class);

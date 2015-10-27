@@ -48,6 +48,9 @@ public class ClueCompleteFragment extends Fragment {
         }
     }
 
+    /**
+     Interface to listen for fragment changes - opening camera
+     **/
     public interface onNextClueListener {
         void onNextClue();
     }

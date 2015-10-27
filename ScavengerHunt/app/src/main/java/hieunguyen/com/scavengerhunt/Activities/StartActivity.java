@@ -44,9 +44,9 @@ public class StartActivity extends Activity implements WelcomeFragment.onGoListe
     }
 
 
-    /*
+    /**
     Overrides onGo() method of WelcomeFragment.onGoListener
-     */
+     **/
     @Override
     public void onGo() {
         // Replace WelcomeFragment with InstructionsFragment
@@ -55,9 +55,9 @@ public class StartActivity extends Activity implements WelcomeFragment.onGoListe
                 .commit();
     }
 
-    /*
+    /**
     Overrides onReady() method of InstructionsFragment.onReadyListener
-     */
+     **/
     @Override
     public void onReady() {
         // Launch HuntActivity

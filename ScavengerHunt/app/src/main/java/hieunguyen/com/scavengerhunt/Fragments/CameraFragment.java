@@ -51,6 +51,9 @@ public class CameraFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     Interface to listen for fragment changes - opening camera
+     **/
     public interface OnFragmentChangeListener {
         public void onCameraButton();
     }

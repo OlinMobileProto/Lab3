@@ -3,7 +3,6 @@ package hieunguyen.com.scavengerhunt.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,15 +38,11 @@ public class WelcomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        // Get clue data if DB is empty, else print out all current clues stored in DB
+        // Get clue data if DB is empty
         dbService = new DbService(getActivity().getBaseContext());
-        dbService.clear();
+        // dbService.clear();
         if (dbService.isDbEmpty()) {
             dbService.update();
-        } else {
-            for (int i=1; i<7; i++) {
-                Log.d("WELCOME", dbService.getClue(i).toString());
-            }
         }
 
         // Inflate the layout for this fragment
@@ -74,6 +69,9 @@ public class WelcomeFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     Interface to listen for fragment changes - ready for instructions
+     **/
     public interface onGoListener {
         void onGo();
     }
