@@ -72,6 +72,12 @@ public class HttpHandler {
         queue.add(request);
     }
 
+
+    /**
+     * Post metadata on photo to server
+     * @param String imageKey - image's name
+     * @param String imageLocation - clue ID of image
+     */
     public void postPhotoData(String imageKey, String imageLocation, final PhotoPostCallback callback) {
         String url = context.getString(R.string.ip_address);
         String route = "/userdata/" + APP_ID;

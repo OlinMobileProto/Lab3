@@ -3,7 +3,6 @@ package hieunguyen.com.scavengerhunt.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +69,9 @@ public class WelcomeFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     Interface to listen for fragment changes - ready for instructions
+     **/
     public interface onGoListener {
         void onGo();
     }
