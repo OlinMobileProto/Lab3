@@ -108,6 +108,9 @@ public class ClueFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     Interface to listen for fragment changes - done with video
+     **/
     public interface onVideoDoneListener {
         void onVideoDone();
     }
