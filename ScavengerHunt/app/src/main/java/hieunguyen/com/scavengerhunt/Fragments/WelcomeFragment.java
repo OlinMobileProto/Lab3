@@ -39,15 +39,11 @@ public class WelcomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        // Get clue data if DB is empty, else print out all current clues stored in DB
+        // Get clue data if DB is empty
         dbService = new DbService(getActivity().getBaseContext());
-        dbService.clear();
+        // dbService.clear();
         if (dbService.isDbEmpty()) {
             dbService.update();
-        } else {
-            for (int i=1; i<7; i++) {
-                Log.d("WELCOME", dbService.getClue(i).toString());
-            }
         }
 
         // Inflate the layout for this fragment

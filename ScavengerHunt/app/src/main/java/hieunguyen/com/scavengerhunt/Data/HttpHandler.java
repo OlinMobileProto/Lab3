@@ -37,7 +37,10 @@ public class HttpHandler {
         queue = Volley.newRequestQueue(context);
     }
 
-    // API request for clue-related data
+    /**
+     * Retrieve all information on destinations like Latitude-Longitude, video ID, and clue ID
+     * @param callback Callback function to handle JSON object in response
+     */
     public void getDestinations(final DestinationCallback callback) {
         String localUrl = url + "/scavengerHunt";
 

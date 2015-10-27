@@ -38,7 +38,7 @@ import hieunguyen.com.scavengerhunt.R;
 
 public class MapFragment extends Fragment {
 
-    public static final String TAG = "GPS_FRAGMENT";
+    public static final String TAG = MapFragment.class.getSimpleName();
     @Bind(R.id.map) MapView mMapView;
     public GoogleMap mMap;
     public Marker mMarker;
@@ -70,7 +70,9 @@ public class MapFragment extends Fragment {
         return rootView;
     }
 
-    // Async method for when map is ready
+    /**
+     * Async method to update UI when the map is ready
+     */
     private class mapReadyCallback implements OnMapReadyCallback {
         @Override
         public void onMapReady(GoogleMap googleMap) {
@@ -124,6 +126,10 @@ public class MapFragment extends Fragment {
         super.onDetach();
     }
 
+    /**
+     * Updates the MapView
+     * @param location Location object received from API request
+     */
     public void updateUI(Location location) {
         if (mMap != null) {
             Log.d(TAG, location.toString());
@@ -141,6 +147,11 @@ public class MapFragment extends Fragment {
         }
     }
 
+    /**
+     * Check to see if the user is close enough to the clue to count as having found it
+     * @param pos Current position of the user
+     * @return True or False
+     */
     public boolean isWithinRange(LatLng pos) {
         double locTol = 1; // 0.00002; // Roughly 3 meters (or 10 feet)
         return (pos.latitude > currClue.getLatitude() - locTol
@@ -149,6 +160,10 @@ public class MapFragment extends Fragment {
                 && pos.longitude < currClue.getLongitude() + locTol);
     }
 
+    /**
+     * Updates marker position on the MapView
+     * @param pos Current position of the user
+     */
     public void updateMarker(LatLng pos) {
         // Updates markerOptions and marker
         mOptions.position(pos);
@@ -164,6 +179,10 @@ public class MapFragment extends Fragment {
         }
     }
 
+    /**
+     * Updates plotted path the user takes
+     * @param pos Current position of the user
+     */
     public void updatePolyline(LatLng pos) {
         // Adds current location to the polyline and plot it
         pOptions.add(pos);
