@@ -41,6 +41,12 @@ public class LocationProvider implements
     private Location mCurrentLocation;
     private boolean mRequestingLocationUpdates = true;
 
+    /**
+     * Constructor
+     * @param context Context
+     * @param callback Class that implements LocationCallback to handle a new Location when it's
+     *                 received
+     */
     public LocationProvider(Context context, LocationCallback callback) {
         Log.d(TAG, "Location Provider CREATED");
 
