@@ -72,7 +72,7 @@ public class HttpHandler
             JSONArray jArray = input.getJSONArray("path");
             int size = jArray.length();
             if (currentObjective > size) {
-                Toast.makeText(parentContext, "Congratulations! Hunt completed", Toast.LENGTH_LONG);
+                Toast.makeText(parentContext, "Congratulations! Hunt completed. Start a new hunt if you still want to play.", Toast.LENGTH_LONG);
             } else {
                 for (int i = 0; i < size; i++) {
                     JSONObject currentJsonObject = jArray.getJSONObject(i);

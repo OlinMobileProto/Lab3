@@ -83,6 +83,7 @@ public class HUDFragment extends Fragment
 //                .addApi(LocationServices.API)
 //                .build();
         httpHandler = new HttpHandler(getActivity());
+        httpHandler.updatePathFromServer();
         sharedPrefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         sharedPrefsEditor = sharedPrefs.edit();
         View view = inflater.inflate(R.layout.fragment_hud, container, false);
@@ -91,7 +92,7 @@ public class HUDFragment extends Fragment
             @Override
             public void onClick(View v) {
                 ((HUDFragment.OnFragmentInteractionListener) getActivity())
-                        .onFragmentInteraction(Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp"));
+                        .onFragmentInteraction(Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp")); // can be replaced with a string button or fragment now; video ID is no longer communicated via the onFragmentInteraction URI and instead uses the sharedPreferences values.
 
             }
         });
@@ -100,10 +101,11 @@ public class HUDFragment extends Fragment
             @Override
             public void onClick(View v) {
                 //takePhoto();
-                int currentStep = sharedPrefs.getInt("current_step", 0);
+                int currentStep = sharedPrefs.getInt("current_step", 1);
                 int nextStep = currentStep + 1;
-                sharedPrefsEditor.putInt("current_step", nextStep);
-                httpHandler.updatePathFromServer();
+                sharedPrefsEditor.putInt("current_step", nextStep); // sets the current step to be the one we want the location/video data for.
+                httpHandler.updatePathFromServer(); // has the handler query the server for the latitude/longitude/videoId combos; handler then sets the sharedPreferences for these based on the "current_step" sharedpreference.
+                takePhotoButton.setEnabled(false); //re-greys it out until the next time we get location info, at least.
             }
         });
 //        takePhotoButton.setOnClickListener(new View.OnClickListener() {
