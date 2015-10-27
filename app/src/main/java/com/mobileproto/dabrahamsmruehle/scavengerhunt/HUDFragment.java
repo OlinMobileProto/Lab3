@@ -81,8 +81,6 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-        // TODO: possibly this should be getMapAsync. right now it is null.
-        map = mapView.getMap();
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
