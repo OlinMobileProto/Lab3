@@ -79,18 +79,20 @@ public class VolleyRequest {
     }
 
     public void putID(final UUID uid, int location){
-        String url = "http://45.55.65.113/CynthiaZoherMobProto2015/scavengerhunt";
+        String url = "http://45.55.65.113/userdata/CynthiaZoherMobProto2015Lab3";
         JSONObject ImageInfo = new JSONObject();
         try{
             ImageInfo.put("imageKey", uid.toString());
         } catch (Exception e){
             Log.e("ERROR!", e.getMessage());
         }
+        Log.d("Location: ", String.valueOf(location));
         try{
             ImageInfo.put("imageLocation", String.valueOf(location));
         } catch (Exception e){
             Log.e("ERROR!", e.getMessage());
         }
+        Log.d("JSONObject: ", ImageInfo.toString());
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -98,9 +100,6 @@ public class VolleyRequest {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        AmazonS3Client s3Client = new AmazonS3Client();
-                        GetObjectRequest getRequest = new GetObjectRequest("olin-mobile-proto", uid.toString());
-                        S3Object getResponse = s3Client.getObject(getRequest);
                     }
                 },
                 new Response.ErrorListener() {

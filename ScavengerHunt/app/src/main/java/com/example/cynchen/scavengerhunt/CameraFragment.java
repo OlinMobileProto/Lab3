@@ -19,6 +19,10 @@ import android.widget.ImageView;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
@@ -74,6 +78,7 @@ public class CameraFragment extends Fragment {
 
                 UUID uid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
                 uid = uid.randomUUID();
+                Log.d("UUID: ", uid.toString());
                 File imageFile = null;
 
                 // Find the last picture
@@ -94,12 +99,12 @@ public class CameraFragment extends Fragment {
                 }
 
                 if (imageFile != null) {
+                    Log.d("SUCCESS!", imageFile.toString());
                     BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAISEFKD6O3QSZGHUQ", "ETum1qfRaUFQ/ixydMBA+yBcUJLY5m8/JojEufNf");
-                    AmazonS3Client s3Client = new AmazonS3Client();
-                    File fileToUpload = imageFile;
-                    //(Replace "MY-BUCKET" with your S3 bucket name, and "MY-OBJECT-KEY" with whatever you would like to name the file in S3)
-                    PutObjectRequest putRequest = new PutObjectRequest("olin-mobile-proto", uid.toString(), fileToUpload);
-                    PutObjectResult putResponse = s3Client.putObject(putRequest);
+
+                    AmazonS3Client s3Client = new AmazonS3Client(awsCreds);
+                    TransferUtility transferUtility = new TransferUtility(s3Client, getContext());
+                    TransferObserver observer = transferUtility.upload("olin-mobile-proto", uid.toString(), imageFile);
                 }
 
                 VolleyRequest handler = new VolleyRequest(getActivity().getApplicationContext());

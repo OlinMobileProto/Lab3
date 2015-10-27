@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     //Incrementing counter for each clue
     private int counter = 5;
     private VideoFragment playClue;
+    private FeedFragment feed;
 
     public int increment_counter(){
         counter +=1;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Log.d("volley", volley_locations.toString());
-
+        FeedFragment feed = new FeedFragment();
         GPSFragment gps = new GPSFragment();
         playClue = new VideoFragment();
         CameraFragment takePicture = new CameraFragment();

@@ -59,7 +59,7 @@ public class VideoFragment extends Fragment {
         clue.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                clue.seekTo(1);
+                clue.seekTo(100);
                 MediaController mc = new MediaController(getContext());
                 clue.setMediaController(mc);
                 mc.setAnchorView(clue);
