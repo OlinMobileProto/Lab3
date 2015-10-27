@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Incrementing counter for each clue
     private int counter = 5;
-    private VideoFragment playClue;
+    private HomeScreenFragment homescreen = new HomeScreenFragment();
 
     public int increment_counter(){
         counter +=1;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 locations_videos = videos;
                 longitudes_list = longitudes;
                 latitudes_list = latitudes;
-                transitionToFragment(playClue);
+                transitionToFragment(homescreen);
             }
         });
     }
@@ -56,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Log.d("volley", volley_locations.toString());
 
-        GPSFragment gps = new GPSFragment();
-        playClue = new VideoFragment();
-        CameraFragment takePicture = new CameraFragment();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
