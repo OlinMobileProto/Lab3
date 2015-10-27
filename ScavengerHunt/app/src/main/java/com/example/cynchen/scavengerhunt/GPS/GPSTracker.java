@@ -1,4 +1,4 @@
-package com.example.cynchen.scavengerhunt;
+package com.example.cynchen.scavengerhunt.GPS;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

@@ -1,4 +1,4 @@
-package com.example.cynchen.scavengerhunt;
+package com.example.cynchen.scavengerhunt.FinalScreen;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.example.cynchen.scavengerhunt.R;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package com.example.cynchen.scavengerhunt;
+package com.example.cynchen.scavengerhunt.Video;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -8,11 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+
+import com.example.cynchen.scavengerhunt.GPS.GPSFragment;
+import com.example.cynchen.scavengerhunt.MainActivity;
+import com.example.cynchen.scavengerhunt.R;
 
 import java.util.ArrayList;
 

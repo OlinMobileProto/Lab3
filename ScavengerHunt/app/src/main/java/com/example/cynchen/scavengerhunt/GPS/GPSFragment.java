@@ -1,4 +1,4 @@
-package com.example.cynchen.scavengerhunt;
+package com.example.cynchen.scavengerhunt.GPS;
 
 import android.content.IntentSender;
 import android.graphics.Color;
@@ -12,12 +12,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.cynchen.scavengerhunt.Camera.CameraFragment;
+import com.example.cynchen.scavengerhunt.MainActivity;
+import com.example.cynchen.scavengerhunt.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -91,7 +93,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_g, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_gps, container, false);
 
         //VIDEO Code:
         cluesLink = ((MainActivity)getActivity()).locations_videos;

@@ -1,11 +1,10 @@
-package com.example.cynchen.scavengerhunt;
+package com.example.cynchen.scavengerhunt.Camera;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -16,16 +15,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
+import com.example.cynchen.scavengerhunt.FinalScreen.FeedFragment;
+import com.example.cynchen.scavengerhunt.MainActivity;
+import com.example.cynchen.scavengerhunt.R;
+import com.example.cynchen.scavengerhunt.Video.VideoFragment;
+import com.example.cynchen.scavengerhunt.VolleyRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
