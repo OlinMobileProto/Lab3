@@ -108,10 +108,16 @@ public class CameraFragment extends Fragment {
                 }
 
                 VolleyRequest handler = new VolleyRequest(getActivity().getApplicationContext());
-                handler.putID(uid, ((MainActivity)getActivity()).return_counter());
+                handler.putID(uid, ((MainActivity) getActivity()).return_counter());
 
-                VideoFragment camera_frag = new VideoFragment();
-                ((MainActivity)getActivity()).transitionToFragment(camera_frag);
+                if (((MainActivity)getActivity()).return_counter() == 6) {
+                    FeedFragment feed_frag = new FeedFragment();
+                    ((MainActivity) getActivity()).transitionToFragment(feed_frag);
+                }
+                else {
+                    VideoFragment camera_frag = new VideoFragment();
+                    ((MainActivity) getActivity()).transitionToFragment(camera_frag);
+                }
             }
         });
         //WE WILL USE THE LAST PICTURE OF THE GALLERY TO GET THE PICTURE THAT WE ARE SAVING TO DATABASE
