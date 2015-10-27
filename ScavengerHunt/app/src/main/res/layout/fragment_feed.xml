@@ -9,7 +9,7 @@
         android:id="@+id/next_button"
         android:layout_alignParentRight="true"
         android:layout_marginTop="5dp"
-        android:text="Next"
+        android:text="@string/next_button_final"
         />
 
     <Button
@@ -18,7 +18,7 @@
         android:id="@+id/prev_button"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="5dp"
-        android:text="Previous"
+        android:text="@string/previous_button_final"
         />
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
-        android:text="THE END!"
+        android:text="@string/the_end_text"
         android:textSize="30dp"/>
 
     <ImageView

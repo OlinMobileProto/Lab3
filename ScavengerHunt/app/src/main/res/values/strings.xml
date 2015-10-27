@@ -8,6 +8,15 @@
     <string name="start_gps_text">Let\'s Go!</string>
     <string name="title_activity_maps">Map</string>
     <string name="current_loc_text">Current Location:</string>
+    <string name="camera_directions">Now take a picture of the location!</string>
+    <string name="camera_button">Open Camera</string>
+    <string name="publish_image_button">Publish Image</string>
+    <string name="next_button_final">Next</string>
+    <string name="previous_button_final">Previous</string>
+    <string name="the_end_text">THE END!</string>
+    <string name="clue_name">Overwrite me</string>
+    <string name="scavenger_hunt_title">Olin Scavenger Hunt</string>
+    <string name="start_button">Start!</string>
 
     <string-array name="instructions_array">
 

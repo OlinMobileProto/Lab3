@@ -4,7 +4,7 @@
     tools:context="com.example.cynchen.scavengerhunt.HomeScreen.HomeScreenFragment">
 
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="Olin Scavenger Hunt"
+        android:text="@string/scavenger_hunt_title"
         android:id="@+id/startmessage"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
@@ -28,7 +28,7 @@
         android:layout_height="60dp"
         android:layout_below="@id/instructions"
         android:layout_centerHorizontal="true"
-        android:text="Start!"
+        android:text="@string/start_button"
         android:textSize="30sp"
         android:layout_marginTop="50dp"
         android:id="@+id/startbutton"/>
