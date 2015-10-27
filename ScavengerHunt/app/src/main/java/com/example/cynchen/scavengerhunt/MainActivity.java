@@ -1,5 +1,6 @@
 package com.example.cynchen.scavengerhunt;
 
+import android.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.Window;
 
 import org.json.JSONObject;
 
@@ -55,10 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Log.d("volley", volley_locations.toString());
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         //Automatically transitions to video fragment on initialization
 
         volley_data();

@@ -8,4 +8,12 @@
     <string name="start_gps_text">Let\'s Go!</string>
     <string name="title_activity_maps">Map</string>
     <string name="current_loc_text">Current Location:</string>
+
+    <string-array name="instructions_array">
+
+        <item>1. Watch the clue to determine your destination.</item>
+        <item>2. When you get to your destination, your phone will automatically sense that you are there.</item>
+        <item>3. Take a picture of yourself at the location and publish it to the Internet. </item>
+        <item>4. Watch the next clue.</item>
+    </string-array>
 </resources>
