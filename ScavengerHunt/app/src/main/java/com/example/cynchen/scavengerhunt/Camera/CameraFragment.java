@@ -34,8 +34,8 @@ public class CameraFragment extends Fragment {
     public Button openCamera;
     public Button saveimage;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
-    private UUID uid;
-    private File imageFile;
+    public UUID uid;
+    public File imageFile;
     public ImageView imageView;
 
     @Override
