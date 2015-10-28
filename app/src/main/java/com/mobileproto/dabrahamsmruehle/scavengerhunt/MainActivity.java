@@ -1,6 +1,8 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -32,15 +34,20 @@ public class MainActivity extends AppCompatActivity implements
     public static final int MEDIA_TYPE_VIDEO = 2;
     private Uri uri;
     private static final String OUTPUT_FILE_URI_KEY = "outputUri";
+    public SharedPreferences sharedPrefs;
+    public SharedPreferences.Editor sharedPrefsEditor;
+    public HttpHandler httpHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         manager = getSupportFragmentManager();
-//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         setContentView(R.layout.activity_main);
         switchFragment(StartMenuFragment.newInstance());
+        sharedPrefs = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        sharedPrefsEditor = sharedPrefs.edit();
+        httpHandler = new HttpHandler(this);
 
         if (savedInstanceState != null)
         {
@@ -96,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements
 
             // start the image capture Intent
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        } else if (buttonName == "play_clue_button")
+        {
+            AWS_Video vid = new AWS_Video();
+            switchFragment(vid);
         }
     }
 
@@ -150,27 +161,23 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        Log.d(DEBUG_TAG, "Intent recieved");
+        Log.d(DEBUG_TAG, "Intent received");
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved to:\n" +
                         uri.toString(), Toast.LENGTH_LONG).show();
-
-                // TODO: UPDATE SHARED PREFERENCE TO GO TO NEXT CLUE!
-
+                int currentStep = sharedPrefs.getInt("current_step", 1);
+                int nextStep = currentStep + 1;
+                sharedPrefsEditor.putInt("current_step", nextStep); // sets the current step to be the one we want the location/video data for.
+                sharedPrefsEditor.commit();
+                httpHandler.updatePathFromServer(); // has the handler query the server for the latitude/longitude/videoId combos; handler then sets the sharedPreferences for these based on the "current_step" sharedpreference.
             } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
             } else {
                 // Image capture failed, advise user
             }
         }
-    }
-
-    public void onFragmentInteraction(Uri uri)
-    {
-        AWS_Video vid = new AWS_Video();
-        switchFragment(vid);
     }
 
 }

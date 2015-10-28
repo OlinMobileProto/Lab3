@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 
@@ -48,7 +47,6 @@ public class AWS_Video extends Fragment
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         LinearLayout videoPlayerLayout = (LinearLayout) inflater.inflate(R.layout.fragment_aws__video, container, false);
         videoView = (VideoView) videoPlayerLayout.findViewById(R.id.video_view);
-        Toast.makeText(getActivity(), "got to here", Toast.LENGTH_SHORT).show();
         mediaController = new MediaController(getActivity());
         videoView.setMediaController(mediaController);
         String urlToPlay = "https://s3.amazonaws.com/olin-mobile-proto/" + sharedPreferences.getString("target_video", "MVI_3146.3gp"); // gets target video; defaults to first clue just-in-case.
@@ -61,21 +59,6 @@ public class AWS_Video extends Fragment
         return videoPlayerLayout;
     }
 
-    public void onButtonPressed(Uri uri)
-    {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    public void playVideo(Uri videoUri)
-    {
-        Uri uriToPlay = Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp");
-        videoView.setVideoURI(uriToPlay);
-        videoView.requestFocus();
-        mediaController.show();
-        videoView.start();
-    }
 
     @Override
     public void onAttach(Activity activity)
@@ -98,7 +81,7 @@ public class AWS_Video extends Fragment
 
     public interface OnFragmentInteractionListener
     {
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(String button);
     }
 
 }

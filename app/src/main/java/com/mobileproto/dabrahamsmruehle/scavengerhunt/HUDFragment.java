@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -93,23 +92,11 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
             public void onClick(View v)
             {
                 ((HUDFragment.OnFragmentInteractionListener) getActivity())
-                        .onFragmentInteraction(Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp")); // can be replaced with a string button or fragment now; video ID is no longer communicated via the onFragmentInteraction URI and instead uses the sharedPreferences values.
+                        .onFragmentInteraction("play_clue_button"); // can be replaced with a string button or fragment now; video ID is no longer communicated via the onFragmentInteraction URI and instead uses the sharedPreferences values.
 
             }
         });
         takePhotoBtn.setEnabled(false);
-//        takePhotoButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //takePhoto();
-//                int currentStep = sharedPrefs.getInt("current_step", 1);
-//                int nextStep = currentStep + 1;
-//                sharedPrefsEditor.putInt("current_step", nextStep); // sets the current step to be the one we want the location/video data for.
-//                sharedPrefsEditor.commit();
-//                httpHandler.updatePathFromServer(); // has the handler query the server for the latitude/longitude/videoId combos; handler then sets the sharedPreferences for these based on the "current_step" sharedpreference.
-//                takePhotoButton.setEnabled(false); //re-greys it out until the next time we get location info, at least.
-//            }
-//        });
         Log.d("GpsVals", "got to here: HUD Fragment, about to make it handle GPS");
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -165,8 +152,8 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
         double targetLongitudeAsDouble = Double.longBitsToDouble(targetLongitude);
         double targetLatitudeAsDouble = Double.longBitsToDouble(targetLatitude);
         Log.d("GpsVals", "checkIfClose: as double: long: " + Double.toString(targetLongitudeAsDouble) + ", lat: " + Double.toString(targetLatitudeAsDouble));
-        float distanceThreshold = sharedPrefs.getFloat("distance_threshold", 500); // 100 meters is the default. Not sure if this is reasonable.
-        //Ideally, distance_threshold will be set in the Settings options/tabs/etc. Right now, it's 500 because it's cold outside.
+        float distanceThreshold = sharedPrefs.getFloat("distance_threshold", 100); // 100 meters is the default. Not sure if this is reasonable.
+        //Ideally, distance_threshold will be set in the Settings options/tabs/etc.
         destination.setLongitude(targetLongitudeAsDouble);
         destination.setLatitude(targetLatitudeAsDouble);
         float distanceToTarget = location.distanceTo(destination);
@@ -247,7 +234,6 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
     public interface OnFragmentInteractionListener
     {
         public void onFragmentInteraction(String s);
-        public void onFragmentInteraction(Uri u);
     }
 
 }
