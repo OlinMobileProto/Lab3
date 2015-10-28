@@ -57,19 +57,19 @@ public class CameraFragment extends Fragment {
         tempopenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//                startActivity(intent);
 
-                //HAVE if statement to check if activity manager can be initialized
-
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,
-                        CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-
+                //Try to start camera activity when open camera button is pressed
+                try{
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent,
+                            CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                } catch (Exception e){
+                    Log.e("ERROR!", e.getMessage());
+                }
             }
         });
 
-        //for now: saveimage only transitions to next clue, but later it will do some stuff with the database
+        //save image button transitions to the next fragment, and puts the picture into s3
         saveimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +108,8 @@ public class CameraFragment extends Fragment {
                 VolleyRequest handler = new VolleyRequest(getActivity().getApplicationContext());
                 handler.putID(uid, ((MainActivity) getActivity()).return_counter());
 
+                //Checks to see if it's on the last clue, then it will show the final page
+                //ELSE: increment to the next clue video fragment
                 if (((MainActivity)getActivity()).return_counter() == 6) {
                     FeedFragment feed_frag = new FeedFragment();
                     ((MainActivity) getActivity()).transitionToFragment(feed_frag);
@@ -118,7 +120,7 @@ public class CameraFragment extends Fragment {
                 }
             }
         });
-        //WE WILL USE THE LAST PICTURE OF THE GALLERY TO GET THE PICTURE THAT WE ARE SAVING TO DATABASE
+
         return rootView;
     }
 
@@ -128,15 +130,10 @@ public class CameraFragment extends Fragment {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
 
-                //saveimage button only pops up once an image is uploaded
+                //publish image button only pops up once an image is uploaded
                 saveimage.setVisibility(View.VISIBLE);
 
-//                Uri contentUri = data.getData();
-//                Log.d("uri", contentUri.toString());
-//
-//
-//                imageView.setImageURI(contentUri);
-//                //Do getData instead, Uri contenturi
+                //make bitmap of a thumbnail of the image that was just taken
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
@@ -144,10 +141,10 @@ public class CameraFragment extends Fragment {
                 byte[] byteArray = stream.toByteArray();
 
                 // convert byte array to Bitmap
-
                 Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
                         byteArray.length);
 
+                //set imageview to be the thumbnail
                 imageView.setImageBitmap(bitmap);
 
             }

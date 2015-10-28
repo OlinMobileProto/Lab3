@@ -33,10 +33,9 @@ public class VolleyRequest {
 
     //Function that searches the input to the function, given by SearchFragment on search click
     public void getlocations(final searchcallback callback) {
-//        String query = searchQuery.replaceAll(" ", "+"); //replaces spaces with +
         String url = "http://45.55.65.113/scavengerhunt";
 
-        //Requesting the JSON object with the custom search url
+        //Requesting the JSON object from the url of server
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -45,7 +44,7 @@ public class VolleyRequest {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        //Initializes an arraylist that we will fill with image url's
+                        //Initializes three arraylists of video links, longitudes, latitudes
                         ArrayList<String> locationvideolist = new ArrayList<String>();
                         ArrayList<String> longitudes = new ArrayList<String>();
                         ArrayList<String> latitudes = new ArrayList<String>();
@@ -53,12 +52,19 @@ public class VolleyRequest {
                             //get items array, which we will parse to get all of the links
                             JSONArray items = response.getJSONArray("path");
                             for (int i=0; i<items.length(); i++){
+                                //get the path JSON object
                                 JSONObject image_item = items.getJSONObject(i);
+
+                                //append string of video into locationvideolist
                                 String videos = "https://s3.amazonaws.com/olin-mobile-proto/" + image_item.getString("s3id");
-                                String longitude = image_item.getString("longitude");
-                                String latitude = image_item.getString("latitude");
                                 locationvideolist.add(videos); //add each link to arraylist of image links
+
+                                //append string of longitude to longitudeslist
+                                String longitude = image_item.getString("longitude");
                                 longitudes.add(longitude);
+
+                                //append string of latitude to latitudeslist
+                                String latitude = image_item.getString("latitude");
                                 latitudes.add(latitude);
                             }
                         } catch (Exception e) {

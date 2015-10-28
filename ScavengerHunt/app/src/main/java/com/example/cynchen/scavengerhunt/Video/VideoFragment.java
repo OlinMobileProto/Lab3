@@ -41,10 +41,6 @@ public class VideoFragment extends Fragment {
 
         //Calls increment_counter during initialization to get the number of clue that it is on after finishing the first clue
         clueCounter = ((MainActivity)getActivity()).increment_counter();
-        Log.d("Counter", String.valueOf(clueCounter));
-        Log.d("videos", cluesLink.toString());
-        Log.d("latitudes", ((MainActivity)getActivity()).latitudes_list.toString());
-        Log.d("longitudes", ((MainActivity)getActivity()).longitudes_list.toString());
 
 
         //fragment_video is the layout

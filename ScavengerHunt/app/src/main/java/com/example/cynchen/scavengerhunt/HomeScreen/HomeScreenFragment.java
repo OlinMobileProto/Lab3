@@ -27,9 +27,10 @@ public class HomeScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //fragment_video is the layout
+        //fragment_home_screen is the layout
         final View rootView = inflater.inflate(R.layout.fragment_home_screen, container, false);
 
+        //start button starts the first clue in video fragment
         start_button = (Button) rootView.findViewById(R.id.startbutton);
 
         start_button.setOnClickListener(new View.OnClickListener() {
