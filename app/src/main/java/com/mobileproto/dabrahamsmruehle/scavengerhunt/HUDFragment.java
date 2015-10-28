@@ -78,10 +78,6 @@ public class HUDFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        // Inflate the layout for this fragment
-//        myGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-//                .addApi(LocationServices.API)
-//                .build();
         httpHandler = new HttpHandler(getActivity());
         httpHandler.updatePathFromServer();
         sharedPrefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -97,28 +93,15 @@ public class HUDFragment extends Fragment
             }
         });
         takePhotoButton.setEnabled(false);
-        takePhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //takePhoto();
-                int currentStep = sharedPrefs.getInt("current_step", 1);
-                int nextStep = currentStep + 1;
-                sharedPrefsEditor.putInt("current_step", nextStep); // sets the current step to be the one we want the location/video data for.
-                httpHandler.updatePathFromServer(); // has the handler query the server for the latitude/longitude/videoId combos; handler then sets the sharedPreferences for these based on the "current_step" sharedpreference.
-                takePhotoButton.setEnabled(false); //re-greys it out until the next time we get location info, at least.
-            }
-        });
 //        takePhotoButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//        public void onClick(View v) {
-//                Log.d("GpsVals", "TakePhoto clicked");
-//
-//                Location loc = LocationServices.FusedLocationApi.getLastLocation(myGoogleApiClient);
-//                if (loc == null) {
-//                    Log.d("GpsVals", "TakePhoto: getLastLocation returned null");
-//                } else {
-//                    Log.d("GpsVals", "TakePhoto onClick: lat = " + String.valueOf(loc.getLatitude()) + " long = " + String.valueOf(loc.getLongitude()));
-//                }
+//            public void onClick(View v) {
+//                //takePhoto();
+//                int currentStep = sharedPrefs.getInt("current_step", 1);
+//                int nextStep = currentStep + 1;
+//                sharedPrefsEditor.putInt("current_step", nextStep); // sets the current step to be the one we want the location/video data for.
+//                httpHandler.updatePathFromServer(); // has the handler query the server for the latitude/longitude/videoId combos; handler then sets the sharedPreferences for these based on the "current_step" sharedpreference.
+//                takePhotoButton.setEnabled(false); //re-greys it out until the next time we get location info, at least.
 //            }
 //        });
         Log.d("GpsVals", "got to here: HUD Fragment, about to make it handle GPS");
@@ -165,12 +148,15 @@ public class HUDFragment extends Fragment
         Location destination = new Location("SERVER");
         double currentLongitude = Double.longBitsToDouble(sharedPrefs.getLong("target_longitude", 0));
         double currentLatitude = Double.longBitsToDouble(sharedPrefs.getLong("target_latitude", 0));
-        float distanceThreshold = sharedPrefs.getFloat("distance_threshold", 50); // 50 meters is the default. Not sure if this is reasonable.
+
+        float distanceThreshold = sharedPrefs.getFloat("distance_threshold", 500); // 100 meters is the default. Not sure if this is reasonable.
+        //Ideally, distance_threshold will be set in the Settings options/tabs/etc. Right now, it's 500 because it's cold outside.
         destination.setLongitude(currentLongitude);
         destination.setLatitude(currentLatitude);
         float distanceToTarget = location.distanceTo(destination);
         isAtTarget = (distanceToTarget < distanceThreshold);
         takePhotoButton.setEnabled(isAtTarget);
+        Log.d("GpsVals", "current distance: " + String.valueOf(distanceToTarget));
     }
 
     @Override

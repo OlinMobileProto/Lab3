@@ -20,21 +20,6 @@ public class GpsHandler {
     private GpsCallback callback;
     private LocationListener locationListener;
     private LocationRequest mLocationRequest;
-
-//    private LocationListener locationListener = new LocationListener()
-//    {
-//        public void onLocationChanged(Location location)
-//        {
-//            callback.callback(location);
-//        }
-//
-//        public void onStatusChanged(String provider, int status, Bundle extras) {}
-//
-//        public void onProviderEnabled(String provider) {}
-//
-//        public void onProviderDisabled(String provider) {}
-//    };
-
     private LocationManager locationManager;
 
 
@@ -56,6 +41,7 @@ public class GpsHandler {
             };
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
             Log.d("GpsVals", "requested location updates with locationListener");
         } catch (SecurityException ex) {
             Log.e("SECURITY_ERROR", ex.getMessage());
