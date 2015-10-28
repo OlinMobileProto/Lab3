@@ -136,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved to:\n" +
                         data.getData(), Toast.LENGTH_LONG).show();
+
+                // TODO: UPDATE SHARED PREFERENCE TO GO TO NEXT CLUE!
+
             } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
             } else {
