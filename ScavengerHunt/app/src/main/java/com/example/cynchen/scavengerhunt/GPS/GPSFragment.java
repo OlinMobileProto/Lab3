@@ -126,27 +126,6 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
         //Map setup at the very beginning
         setUpMapIfNeeded();
 
-        longitude_list =  ((MainActivity) getActivity()).longitudes_list;
-        latitude_list =  ((MainActivity) getActivity()).latitudes_list;
-
-        arrayPoints = new ArrayList<LatLng>();
-
-
-        //Timertask calls display_location every 10 seconds
-        timer = new Timer();
-        myTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run() {
-                        display_location(Double.parseDouble(longitude_list.get(clueCounter - 1)), Double.parseDouble(latitude_list.get(clueCounter - 1)));
-                    }
-                });
-            }
-        };
-        //singleshot delay 1000 ms
-        timer.scheduleAtFixedRate(myTimerTask, 0, FASTEST_INTERVAL);
-
 
         return rootView;
     }
@@ -175,16 +154,20 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
 
         //Map Type: Hybrid - mixture of normal and satellite views
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
     }
 
     @Override
     public void onConnected(Bundle bundle) {
         Location myLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
         if (myLocation == null) {
+            Log.d("My location", "null");
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
         else {
+            Log.d("My location", "not null");
             //calls handleNewLocation when connected
             handleNewLocation(myLocation);
         };
@@ -218,6 +201,7 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             //Disconnect if onPause
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
+            Log.d("being called","called");
         }
     }
 
@@ -228,7 +212,6 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
         Log.d(TAG, "onStop fired ..............");
         mGoogleApiClient.disconnect();
         Log.d(TAG, "isConnected ...............: " + mGoogleApiClient.isConnected());
-        timer.cancel();
     }
 
     @Override
@@ -259,19 +242,27 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.d("location changed", "HI");
+        Location myLocation = location;
 
+        longitude_list =  ((MainActivity) getActivity()).longitudes_list;
+        latitude_list =  ((MainActivity) getActivity()).latitudes_list;
+
+        display_location(Double.parseDouble(longitude_list.get(clueCounter - 1)), Double.parseDouble(latitude_list.get(clueCounter - 1)),myLocation);
+        handleNewLocation(myLocation);
     }
 
-    //Timertask calls display_location function, which finds whether or not the location is the right
+    //OnLocationChanged display_location function, which finds whether or not the location is the right
     //location and then starts the camera fragment if the person is in the right location
-    public void display_location(double longitude_real, double latitude_real){
+    public void display_location(double longitude_real, double latitude_real, Location myLocation){
+
         gps = new GPSTracker(getActivity());
 
         //check if GPS enabled
         if (gps.canGetLocation()) {
 
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
+            double latitude = myLocation.getLatitude();
+            double longitude = myLocation.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
 
             Log.d("Latitude",Double.toString(latitude_real));
@@ -301,9 +292,13 @@ public class GPSFragment extends Fragment implements GoogleApiClient.ConnectionC
             polylineOptions.color(Color.RED);
             polylineOptions.width(5);
 
+            arrayPoints = new ArrayList<LatLng>();
+
             arrayPoints.add(latLng);
             polylineOptions.addAll(arrayPoints);
             googleMap.addPolyline(polylineOptions);
+
+            Toast.makeText(getActivity(),Double.toString(latitude) + " " + Double.toString(longitude), Toast.LENGTH_LONG).show();
 
         } else {
             // can't get location
