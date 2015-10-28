@@ -1,6 +1,8 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,13 +45,14 @@ public class AWS_Video extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         LinearLayout videoPlayerLayout = (LinearLayout) inflater.inflate(R.layout.fragment_aws__video, container, false);
         videoView = (VideoView) videoPlayerLayout.findViewById(R.id.video_view);
         Toast.makeText(getActivity(), "got to here", Toast.LENGTH_SHORT).show();
         mediaController = new MediaController(getActivity());
         videoView.setMediaController(mediaController);
-
-        Uri uriToPlay = Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp");
+        String urlToPlay = "https://s3.amazonaws.com/olin-mobile-proto/" + sharedPreferences.getString("target_video", "MVI_3146.3gp"); // gets target video; defaults to first clue just-in-case.
+        Uri uriToPlay = Uri.parse(urlToPlay);
         videoView.setVideoURI(uriToPlay);
         videoView.requestFocus();
         mediaController.show();
