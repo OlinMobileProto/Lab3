@@ -101,6 +101,7 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
 //                int currentStep = sharedPrefs.getInt("current_step", 1);
 //                int nextStep = currentStep + 1;
 //                sharedPrefsEditor.putInt("current_step", nextStep); // sets the current step to be the one we want the location/video data for.
+//                sharedPrefsEditor.commit();
 //                httpHandler.updatePathFromServer(); // has the handler query the server for the latitude/longitude/videoId combos; handler then sets the sharedPreferences for these based on the "current_step" sharedpreference.
 //                takePhotoButton.setEnabled(false); //re-greys it out until the next time we get location info, at least.
 //            }
@@ -110,7 +111,7 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location)
             {
-                Log.d("GpsVals", "onLocationChanged: " + String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude()));
+//                Log.d("GpsVals", "onLocationChanged: lat: " + String.valueOf(location.getLatitude()) + ", long: " + String.valueOf(location.getLongitude()));
                 checkIfClose(location);
             }
             public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -139,13 +140,17 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
     public void checkIfClose(Location location)
     {
         Location destination = new Location("SERVER");
-        double currentLongitude = Double.longBitsToDouble(sharedPrefs.getLong("target_longitude", 0));
-        double currentLatitude = Double.longBitsToDouble(sharedPrefs.getLong("target_latitude", 0));
 
+        long targetLongitude = sharedPrefs.getLong("target_longitude", 0);
+        long targetLatitude = sharedPrefs.getLong("target_latitude", 0);
+        Log.d("GpsVals", "checkifClose: as long: long: " + Long.toString(targetLongitude) + ", lat: " + Long.toString(targetLatitude));
+        double targetLongitudeAsDouble = Double.longBitsToDouble(targetLongitude);
+        double targetLatitudeAsDouble = Double.longBitsToDouble(targetLatitude);
+        Log.d("GpsVals", "checkIfClose: as double: long: " + Double.toString(targetLongitudeAsDouble) + ", lat: " + Double.toString(targetLatitudeAsDouble));
         float distanceThreshold = sharedPrefs.getFloat("distance_threshold", 500); // 100 meters is the default. Not sure if this is reasonable.
         //Ideally, distance_threshold will be set in the Settings options/tabs/etc. Right now, it's 500 because it's cold outside.
-        destination.setLongitude(currentLongitude);
-        destination.setLatitude(currentLatitude);
+        destination.setLongitude(targetLongitudeAsDouble);
+        destination.setLatitude(targetLatitudeAsDouble);
         float distanceToTarget = location.distanceTo(destination);
         isAtTarget = (distanceToTarget < distanceThreshold);
         takePhotoButton.setEnabled(isAtTarget);
