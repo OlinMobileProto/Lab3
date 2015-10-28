@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String DEBUG_TAG = "Activity_Debug";
 
     FragmentManager manager;
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     private Uri uri;
