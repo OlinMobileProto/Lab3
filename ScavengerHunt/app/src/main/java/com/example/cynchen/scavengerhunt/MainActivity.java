@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.container, fragment);
-//        Log.d("WORKED", locations_videos.toString());
         transaction.commit();
     }
 

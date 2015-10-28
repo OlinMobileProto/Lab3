@@ -31,9 +31,11 @@ import java.util.UUID;
 
 public class CameraFragment extends Fragment {
 
-    public Button tempopenCamera;
+    public Button openCamera;
     public Button saveimage;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
+    private UUID uid;
+    private File imageFile;
     public ImageView imageView;
 
     @Override
@@ -49,12 +51,12 @@ public class CameraFragment extends Fragment {
 
         imageView = (ImageView) rootView.findViewById(R.id.imageview);
         //Opens Camera for the user to take a picture of the location
-        tempopenCamera = (Button) rootView.findViewById(R.id.camera_button);
+        openCamera = (Button) rootView.findViewById(R.id.camera_button);
 
         //Save Image Button
         saveimage = (Button) rootView.findViewById(R.id.save_button);
 
-        tempopenCamera.setOnClickListener(new View.OnClickListener() {
+        openCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -73,13 +75,11 @@ public class CameraFragment extends Fragment {
         saveimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                UUID uid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+                //generates random UUID to identify each image
                 uid = uid.randomUUID();
                 Log.d("UUID: ", uid.toString());
-                File imageFile = null;
 
-                // Find the last picture
+                //creates the cursor to store query to MediaStore on phone
                 String[] projection = new String[]{
                         MediaStore.Images.ImageColumns._ID,
                         MediaStore.Images.ImageColumns.DATA,
@@ -90,21 +90,19 @@ public class CameraFragment extends Fragment {
                 final Cursor cursor = getContext().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
                         null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
 
-                // Put it in the image view
+                //sets the imageFile to be the most recent photo in the phone's gallery
                 if (cursor.moveToFirst()) {
                     String imageLocation = cursor.getString(1);
                     imageFile = new File(imageLocation);
                 }
-
+                //once we have the most recent photo, upload it to s3
                 if (imageFile != null) {
-                    Log.d("SUCCESS!", imageFile.toString());
                     BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAISEFKD6O3QSZGHUQ", "ETum1qfRaUFQ/ixydMBA+yBcUJLY5m8/JojEufNf");
-
                     AmazonS3Client s3Client = new AmazonS3Client(awsCreds);
                     TransferUtility transferUtility = new TransferUtility(s3Client, getContext());
                     TransferObserver observer = transferUtility.upload("olin-mobile-proto", uid.toString(), imageFile);
                 }
-
+                //also have to upload the id and the location to the web server using Volley
                 VolleyRequest handler = new VolleyRequest(getActivity().getApplicationContext());
                 handler.putID(uid, ((MainActivity) getActivity()).return_counter());
 

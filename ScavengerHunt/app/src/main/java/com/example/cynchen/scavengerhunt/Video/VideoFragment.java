@@ -54,14 +54,18 @@ public class VideoFragment extends Fragment {
         clue = (VideoView) rootView.findViewById(R.id.clue);
         clue.setVideoURI(Uri.parse(cluesLink.get(clueCounter - 1)));
 
-        //Clue Media Controller code: COMMENT WHY WE HAVE THIS
+        //Clue Media Controller code
+        //once we have loaded the video from s3
         clue.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                clue.seekTo(100);
-                MediaController mc = new MediaController(getContext());
-                clue.setMediaController(mc);
-                mc.setAnchorView(clue);
+                clue.seekTo(100);   //jump to 100 ms in the video to provide user a photo to look at
+                MediaController mc = new MediaController(getContext()); //initialize media controller
+                clue.setMediaController(mc);    //set media controller on view
+                mc.setAnchorView(clue); //anchor media controller to the bottom
+                //media controller fades out after 3 seconds, done by design to mimic most media players
+                //and will come back in to videoview on tap. other option would be to always have media
+                //controller displayed at the bottom of the videoview
             }
         });
 

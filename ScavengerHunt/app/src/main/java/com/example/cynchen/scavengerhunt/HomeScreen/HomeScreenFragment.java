@@ -22,7 +22,6 @@ public class HomeScreenFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    //oncreateview: finds the correct clueslink video to show dependent on the clue counter from main activity
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

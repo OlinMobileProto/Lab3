@@ -26,12 +26,12 @@ import com.android.volley.toolbox.Volley;
 public class VolleyRequest {
     public RequestQueue queue;
 
-    //Makes the volley request
+    //Makes the queue for requests in Volley
     public VolleyRequest (Context context){
         queue = Volley.newRequestQueue(context);
     }
 
-    //Function that searches the input to the function, given by SearchFragment on search click
+    //Function that gets the data from the webserver for the videos, latitude, and longitude
     public void getlocations(final searchcallback callback) {
         String url = "http://45.55.65.113/scavengerhunt";
 
@@ -84,26 +84,26 @@ public class VolleyRequest {
         queue.add(request); //make the queue request
     }
 
+    //Function that writes to the webserver the id of the uploaded photo to s3 and the location #
+    //the photo was taken at
     public void putID(final UUID uid, int location){
         String url = "http://45.55.65.113/userdata/CynthiaZoherMobProto2015Lab3";
-        JSONObject ImageInfo = new JSONObject();
+        JSONObject ImageInfo = new JSONObject();    //create the necessary JSON object for the POST request
         try{
             ImageInfo.put("imageKey", uid.toString());
         } catch (Exception e){
             Log.e("ERROR!", e.getMessage());
         }
-        Log.d("Location: ", String.valueOf(location));
         try{
             ImageInfo.put("imageLocation", String.valueOf(location));
         } catch (Exception e){
             Log.e("ERROR!", e.getMessage());
         }
-        Log.d("JSONObject: ", ImageInfo.toString());
-        JsonObjectRequest request = new JsonObjectRequest(
+        JsonObjectRequest request = new JsonObjectRequest(  //create the request
                 Request.Method.POST,
                 url,
                 ImageInfo,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONObject>() {   //nothing to do on response from the webserver
                     @Override
                     public void onResponse(JSONObject response) {
                     }
@@ -115,6 +115,6 @@ public class VolleyRequest {
                     }
                 });
         queue.add(request);
-
     }
+
 }

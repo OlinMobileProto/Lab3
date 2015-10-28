@@ -16,9 +16,6 @@ import com.example.cynchen.scavengerhunt.R;
 
 import java.io.File;
 
-/**
- * Created by faridaghadyali on 10/26/15.
- */
 public class FeedFragment extends Fragment {
 
     public Button next_button;
@@ -32,7 +29,10 @@ public class FeedFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    //oncreateview: finds the correct clueslink video to show dependent on the clue counter from main activity
+    //displays to the user a feed of all of the photos they took on their scavenger hunt. This
+    //implementation uses the most recent 6 photos in the user's gallery which makes sense if the
+    //user does the scavenger hunt in one go, better implementation would be to use the web server
+    //to get the 6 most recent uploads and use the ids to display the 6 photos published to s3
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,9 +40,10 @@ public class FeedFragment extends Fragment {
         next_button = (Button) rootView.findViewById(R.id.next_button);
         prev_button = (Button) rootView.findViewById(R.id.prev_button);
         imageView = (ImageView) rootView.findViewById(R.id.feedView);
-        imgCounter = 0;
+        imgCounter = 0; //only interested in showing the user the 6 most recent photos from their gallery,
+        //start with the most recent one
 
-        // Find the last picture
+        //creates the cursor to store query to MediaStore on phone
         String[] projection = new String[]{
                 MediaStore.Images.ImageColumns._ID,
                 MediaStore.Images.ImageColumns.DATA,
@@ -53,14 +54,7 @@ public class FeedFragment extends Fragment {
         final Cursor cursor = getContext().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
                 null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
 
-        // Put it in the image view
-//        if (cursor.moveToFirst()) {
-//            String imageLocation = cursor.getString(1);
-//            imageFile = new File(imageLocation);
-//            Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-//            imageView.setImageBitmap(myBitmap);
-//        }
-
+        //now that we have the most recent photo, put it in the imageView
         if (cursor.moveToPosition(imgCounter)) {
             String imageLocation = cursor.getString(1);
             imageFile = new File(imageLocation);
@@ -68,6 +62,8 @@ public class FeedFragment extends Fragment {
             imageView.setImageBitmap(myBitmap);
         }
 
+        //on click of next button, move to the second to most recent photo in the gallery on the phone
+        //wrap around to the most recent photo to only display the 6 photos taken on the scavenger hunt
         next_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +71,9 @@ public class FeedFragment extends Fragment {
                 if (imgCounter > 5){
                     imgCounter = 0;
                 }
+                //we keep moving the cursor and updating the imageView, no visible delay in experience
+                //but could potentially only use the cursor once, store the 6 photos in an arrayList
+                //and then not have to move the cursor
                 if (cursor.moveToPosition(imgCounter)) {
                     String imageLocation = cursor.getString(1);
                     imageFile = new File(imageLocation);
@@ -84,6 +83,8 @@ public class FeedFragment extends Fragment {
             }
         });
 
+        //same thing as next button except loops the other way from less recent photos to most recent,
+        //again only displaying the 6 most recent photos taken on the scavenger hunt
         prev_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,10 +102,6 @@ public class FeedFragment extends Fragment {
             }
         });
 
-
-
         return rootView;
-
     }
-
 }
