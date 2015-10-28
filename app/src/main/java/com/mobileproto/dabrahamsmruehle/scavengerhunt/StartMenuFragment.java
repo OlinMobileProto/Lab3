@@ -1,6 +1,8 @@
 package com.mobileproto.dabrahamsmruehle.scavengerhunt;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,9 +25,8 @@ public class StartMenuFragment extends Fragment
 {
 
     private OnFragmentInteractionListener mListener;
-    @Bind(R.id.continue_button)
-    Button continueButton;
-    Button newHuntButton;
+    @Bind(R.id.continue_button) Button continueButton;
+    @Bind(R.id.new_hunt_button) Button newHuntButton;
     Button settingsButton;
     Button helpButton;
 
@@ -89,6 +90,18 @@ public class StartMenuFragment extends Fragment
             @Override
             public void onClick(View v)
             {
+                ((StartMenuFragment.OnFragmentInteractionListener) getActivity())
+                        .onFragmentInteraction("continue_button");
+            }
+        });
+        newHuntButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                //TODO: Alert dialog, to keep you from accidentally resetting your hunt thing.
+                SharedPreferences sharedPrefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                SharedPreferences.Editor sharedPrefsEd = sharedPrefs.edit();
+                sharedPrefsEd.putInt("current_step", 1);
                 ((StartMenuFragment.OnFragmentInteractionListener) getActivity())
                         .onFragmentInteraction("continue_button");
             }

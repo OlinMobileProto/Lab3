@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 
 public class MainActivity extends AppCompatActivity implements
         StartMenuFragment.OnFragmentInteractionListener,
+        AWS_Video.OnFragmentInteractionListener,
         HUDFragment.OnFragmentInteractionListener
 {
 
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements
     {
         super.onCreate(savedInstanceState);
         manager = getSupportFragmentManager();
+//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         setContentView(R.layout.activity_main);
         switchFragment(StartMenuFragment.newInstance());
 
@@ -146,7 +148,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         Log.d(DEBUG_TAG, "Intent recieved");
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -163,4 +166,11 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
+
+    public void onFragmentInteraction(Uri uri)
+    {
+        AWS_Video vid = new AWS_Video();
+        switchFragment(vid);
+    }
+
 }
