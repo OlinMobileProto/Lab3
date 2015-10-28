@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
+    private Uri uri;
+    private static final String OUTPUT_FILE_URI_KEY = "outputUri";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,6 +39,12 @@ public class MainActivity extends AppCompatActivity implements
         manager = getSupportFragmentManager();
         setContentView(R.layout.activity_main);
         switchFragment(StartMenuFragment.newInstance());
+
+        if (savedInstanceState != null)
+        {
+            uri = savedInstanceState.getParcelable(OUTPUT_FILE_URI_KEY);
+        }
+
     }
 
     private void switchFragment(Fragment f)
@@ -81,12 +89,21 @@ public class MainActivity extends AppCompatActivity implements
         } else if (buttonName == "take_photo_button")
         {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            Uri fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+            uri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // set the image file name
 
             // start the image capture Intent
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putParcelable(OUTPUT_FILE_URI_KEY, uri);
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     /** Create a file Uri for saving an image or video */
@@ -135,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements
             if (resultCode == RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved to:\n" +
-                        data.getData(), Toast.LENGTH_LONG).show();
+                        uri.toString(), Toast.LENGTH_LONG).show();
 
                 // TODO: UPDATE SHARED PREFERENCE TO GO TO NEXT CLUE!
 
