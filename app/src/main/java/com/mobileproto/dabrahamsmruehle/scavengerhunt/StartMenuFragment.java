@@ -85,11 +85,13 @@ public class StartMenuFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_start_menu, container, false);
         ButterKnife.bind(this, view);
-        continueButton.setOnClickListener(new View.OnClickListener() {
+        continueButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 ((StartMenuFragment.OnFragmentInteractionListener) getActivity())
-                        .onFragmentInteraction('a');
+                        .onFragmentInteraction("continue_button");
             }
         });
         newHuntButton.setOnClickListener(new View.OnClickListener()
@@ -101,7 +103,7 @@ public class StartMenuFragment extends Fragment
                 SharedPreferences.Editor sharedPrefsEd = sharedPrefs.edit();
                 sharedPrefsEd.putInt("current_step", 1);
                 ((StartMenuFragment.OnFragmentInteractionListener) getActivity())
-                        .onFragmentInteraction('a');
+                        .onFragmentInteraction("continue_button");
             }
         });
         return view;
@@ -120,6 +122,6 @@ public class StartMenuFragment extends Fragment
     public interface OnFragmentInteractionListener
     {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(char buttonName);
+        public void onFragmentInteraction(String buttonName);
     }
 }

@@ -17,7 +17,6 @@ import android.widget.Button;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,6 +35,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
  */
 public class HUDFragment extends Fragment implements OnMapReadyCallback
 {
+    private static final String ERROR_TAG = "HUD Fragment Error";
+
     private OnFragmentInteractionListener mListener;
     public LocationManager locationManager;
     public LocationListener locationListener;
@@ -45,8 +46,9 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
     public HttpHandler httpHandler;
     @Bind(R.id.curr_clue_button) Button playCurrentClue;
     @Bind(R.id.mapview) MapView mapView;
-    @Bind(R.id.take_photo_button) Button takePhotoButton;
     GoogleMap map;
+
+    @Bind(R.id.take_photo_btn) Button takePhotoBtn;
 
     /**
      * Use this factory method to create a new instance of
@@ -85,15 +87,17 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
         sharedPrefsEditor = sharedPrefs.edit();
         View view = inflater.inflate(R.layout.fragment_hud, container, false);
         ButterKnife.bind(this, view);
-        playCurrentClue.setOnClickListener(new View.OnClickListener() {
+        playCurrentClue.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 ((HUDFragment.OnFragmentInteractionListener) getActivity())
                         .onFragmentInteraction(Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp")); // can be replaced with a string button or fragment now; video ID is no longer communicated via the onFragmentInteraction URI and instead uses the sharedPreferences values.
 
             }
         });
-        takePhotoButton.setEnabled(false);
+        takePhotoBtn.setEnabled(false);
 //        takePhotoButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -117,9 +121,23 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
             public void onProviderEnabled(String provider) {}
             public void onProviderDisabled(String provider) {}
         };
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener); // Do we really need to check for these permissions if we're putting them in the manifest xml file?
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener); // Do we really need to check for these permissions if we're putting them in the manifest xml file?
+        } catch (SecurityException e) {
+            Log.e(ERROR_TAG, "GPS Permissions were not given. :(");
+        }
         Log.d("GpsVals", "got to here: HUD Fragment, just requested location updates.");
+
+        takePhotoBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ((HUDFragment.OnFragmentInteractionListener) getActivity())
+                        .onFragmentInteraction("take_photo_button");
+            }
+        });
 
         int checkGooglePlayServices =
                 GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
@@ -148,7 +166,7 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
         destination.setLatitude(currentLatitude);
         float distanceToTarget = location.distanceTo(destination);
         isAtTarget = (distanceToTarget < distanceThreshold);
-        takePhotoButton.setEnabled(isAtTarget);
+        takePhotoBtn.setEnabled(isAtTarget);
         Log.d("GpsVals", "current distance: " + String.valueOf(distanceToTarget));
     }
 
@@ -178,8 +196,9 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onDestroy()
     {
-        super.onDestroy();
+
         mapView.onDestroy();
+        super.onDestroy();
     }
 
     /**
@@ -222,7 +241,7 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
      */
     public interface OnFragmentInteractionListener
     {
-        // TODO: Update argument type and name
+        public void onFragmentInteraction(String s);
         public void onFragmentInteraction(Uri u);
     }
 
