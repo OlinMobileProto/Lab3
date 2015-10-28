@@ -34,13 +34,15 @@ public class HttpHandler
         sharedPreferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         sharedPreferencesEditor = sharedPreferences.edit();
         parentContext = context;
+        Log.d("SharedPrefsHttp", "handler created");
     }
 
     public void updatePathFromServer()
     {
         sharedPreferencesEditor.putLong("target_longitude", 0); // so that you can't immediately "clear" a step while waiting for the HTTP response.
+        Log.d("SharedPrefsHttp", "updatePathFromServer called");
         JSONObject body = new JSONObject();
-        String address = ipAddress + objToRequest;
+        String address = "http://" + ipAddress + objToRequest;
         JsonObjectRequest getRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 address,
@@ -50,6 +52,7 @@ public class HttpHandler
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("Response", response.toString());
+                        Log.d("SharedPrefsHttp", "response received");
                         sendServerDataToSharedPreferences(response);
                     }
                 },
@@ -58,15 +61,19 @@ public class HttpHandler
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Error", error.getMessage());
+                        Log.d("SharedPrefsHttp", "error received");
+                        Log.d("SharedPrefsHttp", error.getMessage());
                     }
                 }
         );
         queue.add(getRequest);
+        Log.d("SharedPrefsHttp", "get request added to queue");
     }
 
     public void sendServerDataToSharedPreferences(JSONObject input)
     {
         int currentObjective = sharedPreferences.getInt("current_step", 1);
+        Log.d("SharedPrefsHttp", "callback sendServerData called");
         try
         {
             JSONArray jArray = input.getJSONArray("path");
@@ -78,10 +85,17 @@ public class HttpHandler
                     JSONObject currentJsonObject = jArray.getJSONObject(i);
                     try {
                         int currentId = currentJsonObject.getInt("id");
+                        Log.d("SharedPrefsHttp", "id: " + String.valueOf(currentId) + ", currObjective: " + String.valueOf(currentObjective));
                         if (currentId == currentObjective) {
-                            sharedPreferencesEditor.putLong("target_longitude", currentJsonObject.getLong("longitude"));
-                            sharedPreferencesEditor.putLong("target_latitude", currentJsonObject.getLong("latitude"));
-                            sharedPreferencesEditor.putString("target_video", currentJsonObject.getString("s3id"));
+                            Log.d("SharedPrefsHttp", "determined equal");
+                            double longitude = currentJsonObject.getDouble("longitude");
+                            double latitude = currentJsonObject.getDouble("latitude");
+                            String targetVid = currentJsonObject.getString("s3id");
+                            Log.d("SharedPrefsHttp", "longitude: " + String.valueOf(longitude) + ", latitude: " + String.valueOf(latitude) + ", video: " + targetVid);
+                            sharedPreferencesEditor.putLong("target_longitude", Double.doubleToLongBits(longitude));
+                            sharedPreferencesEditor.putLong("target_latitude", Double.doubleToLongBits(latitude));
+                            sharedPreferencesEditor.putString("target_video", targetVid);
+                            sharedPreferencesEditor.commit();
                         }
                     } catch (JSONException ex) {
                         Log.e("Error", ex.getMessage());

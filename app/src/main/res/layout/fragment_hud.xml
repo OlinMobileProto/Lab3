@@ -23,12 +23,6 @@
             android:text="@string/current_clue_btn"
             android:id="@+id/curr_clue_button"/>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/prev_clue_btn"
-            android:id="@+id/prev_clue_button"/>
     </LinearLayout>
 
     <Button

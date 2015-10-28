@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,7 @@ public class StartMenuFragment extends Fragment
     private OnFragmentInteractionListener mListener;
     @Bind(R.id.continue_button) Button continueButton;
     @Bind(R.id.new_hunt_button) Button newHuntButton;
-    Button settingsButton;
-    Button helpButton;
+    @Bind(R.id.help_button) Button helpButton;
 
     /**
      * Use this factory method to create a new instance of
@@ -85,11 +85,9 @@ public class StartMenuFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_start_menu, container, false);
         ButterKnife.bind(this, view);
-        continueButton.setOnClickListener(new View.OnClickListener()
-        {
+        continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ((StartMenuFragment.OnFragmentInteractionListener) getActivity())
                         .onFragmentInteraction("continue_button");
             }
@@ -104,6 +102,16 @@ public class StartMenuFragment extends Fragment
                 sharedPrefsEd.putInt("current_step", 1);
                 ((StartMenuFragment.OnFragmentInteractionListener) getActivity())
                         .onFragmentInteraction("continue_button");
+            }
+        });
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder instructionsBuilder = new AlertDialog.Builder(getActivity());
+                instructionsBuilder.setTitle("Instructions");
+                instructionsBuilder.setMessage("New hunt begins a new hunt. \n Continue hunt continues an existing hunt. \n To play a hunt, use the 'Play Clue' button to view a hint about where to go. When you're close to the target location, the 'Take Photo' button will become click-able; after you take a photo, it will be saved to your device and you'll move on to the next clue.");
+                AlertDialog aD = instructionsBuilder.create();
+                aD.show();
             }
         });
         return view;
