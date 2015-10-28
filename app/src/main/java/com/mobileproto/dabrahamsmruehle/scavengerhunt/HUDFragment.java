@@ -87,9 +87,11 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
         sharedPrefsEditor = sharedPrefs.edit();
         View view = inflater.inflate(R.layout.fragment_hud, container, false);
         ButterKnife.bind(this, view);
-        playCurrentClue.setOnClickListener(new View.OnClickListener() {
+        playCurrentClue.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 ((HUDFragment.OnFragmentInteractionListener) getActivity())
                         .onFragmentInteraction(Uri.parse("https://s3.amazonaws.com/olin-mobile-proto/MVI_3140.3gp")); // can be replaced with a string button or fragment now; video ID is no longer communicated via the onFragmentInteraction URI and instead uses the sharedPreferences values.
 
@@ -194,8 +196,9 @@ public class HUDFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onDestroy()
     {
-        super.onDestroy();
+
         mapView.onDestroy();
+        super.onDestroy();
     }
 
     /**
