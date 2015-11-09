@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="500dp">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/stage_text"
+        android:text="    Stage #"
+        android:textSize="25dp"
+        android:paddingTop="@dimen/start_frag"
+        />
+    <fragment
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/stage_text"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_marginTop="@dimen/inbetween"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/map"
+        android:layout_marginTop="30dp"
+        android:text="Not There Yet!"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/Stage_status"
+    />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Stage_status"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="Camera"
+        android:id="@+id/Camera_button"
+    />
+
+
+</RelativeLayout>

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">SavangerHunt_1</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_section1">Clip</string>
+    <string name="title_section2">Map</string>
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">AIzaSyCDvZsJpfGQSOh0xYDHYeZFr8hoYZ9Nq6c</string>
+    <string-array name="drawer_titles">
+        <item>Stage 1</item>
+        <item>Stage 2</item>
+    </string-array>
+</resources>

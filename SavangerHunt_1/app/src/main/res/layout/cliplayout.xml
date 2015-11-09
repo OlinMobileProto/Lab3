@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="match_parent"
+    >
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/stage_text"
+        android:textSize="25dp"
+        android:paddingTop="@dimen/start_frag"
+        />
+
+    <VideoView
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/stage_text"
+        android:id="@+id/video_view"
+        android:layout_marginTop="@dimen/inbetween"
+        />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/video_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:id="@+id/completed_image"
+        />
+
+</RelativeLayout>
