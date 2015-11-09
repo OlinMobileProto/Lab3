@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Scavenger Hunt</string>
+    <string name="AccessKeyId">AKIAISEFKD6O3QSZGHUQ</string>
+    <string name="Secret_Access_Key">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</string>
+
+    <!-- Default -->
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="new_game">New Game</string>
+    <string name="resume_game">Resume</string>
+    <string name="no_picture">Picture was not taken</string>
+    <string name="total_clue">6</string>
+
+    <!-- Camera Activity -->
+    <string name="curClueNum">curClueNum</string>
+    <string name="file_name">takenImage</string>
+    <string name="suffix">.jpg</string>
+    <string name="s3bucket">olin-mobile-proto</string>
+
+    <!-- ClueFetch Fragment -->
+    <string name="clue">Clue</string>
+    <string name="slash">/</string>
+    <string name="yes">Yes</string>
+    <string name="go_back">Go Back</string>
+    <string name="hint_message">Please get close to the spot to take a picture. Do you want a hint?</string>
+    <string name="clue_switch_message">Are you sure to skip this challenge?</string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="last_clue">This is the last challenge</string>
+    <string name="first_clue">This is the first challenge</string>
+
+</resources>
