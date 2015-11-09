@@ -1,0 +1,31 @@
+<resources>
+    <string name="start_game">Start New Scavenger Hunt</string>
+    <string name="guide">Guide</string>
+    <string name="resume">Resume</string>
+    <string name="app_name">ScavengerHunt</string>
+    <string name="action_settings">Settings</string>
+    <string name="GPS_Checking_Camera">Camera</string>
+    <string name="GPS_Checking_Cancel">Cancel</string>
+    <string name="GPS_Checking_Retry">Camera</string>
+    <string name="GPS_Checking_Return">Cancel</string>
+    <string name="GPS_Checking_Hint">Hint</string>
+    <string name="GPS_Checking_Fail_MSG">You are not there yet :(</string>
+    <string name="GPS_Checking_Success_MSG">You find the spot!!!</string>
+    <string name="GPS_check">Check GPS</string>
+    <string name="GPS_view">View GPS</string>
+    <string name="left">back</string>
+    <string name="right">next</string>
+    <string name="stage">Stage&#160;</string>
+    <string name="video">&#160;video</string>
+    <string name="current_stage">, current stage</string>
+    <string name="previous_stage">, previous stage</string>
+    <string name="buffering">Buffering...</string>
+    <string name="instruction">Watch the videos to find the next location.
+            Once you think you are there, check your GPS. If you are correct, upload a photo
+            evidence to move to next stage
+    </string>
+    <string name="menu">Menu</string>
+    <string name="videos">Videos</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="Congratulation">Congratulations!!!</string>
+</resources>
