@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/mapblur"
+    tools:context="hieunguyen.com.scavengerhunt.Fragments.InstructionsFragment">
+
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:id="@+id/instruction_title_iv"
+        android:background="@drawable/instructions"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="100dp"
+        android:paddingBottom="20dp"
+        android:layout_marginTop="140dp" />
+
+
+    <ImageButton
+        android:layout_width="@dimen/next_clue_button_width"
+        android:layout_height="@dimen/next_clue_button_height"
+        android:background="@drawable/letsgobutton"
+        android:id="@+id/done_button"
+        android:layout_marginTop="16dp"
+        android:layout_margin="100dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="16dp"
+        android:layout_gravity="center_horizontal"/>
+
+
+</LinearLayout>

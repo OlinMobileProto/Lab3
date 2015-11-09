@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Scavenger Hunt</string>
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        AIzaSyCy5VYmC88UsRI3vVZcT1Zv6WvWa599OVA
+    </string>
+    <string name="ip_address">http://45.55.65.113</string>
+
+    <string name="welcome_text">Start Your Adventure</string>
+    <string name="action_settings">Settings</string>
+    <string name="go">Go</string>
+    <string name="instructions_title">Instructions</string>
+    <string name="instruction1">1. Watch the clue</string>
+    <string name="instruction2">2. Use the map to find the clue</string>
+    <string name="instruction3">3. Upload a photo</string>
+    <string name="title_activity_hunt">HuntActivity</string>
+
+    <string name="cluetitle">Clue Number </string>
+    <string name="donecluebutton">I\'m Ready!</string>
+    <string name="doneinstructionsbutton">Let\'s Go!</string>
+    <string name="title_activity_photo">PhotoActivity</string>
+
+
+    <string name="found_clue">You Found It!</string>
+    <string name="take_photo_prompt">Now Take a Photo</string>
+    <string name="open_camera_button">Go</string>
+
+    <string name="photo_uploaded">Photo Uploaded!</string>
+    <string name="next_clue">Next Clue</string>
+
+
+</resources>
